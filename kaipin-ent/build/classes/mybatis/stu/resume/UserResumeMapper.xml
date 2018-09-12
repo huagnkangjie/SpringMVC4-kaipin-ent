@@ -1,0 +1,639 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kaipin.student.repository.dao.resume.IResumeDao" >
+  <resultMap id="BaseResultMap" type="com.kaipin.student.model.resume.UserResume" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="resume_name" property="resumeName" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="surname" property="surname" jdbcType="VARCHAR" />
+    <result column="miss_surname" property="missSurname" jdbcType="VARCHAR" />
+    <result column="salary" property="salary" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="INTEGER" />
+    <result column="birth_date" property="birthDate" jdbcType="VARCHAR" />
+    <result column="height" property="height" jdbcType="VARCHAR" />
+    <result column="weight" property="weight" jdbcType="VARCHAR" />
+    <result column="is_married" property="isMarried" jdbcType="INTEGER" />
+    <result column="political_stance" property="politicalStance" jdbcType="VARCHAR" />
+    <result column="post_code" property="postCode" jdbcType="VARCHAR" />
+    <result column="live_address" property="liveAddress" jdbcType="VARCHAR" />
+    <result column="area_id" property="areaId" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="interest" property="interest" jdbcType="VARCHAR" />
+    <result column="cover_letter" property="coverLetter" jdbcType="VARCHAR" />
+    <result column="follow_status" property="followStatus" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="keywords" property="keywords" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="VARCHAR" />
+    <result column="modify_time" property="modifyTime" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, resume_name, user_id, surname, miss_surname, salary, sex, birth_date, height, 
+    weight, is_married, political_stance, post_code, live_address, area_id, phone, email, 
+    interest, cover_letter, follow_status, status, keywords, create_time, modify_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from user_resume
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from user_resume
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.kaipin.student.model.resume.UserResume" >
+    insert into user_resume (id, resume_name, user_id, 
+      surname, miss_surname, salary, 
+      sex, birth_date, height, 
+      weight, is_married, political_stance, 
+      post_code, live_address, area_id, 
+      phone, email, interest, 
+      cover_letter, follow_status, status, 
+      keywords, create_time, modify_time
+      )
+    values (#{id,jdbcType=VARCHAR}, #{resumeName,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, 
+      #{surname,jdbcType=VARCHAR}, #{missSurname,jdbcType=VARCHAR}, #{salary,jdbcType=VARCHAR}, 
+      #{sex,jdbcType=INTEGER}, #{birthDate,jdbcType=VARCHAR}, #{height,jdbcType=VARCHAR}, 
+      #{weight,jdbcType=VARCHAR}, #{isMarried,jdbcType=INTEGER}, #{politicalStance,jdbcType=VARCHAR}, 
+      #{postCode,jdbcType=VARCHAR}, #{liveAddress,jdbcType=VARCHAR}, #{areaId,jdbcType=VARCHAR}, 
+      #{phone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{interest,jdbcType=VARCHAR}, 
+      #{coverLetter,jdbcType=VARCHAR}, #{followStatus,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, 
+      #{keywords,jdbcType=VARCHAR}, #{createTime,jdbcType=VARCHAR}, #{modifyTime,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.kaipin.student.model.resume.UserResume" >
+    insert into user_resume
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="resumeName != null" >
+        resume_name,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="surname != null" >
+        surname,
+      </if>
+      <if test="missSurname != null" >
+        miss_surname,
+      </if>
+      <if test="salary != null" >
+        salary,
+      </if>
+      <if test="sex != null" >
+        sex,
+      </if>
+      <if test="birthDate != null" >
+        birth_date,
+      </if>
+      <if test="height != null" >
+        height,
+      </if>
+      <if test="weight != null" >
+        weight,
+      </if>
+      <if test="isMarried != null" >
+        is_married,
+      </if>
+      <if test="politicalStance != null" >
+        political_stance,
+      </if>
+      <if test="postCode != null" >
+        post_code,
+      </if>
+      <if test="liveAddress != null" >
+        live_address,
+      </if>
+      <if test="areaId != null" >
+        area_id,
+      </if>
+      <if test="phone != null" >
+        phone,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="interest != null" >
+        interest,
+      </if>
+      <if test="coverLetter != null" >
+        cover_letter,
+      </if>
+      <if test="followStatus != null" >
+        follow_status,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="keywords != null" >
+        keywords,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="modifyTime != null" >
+        modify_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="resumeName != null" >
+        #{resumeName,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="surname != null" >
+        #{surname,jdbcType=VARCHAR},
+      </if>
+      <if test="missSurname != null" >
+        #{missSurname,jdbcType=VARCHAR},
+      </if>
+      <if test="salary != null" >
+        #{salary,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        #{sex,jdbcType=INTEGER},
+      </if>
+      <if test="birthDate != null" >
+        #{birthDate,jdbcType=VARCHAR},
+      </if>
+      <if test="height != null" >
+        #{height,jdbcType=VARCHAR},
+      </if>
+      <if test="weight != null" >
+        #{weight,jdbcType=VARCHAR},
+      </if>
+      <if test="isMarried != null" >
+        #{isMarried,jdbcType=INTEGER},
+      </if>
+      <if test="politicalStance != null" >
+        #{politicalStance,jdbcType=VARCHAR},
+      </if>
+      <if test="postCode != null" >
+        #{postCode,jdbcType=VARCHAR},
+      </if>
+      <if test="liveAddress != null" >
+        #{liveAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="areaId != null" >
+        #{areaId,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="interest != null" >
+        #{interest,jdbcType=VARCHAR},
+      </if>
+      <if test="coverLetter != null" >
+        #{coverLetter,jdbcType=VARCHAR},
+      </if>
+      <if test="followStatus != null" >
+        #{followStatus,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="keywords != null" >
+        #{keywords,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyTime != null" >
+        #{modifyTime,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.kaipin.student.model.resume.UserResume" >
+    update user_resume
+    <set >
+      <if test="resumeName != null" >
+        resume_name = #{resumeName,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="surname != null" >
+        surname = #{surname,jdbcType=VARCHAR},
+      </if>
+      <if test="missSurname != null" >
+        miss_surname = #{missSurname,jdbcType=VARCHAR},
+      </if>
+      <if test="salary != null" >
+        salary = #{salary,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        sex = #{sex,jdbcType=INTEGER},
+      </if>
+      <if test="birthDate != null" >
+        birth_date = #{birthDate,jdbcType=VARCHAR},
+      </if>
+      <if test="height != null" >
+        height = #{height,jdbcType=VARCHAR},
+      </if>
+      <if test="weight != null" >
+        weight = #{weight,jdbcType=VARCHAR},
+      </if>
+      <if test="isMarried != null" >
+        is_married = #{isMarried,jdbcType=INTEGER},
+      </if>
+      <if test="politicalStance != null" >
+        political_stance = #{politicalStance,jdbcType=VARCHAR},
+      </if>
+      <if test="postCode != null" >
+        post_code = #{postCode,jdbcType=VARCHAR},
+      </if>
+      <if test="liveAddress != null" >
+        live_address = #{liveAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="areaId != null" >
+        area_id = #{areaId,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="interest != null" >
+        interest = #{interest,jdbcType=VARCHAR},
+      </if>
+      <if test="coverLetter != null" >
+        cover_letter = #{coverLetter,jdbcType=VARCHAR},
+      </if>
+      <if test="followStatus != null" >
+        follow_status = #{followStatus,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="keywords != null" >
+        keywords = #{keywords,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyTime != null" >
+        modify_time = #{modifyTime,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.kaipin.student.model.resume.UserResume" >
+    update user_resume
+    set resume_name = #{resumeName,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=VARCHAR},
+      surname = #{surname,jdbcType=VARCHAR},
+      miss_surname = #{missSurname,jdbcType=VARCHAR},
+      salary = #{salary,jdbcType=VARCHAR},
+      sex = #{sex,jdbcType=INTEGER},
+      birth_date = #{birthDate,jdbcType=VARCHAR},
+      height = #{height,jdbcType=VARCHAR},
+      weight = #{weight,jdbcType=VARCHAR},
+      is_married = #{isMarried,jdbcType=INTEGER},
+      political_stance = #{politicalStance,jdbcType=VARCHAR},
+      post_code = #{postCode,jdbcType=VARCHAR},
+      live_address = #{liveAddress,jdbcType=VARCHAR},
+      area_id = #{areaId,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      interest = #{interest,jdbcType=VARCHAR},
+      cover_letter = #{coverLetter,jdbcType=VARCHAR},
+      follow_status = #{followStatus,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER},
+      keywords = #{keywords,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=VARCHAR},
+      modify_time = #{modifyTime,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <resultMap id="myMap" type="com.kaipin.common.entity.CountHomeBean">
+  	<result column="counts" property="counts" jdbcType="VARCHAR" />
+  	<result column="tag" property="tag" jdbcType="VARCHAR" />
+  	<result column="status" property="status" jdbcType="VARCHAR" />
+  </resultMap>
+  <!--   获取  已读 未读 已通过 未通过 -->
+  <select id="getCounts" resultType="map" parameterType="map">
+		${sql}
+  </select>
+  <!-- 根据职位统计 该职位下的简历数目 -->
+  <sql id="getCountsOfPostionListSQL">
+  		SELECT
+			count(*) counts,
+			b.position_name,b.id,b.id postion_id
+		FROM
+			position_delivery a,
+			position_info b
+		WHERE
+			1 = 1
+		AND a.company_id = #{companyId}
+		AND a.position_id = b.id
+		<if test="isLook != null"><if test="isLook != '' "> and is_look = #{isLook} and is_pass = 0</if></if>
+		<if test="isPass != null"><if test="isPass != '' "> and is_pass = #{isPass} and is_look != 0</if></if>
+		GROUP BY
+			a.company_id,a.position_id
+  </sql>
+  <select id="getCountsOfPostionList" resultType="map" parameterType="map">
+		<include refid="getCountsOfPostionListSQL"></include> 
+		order by a.create_time desc 
+		limit ${page_start},${page_size}
+  </select>
+  <!-- 根据职位统计 该职位下的简历数目   total -->
+  <select id="getCountsOfPostionListTotal"  resultType="java.lang.Integer" parameterType="map">  
+		 select count(*) counts  from (
+		 	<include refid="getCountsOfPostionListSQL"></include>
+			)  total
+  </select>
+  
+  <!-- 根据职位id 获取该职位所搜到的所有简历 -->
+  <sql id="datagridNoReadListSQL">
+	   select 
+			a.* , view.count_m face, view.count_n times,
+			view.inviter_handle_status req_status, 
+			view.company_handle_status pass_status, 
+			view.student_handle_status accept_status,
+			view.current_status
+		from (
+			select s.*,education.major,education.start_time st,education.end_time et 
+				from 
+				(select 
+					relation.id as id, relation.company_id, relation.resume_id,relation.position_id, relation.create_time,
+					position.position_name postion_name, 
+					relation.stu_user_id, relation.is_pass,relation.is_look, resume.id as resumeId, 
+						resume.resume_name, resume.email, resume.surname, resume.miss_surname, resume.sex_code, resume.salary,
+					d_view.interview_id, d_view.offer_id, d_view.exam_invite_id
+				from 
+					resume_info resume, 
+					position_delivery relation, 
+					position_info position,
+					position_delivery_interview d_view
+				WHERE 1=1 
+					and resume.id = relation.resume_id 
+					and relation.position_id = position.id 
+					and relation.id = d_view.position_delivery_id
+					<if test="isLook != null"><if test="isLook != '' "><if test="isLook == 0 "> and relation.is_look = #{isLook} and relation.is_pass = 0</if></if></if>
+					<if test="isLook != null"><if test="isLook != '' "><if test="isLook == 1 "> and relation.is_look = #{isLook}</if></if></if>
+					<if test="isPass != null"><if test="isPass != '' "> and relation.is_pass = #{isPass} and relation.is_look = 1</if></if>
+					and relation.position_id = #{positionId}
+				) s
+				LEFT JOIN 
+					(select cedu.education_name major,edu.start_time,edu.end_time,edu.resume_id  
+						from resume_education_background edu,comm_education cedu 
+						where type = 1 and  edu.education_code = cedu.education_code) education
+				on 
+					s.resume_id = education.resume_id
+			)a 
+		LEFT JOIN 
+			position_interview view
+		on a.interview_id = view.id
+  
+  </sql>
+  <select id="datagridNoReadList" resultType="map" parameterType="map">
+  	 <include refid="datagridNoReadListSQL"></include>
+  	order by a.create_time desc
+	limit ${page_start},${page_size}
+  </select>
+  <!-- 根据职位id 获取该职位所搜到的所有简历   total -->
+  <select id="datagridNoReadListTotal"  resultType="java.lang.Integer" parameterType="map">
+		 select count(*) counts  from (
+		 	<include refid="datagridNoReadListSQL"></include>
+			)  total
+  </select>
+  <!-- 获取企业城市list -->
+  <select id="cityList" resultType="map" parameterType="map">
+  	select 
+  		b.work_area,a.docname 
+	from 
+		system_common_city a,position_info b
+	where 1=1
+		and a.doccode = b.work_area
+		and b.company_id = #{companyId}
+		and b.status != 3
+		and b.end_time > #{today}
+	GROUP BY  b.work_area
+  </select>
+  <!-- 获取企业发布职位工作类型jobType -->
+  <select id="jobTypeList" resultType="map" parameterType="map">
+  	select count(*) counts ,m.name,m.job_type from 
+		(
+		select 
+			count(*) ,b.postion_id,c.job_type,d.name
+		from 
+			user_resume_relation b,position_info c,system_code d
+		where 1=1
+			and b.postion_id = c.id
+			and b.company_id = #{companyId} 
+			and c.job_type = d.code
+			and c.status != 3
+			and c.end_time > #{today}
+		group by b.postion_id
+		) m 
+	group by m.job_type
+
+  </select>
+   <!-- 全局搜索简历 -->
+  <select id="search" resultType="map" parameterType="map">
+  	select * from	
+		(
+		select 
+			    distinct resume.resume_name name,resume.id,relation.id relationId ,resume.surname, resume.miss_surname,position.position_name
+			from 
+				resume_info resume,
+				position_delivery relation,
+				position_info position
+			where  1=1
+				and relation.resume_id = resume.id
+				and (resume.resume_name like '%${name}%' or resume.keywords like '${name}' 
+						or resume.surname like '%${name}%' or resume.miss_surname like '%${name}%')
+				and relation.company_id = #{companyId,jdbcType=VARCHAR}
+				and relation.position_id = position.id
+		) a
+		LEFT JOIN 
+		(
+			select 
+				edu.major,edu.resume_id,major.major_name 
+			from resume_education_background edu,comm_major major 
+			where edu.major = major.major_code
+		) b
+		on a.id = b.resume_id
+  </select>
+<!--   获取企业所有搜到的简历首页显示 -->
+<!--   获取企业所有搜到的简历首页显示 sql -->
+  <sql id="indexResumeSql">
+<!-- 	SELECT 
+		position.position_name,resume.resume_name,resume.id,resume.surname,resume.miss_surname,
+		delivery.id relationId, delivery.create_time	
+	FROM
+		position_delivery delivery,
+		position_info position,
+		resume_info resume
+	where 1=1
+		and delivery.company_id = #{companyId}
+		and delivery.resume_id = resume.id
+		and delivery.position_id = position.id
+		and delivery.is_look = 0
+		and position.status != 3
+		order by delivery.create_time desc-->
+		
+		select * from (
+			SELECT
+				position.position_name,resume.resume_name,resume.id,resume.surname,resume.miss_surname,
+				delivery.id relationId, delivery.create_time, stu.head_url	
+			FROM
+				position_delivery delivery,
+				position_info position,
+				resume_info resume,
+				stu_user stu
+			where 1=1
+				and delivery.company_id = #{companyId}
+				and delivery.resume_id = resume.id
+				and delivery.position_id = position.id
+				and delivery.is_look = 0
+				and position.status != 3
+				and delivery.stu_user_id = stu.id
+				order by delivery.create_time desc
+		)a LEFT JOIN (select t.type, t.resume_id, t2.major_name from resume_education_background t, comm_major t2 where t.major = t2.major_code) b
+		ON a.id = b.resume_id and b.type = 1
+
+		
+  </sql>
+  <select id="getAll" resultType="map" parameterType="map">
+  	<include refid="indexResumeSql"></include>
+  	limit ${page_start},${page_size}
+  </select>
+  <!--  获取企业首页简历统计总数 -->
+  <select id="getIndexResumeListCounts" resultType="map" parameterType="map">
+  	select count(*) counts from ( <include refid="indexResumeSql"></include> ) s
+  </select>
+<!--   获取喜欢工作区域 -->
+  <select id="getWorkAreaList" resultType="map" parameterType="map">
+  	select
+  		* 
+  	from
+  		resume_like_job_area
+  	where
+  		resume_id = #{resumeId,jdbcType=VARCHAR}
+  </select>
+<!--   获取喜欢的工作类型-->
+  <select id="getLikeJobTypeList" resultType="map" parameterType="map">
+  	select
+  		* 
+  	from
+  		resume_like_job_type
+  	where
+  		resume_id = #{resumeId,jdbcType=VARCHAR}
+  </select>
+<!--   获取聘用类型 -->
+  <select id="getEmployTypeList" resultType="map" parameterType="map">
+  	select
+  		* 
+  	from
+  		resume_hire_type
+  	where
+  		resume_id = #{resumeId,jdbcType=VARCHAR}
+  </select>
+<!--   获取语言 -->
+  <select id="getlanguageList" resultType="map" parameterType="map">
+  	select
+  		* 
+  	from
+  		resume_language
+  	where
+  		resume_id = #{resumeId,jdbcType=VARCHAR}
+  </select>
+  
+<!--   插入面试日志 -->
+  <insert id="insertViewLog" parameterType="map">
+  	INSERT INTO position_process_log
+	VALUES
+		(#{position_delivery_id}, #{create_time}, #{content}, #{status}, #{type}, #{object_id})
+  </insert>
+<!--   获取n次m面 -->
+  <select id="getFaceTimes" parameterType="map" resultType="map">
+  	select * from (
+		select pDelivery.id, pDView.interview_id from 
+			position_delivery pDelivery,
+			position_delivery_interview pDView
+		where 1=1
+			and pDelivery.id = pDView.position_delivery_id
+			and pDelivery.id = #{relationId}
+		
+		)a
+	LEFT JOIN
+		(
+			select view.count_m,view.count_n,view.id viewId from  
+			position_interview view 
+			where 1=1
+			and view.object_id = #{relationId}
+		)b
+	ON
+	a.interview_id = b.viewId
+  </select>
+  
+  <!-- 检查学生简历是否有邮箱 -->
+  <select id="checkResumeEmail" resultType="map" parameterType="map">
+  	select b.* from 
+	position_delivery a,
+	resume_info b,
+	user_localauth c
+	where 1=1
+	and a.resume_id = b.id
+	and b.stu_user_id = c.id
+	and a.id = #{relationId}
+  </select>
+  
+  <!-- 获取当前简历状态 -->
+  <select id="getCurrentStatus" parameterType="map" resultType="map">
+  		select 
+			a.* , view.count_m face, view.count_n times,
+			view.inviter_handle_status req_status, 
+			view.company_handle_status pass_status, 
+			view.student_handle_status accept_status,
+			view.current_status
+		from (
+			select s.*,education.major,education.start_time st,education.end_time et 
+				from 
+				(select 
+					relation.id as id, relation.company_id, relation.resume_id,relation.position_id, relation.create_time,
+					position.position_name postion_name, 
+					relation.stu_user_id, relation.is_pass,relation.is_look, resume.id as resumeId, 
+						resume.resume_name, resume.email, resume.surname, resume.miss_surname, resume.sex_code, resume.salary,
+					d_view.interview_id, d_view.offer_id, d_view.exam_invite_id
+				from 
+					resume_info resume, 
+					position_delivery relation, 
+					position_info position,
+					position_delivery_interview d_view
+				WHERE 1=1 
+					and resume.id = relation.resume_id 
+					and relation.position_id = position.id 
+					and relation.id = d_view.position_delivery_id
+					and relation.id = #{relationId}
+					
+				) s
+				LEFT JOIN 
+					(select cedu.education_name major,edu.start_time,edu.end_time,edu.resume_id  
+						from resume_education_background edu,comm_education cedu 
+						where type = 1 and  edu.education_code = cedu.education_code) education
+				on 
+					s.resume_id = education.resume_id
+			)a 
+		LEFT JOIN 
+			position_interview view
+		on a.interview_id = view.id
+  </select>
+  
+  
+  <!--  获取日志列表 -->
+  <select id="getLogList" parameterType="map" resultType="map">
+  	select * from position_process_log where position_delivery_id = #{position_delivery_id} order by create_time desc
+  </select>
+</mapper>

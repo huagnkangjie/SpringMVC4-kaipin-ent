@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.enterprise.mapper.position.PositionDeliveryMapper" >
+  <resultMap id="BaseResultMap" type="com.enterprise.model.position.PositionDelivery" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="position_id" property="positionId" jdbcType="VARCHAR" />
+    <result column="resume_id" property="resumeId" jdbcType="VARCHAR" />
+    <result column="stu_user_id" property="stuUserId" jdbcType="VARCHAR" />
+    <result column="company_id" property="companyId" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="BIGINT" />
+    <result column="is_pass" property="isPass" jdbcType="TINYINT" />
+    <result column="is_look" property="isLook" jdbcType="TINYINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, position_id, resume_id, stu_user_id, company_id, create_time, is_pass, is_look
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from position_delivery
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from position_delivery
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.enterprise.model.position.PositionDelivery" >
+    insert into position_delivery (id, position_id, resume_id, 
+      stu_user_id, company_id, create_time, 
+      is_pass, is_look)
+    values (#{id,jdbcType=VARCHAR}, #{positionId,jdbcType=VARCHAR}, #{resumeId,jdbcType=VARCHAR}, 
+      #{stuUserId,jdbcType=VARCHAR}, #{companyId,jdbcType=VARCHAR}, #{createTime,jdbcType=BIGINT}, 
+      #{isPass,jdbcType=TINYINT}, #{isLook,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.enterprise.model.position.PositionDelivery" >
+    insert into position_delivery
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="positionId != null" >
+        position_id,
+      </if>
+      <if test="resumeId != null" >
+        resume_id,
+      </if>
+      <if test="stuUserId != null" >
+        stu_user_id,
+      </if>
+      <if test="companyId != null" >
+        company_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="isPass != null" >
+        is_pass,
+      </if>
+      <if test="isLook != null" >
+        is_look,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="positionId != null" >
+        #{positionId,jdbcType=VARCHAR},
+      </if>
+      <if test="resumeId != null" >
+        #{resumeId,jdbcType=VARCHAR},
+      </if>
+      <if test="stuUserId != null" >
+        #{stuUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="companyId != null" >
+        #{companyId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="isPass != null" >
+        #{isPass,jdbcType=TINYINT},
+      </if>
+      <if test="isLook != null" >
+        #{isLook,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.enterprise.model.position.PositionDelivery" >
+    update position_delivery
+    <set >
+      <if test="positionId != null" >
+        position_id = #{positionId,jdbcType=VARCHAR},
+      </if>
+      <if test="resumeId != null" >
+        resume_id = #{resumeId,jdbcType=VARCHAR},
+      </if>
+      <if test="stuUserId != null" >
+        stu_user_id = #{stuUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="companyId != null" >
+        company_id = #{companyId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="isPass != null" >
+        is_pass = #{isPass,jdbcType=TINYINT},
+      </if>
+      <if test="isLook != null" >
+        is_look = #{isLook,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.enterprise.model.position.PositionDelivery" >
+    update position_delivery
+    set position_id = #{positionId,jdbcType=VARCHAR},
+      resume_id = #{resumeId,jdbcType=VARCHAR},
+      stu_user_id = #{stuUserId,jdbcType=VARCHAR},
+      company_id = #{companyId,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=BIGINT},
+      is_pass = #{isPass,jdbcType=TINYINT},
+      is_look = #{isLook,jdbcType=TINYINT}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

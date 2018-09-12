@@ -1,0 +1,17 @@
+
+/***
+ * 定义全局变量
+ */
+
+//企业端
+var r_company_url = "http://www.kaipin.tv/company";
+//var r_company_url = "http://kaipin.com:8080/kaipin-ent";
+
+//高校端
+var r_university_url = "http://www.kaipin.tv/university";
+//var r_university_url = "http://kaipin.com:8085/kaipin-sch";
+
+//登录接口
+var r_sso_url = "http://www.kaipin.tv/sso";
+//var r_sso_url = "http://kaipin.com:8084/kaipin-sso";
+

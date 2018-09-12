@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kaipin.oss.repository.mapper.platform.PlatformPermission">
+
+
+	<resultMap type="com.kaipin.oss.model.platform.PlatformPermission"
+		id="permissionResultMap">
+
+		<id column="id" property="id" />
+		<result column="description" property="description" />
+		<result column="name" property="name" />
+		<result column="sn" property="sn" />
+		<result column="module_id" property="moduleId" />
+
+		<association property="module" javaType="PlatformModule"
+			column="module_id"
+			select="com.kaipin.oss.repository.mapper.platform.PlatformModule.getById"  >
+		</association>
+
+	</resultMap>
+
+
+	<select id="getRolePermissions" resultMap="permissionResultMap">
+		SELECT t1.* from
+		platform_permission as t1
+
+		LEFT JOIN
+
+		platform_role_permission as t2
+		on
+		t1.id=t2.permission_id
+		where t2.role_id=#{value}
+	</select>
+
+
+
+
+	<select id="getModulePermissions" resultMap="permissionResultMap">
+		SELECT * from
+		platform_permission where module_id=#{value}
+	</select>
+
+
+</mapper>

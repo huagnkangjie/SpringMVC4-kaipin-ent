@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="SchInfoMapper">
+
+	<sql id="Base_Column_List">
+		id, school_code, school_type_id, school_nature_id,
+		school_feature_id, school_class_id,
+		direction, school_short_name, school_logo, school_bg, location_code,
+		student_count,
+		student_total, verify_status, document_id, employment_name, address, website,
+		birth_year,
+		create_time
+	</sql>
+
+
+
+	<select id="getSearchAllCount" resultType="long" parameterType="map">
+
+		SELECT
+
+		count(*) AS total
+
+		FROM
+
+		school_info_link a,
+		school_info b
+
+		where 
+		a.school_code = b.school_code
+
+
+	</select>
+
+
+	<!-- 全文检索 verify_status = 2 -->
+
+	<select id="getSearchAll" resultType="map" parameterType="map">
+
+		select
+		b.school_name, a.id, a.school_type_id, a.school_nature_id,
+		a.school_feature_id, a.school_class_id,
+		a.school_short_name, a.school_logo, a.location_code, a.create_time, a.website
+
+		from
+		school_info_link a,
+		school_info b
+
+		where
+	    a.school_code = b.school_code
+
+
+	</select>
+
+
+
+	<select id="selectByPrimaryKey" resultType="map" parameterType="string">
+
+		select
+		b.school_name, a.id, a.school_type_id, a.school_nature_id, a.school_feature_id,
+		a.school_class_id,
+		a.school_short_name, a.school_logo, a.location_code, a.create_time, a.website
+
+		from
+		school_info_link a,
+		school_info b
+
+
+		where
+		a.id =#{id}
+		AND a.school_code = b.school_code
+
+
+
+	</select>
+
+
+
+	<select id="selectAppSearchRecommend" resultType="map"
+		parameterType="list">
+
+		select b.school_name,a.id from
+		school_info_link a,
+		school_info b
+		where a.id in
+		<foreach item="item" index="index" collection="list" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+
+		AND a.school_code = b.school_code
+
+		  ORDER BY
+     field(
+     
+       a.id,
+ 
+	<foreach item="item" index="index" collection="list" open=""		separator="," close="">
+			#{item}
+		</foreach> 
+     
+ 
+    )
+
+	</select>
+	<!-- 搜索结果 -->
+
+	<!-- and a.verify_status = 2 -->
+	<select id="selectAppSearchResult" resultType="map"
+		parameterType="list">
+
+		select t1.*,t2.group_name,t3.class_name ,
+		get_location_name(t1.location_code) as location_name
+
+		from(
+		select b.school_name,a.* from
+		school_info_link a,
+		school_info b
+		where a.id in
+		<foreach item="item" index="index" collection="list" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+
+		and a.id = b.id
+
+		order by
+		a.create_time desc
+		) t1
+		left join
+		school_feature as t2
+		on
+		t1.school_feature_id=t2.school_group_code
+		left join
+		school_class as t3
+		on
+		t1.school_class_id=t3.shool_class_code
+
+
+
+ ORDER BY
+     field(
+     
+       	t1.id,
+ 
+	<foreach item="item" index="index" collection="list" open=""		separator="," close="">
+			#{item}
+		</foreach> 
+ 
+)
+	</select>
+
+
+
+
+
+
+
+
+
+
+
+	<!-- web 搜索结果 -->
+	<select id="selectWebSearchResult" resultType="map"
+		parameterType="list">
+		select b.school_name,a.* from
+		school_info_link a,
+		school_info b
+		where a.id in
+		<foreach item="item" index="index" collection="list" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+
+		AND a.school_code = b.school_code
+
+		order by
+		a.create_time desc
+
+	</select>
+
+
+
+
+
+
+
+</mapper>

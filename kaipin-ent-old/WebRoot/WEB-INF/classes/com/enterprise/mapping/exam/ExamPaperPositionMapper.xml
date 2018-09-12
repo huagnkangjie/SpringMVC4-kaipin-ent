@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.enterprise.mapper.exam.ExamPaperPositionMapper" >
+  <resultMap id="BaseResultMap" type="com.enterprise.model.exam.ExamPaperPosition" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="paper_id" property="paperId" jdbcType="VARCHAR" />
+    <result column="position_id" property="positionId" jdbcType="VARCHAR" />
+    <result column="company_id" property="companyId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, paper_id, position_id, company_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from exam_paper_position
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from exam_paper_position
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.enterprise.model.exam.ExamPaperPosition" >
+    insert into exam_paper_position (id, paper_id, position_id, 
+      company_id)
+    values (#{id,jdbcType=VARCHAR}, #{paperId,jdbcType=VARCHAR}, #{positionId,jdbcType=VARCHAR}, 
+      #{companyId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.enterprise.model.exam.ExamPaperPosition" >
+    insert into exam_paper_position
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="paperId != null" >
+        paper_id,
+      </if>
+      <if test="positionId != null" >
+        position_id,
+      </if>
+      <if test="companyId != null" >
+        company_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="paperId != null" >
+        #{paperId,jdbcType=VARCHAR},
+      </if>
+      <if test="positionId != null" >
+        #{positionId,jdbcType=VARCHAR},
+      </if>
+      <if test="companyId != null" >
+        #{companyId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.enterprise.model.exam.ExamPaperPosition" >
+    update exam_paper_position
+    <set >
+      <if test="paperId != null" >
+        paper_id = #{paperId,jdbcType=VARCHAR},
+      </if>
+      <if test="positionId != null" >
+        position_id = #{positionId,jdbcType=VARCHAR},
+      </if>
+      <if test="companyId != null" >
+        company_id = #{companyId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.enterprise.model.exam.ExamPaperPosition" >
+    update exam_paper_position
+    set paper_id = #{paperId,jdbcType=VARCHAR},
+      position_id = #{positionId,jdbcType=VARCHAR},
+      company_id = #{companyId,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kaipin.oss.repository.mapper.company.CompanyInfoFeedback" >
+  <resultMap id="BaseResultMap" type="com.kaipin.oss.model.company.CompanyInfoFeedback" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="company_id" property="companyId" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="BIGINT" />
+    <result column="platform_user_id" property="platformUserId" jdbcType="BIGINT" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="var_name" property="varName" jdbcType="VARCHAR" />
+    <result column="priority" property="priority" jdbcType="INTEGER" />
+    <result column="config_id" property="configId" jdbcType="VARCHAR" />
+    <result column="feedback_id" property="feedbackId" jdbcType="VARCHAR" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <!-- 反馈信息 -->
+  <insert id="insertFeedback" parameterType="com.kaipin.oss.model.company.CompanyInfoFeedback">
+  	insert into company_info_feedback
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="companyId != null" >
+        company_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="platformUserId != null" >
+        platform_user_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="companyId != null" >
+        #{companyId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="platformUserId != null" >
+        #{platformUserId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  
+  <!-- 反馈关联 -->
+  <insert id="insertFeedbackRelation" parameterType="com.kaipin.oss.model.company.CompanyInfoFeedback">
+  	insert into company_info_feedback_relation
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="configId != null" >
+        config_id,
+      </if>
+      <if test="feedbackId != null" >
+        feedback_id,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="configId != null" >
+        #{configId,jdbcType=VARCHAR},
+      </if>
+      <if test="feedbackId != null" >
+        #{feedbackId,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  
+  
+  <!-- 配置list -->
+  <select id="getClassConfig" resultMap="BaseResultMap">
+  	select 
+  		* 
+  	from 
+  		company_info_feedback_config
+  </select>
+  
+  
+  <!-- 模板list -->
+  <select id="getClassTemplate" resultMap="BaseResultMap" parameterType="java.lang.String">
+  	select 
+  		* 
+  	from 
+  		company_info_feedback_template 
+  	where 
+  		config_id = #{configId}
+  </select>
+</mapper>

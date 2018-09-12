@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.enterprise.mapper.login.EntUserMapper" >
+  <resultMap id="BaseResultMap" type="com.enterprise.model.common.EntUser" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="VARCHAR" />
+    <result column="position" property="position" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="company_id" property="companyId" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="check_phone" property="checkPhone" jdbcType="VARCHAR" />
+    <result column="phone_code" property="phoneCode" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="check_mail" property="checkMail" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="VARCHAR" />
+    <result column="ent_name" property="entName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, user_name, sex, position, password, company_id, phone, check_phone, phone_code, 
+    email, check_mail, status, create_time, ent_name
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from ent_user
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from ent_user
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.enterprise.model.common.EntUser" >
+    insert into ent_user (id, user_name, sex, 
+      position, password, company_id, 
+      phone, check_phone, phone_code, 
+      email, check_mail, status, 
+      create_time, ent_name)
+    values (#{id,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR}, 
+      #{position,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{companyId,jdbcType=VARCHAR}, 
+      #{phone,jdbcType=VARCHAR}, #{checkPhone,jdbcType=VARCHAR}, #{phoneCode,jdbcType=VARCHAR}, 
+      #{email,jdbcType=VARCHAR}, #{checkMail,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=VARCHAR}, #{entName,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.enterprise.model.common.EntUser" >
+    insert into ent_user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userName != null" >
+        user_name,
+      </if>
+      <if test="sex != null" >
+        sex,
+      </if>
+      <if test="position != null" >
+        position,
+      </if>
+      <if test="password != null" >
+        password,
+      </if>
+      <if test="companyId != null" >
+        company_id,
+      </if>
+      <if test="phone != null" >
+        phone,
+      </if>
+      <if test="checkPhone != null" >
+        check_phone,
+      </if>
+      <if test="phoneCode != null" >
+        phone_code,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="checkMail != null" >
+        check_mail,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="entName != null" >
+        ent_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null" >
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="position != null" >
+        #{position,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="companyId != null" >
+        #{companyId,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="checkPhone != null" >
+        #{checkPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="phoneCode != null" >
+        #{phoneCode,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="checkMail != null" >
+        #{checkMail,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="entName != null" >
+        #{entName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.enterprise.model.common.EntUser" >
+    update ent_user
+    <set >
+      <if test="userName != null" >
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        sex = #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="position != null" >
+        position = #{position,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="companyId != null" >
+        company_id = #{companyId,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="checkPhone != null" >
+        check_phone = #{checkPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="phoneCode != null" >
+        phone_code = #{phoneCode,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="checkMail != null" >
+        check_mail = #{checkMail,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="entName != null" >
+        ent_name = #{entName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.enterprise.model.common.EntUser" >
+    update ent_user
+    set user_name = #{userName,jdbcType=VARCHAR},
+      sex = #{sex,jdbcType=VARCHAR},
+      position = #{position,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      company_id = #{companyId,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      check_phone = #{checkPhone,jdbcType=VARCHAR},
+      phone_code = #{phoneCode,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      check_mail = #{checkMail,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=VARCHAR},
+      ent_name = #{entName,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+<!-- 表数据 -->
+<!-- 登录返回对象 -->
+<!-- 登录 -->
+	<select id="login" resultMap="BaseResultMap" parameterType="map" >
+	    select 
+	    <include refid="Base_Column_List" />
+	    from 
+	    	ent_user
+	    where 1=1
+	    	<if test="id != null "><if test="id != ''"> and id = #{id,jdbcType=VARCHAR} </if></if>
+	    	<if test="status != null "><if test="status != ''"> and status = #{status,jdbcType=VARCHAR} </if></if>
+	    	<if test="checkMail != null "><if test="checkMail != ''"> and check_mail = #{checkMail,jdbcType=VARCHAR} </if></if>
+	    	<if test="email != null "><if test="email != ''"> and email = #{email,jdbcType=VARCHAR} </if></if>
+	    	<if test="password != null "><if test="password != ''"> and password = #{password,jdbcType=VARCHAR} </if></if>
+  </select>
+<!--  获取首页基本信息和配置信息 -->
+  <select id="getUserInfoAndConfig" resultType="map" parameterType="map">
+		SELECT 
+			b.*, 
+			d.id configId,d.mail_host,d.mail_port,d.mail_ssl,d.mail_username,d.mail_password
+		from (
+			select c.*,a.company_id from 
+			company_base_user a,company_user_info c 
+			where 1=1 
+			and a.company_user_id = c.id 
+			and a.company_id = #{companyId}
+		) b
+		LEFT JOIN 
+		comm_mail_config d
+		on b.company_id = d.company_id
+	</select>
+</mapper>

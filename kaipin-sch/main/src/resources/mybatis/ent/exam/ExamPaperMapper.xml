@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kaipin.enterprise.repository.dao.exam.IExamPaperDao" >
+  <resultMap id="BaseResultMap" type="com.kaipin.enterprise.model.exam.ExamPaper" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="paper_name" property="paperName" jdbcType="VARCHAR" />
+    <result column="company_id" property="companyId" jdbcType="VARCHAR" />
+    <result column="question_db_id" property="questionDbId" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="last_updated_time" property="lastUpdatedTime" jdbcType="BIGINT" />
+    <result column="create_time" property="createTime" jdbcType="BIGINT" />
+    <result column="memo" property="memo" jdbcType="VARCHAR" />
+    <result column="paper_minutes" property="paperMinutes" jdbcType="INTEGER" />
+    <result column="total_score" property="totalScore" jdbcType="REAL" />
+    <result column="paper_type" property="paperType" jdbcType="TINYINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, paper_name, company_id, question_db_id, status, last_updated_time, create_time, 
+    memo, paper_minutes, total_score, paper_type
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from exam_paper
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from exam_paper
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.kaipin.enterprise.model.exam.ExamPaper" >
+    insert into exam_paper (id, paper_name, company_id, 
+      question_db_id, status, last_updated_time, 
+      create_time, memo, paper_minutes, 
+      total_score, paper_type)
+    values (#{id,jdbcType=VARCHAR}, #{paperName,jdbcType=VARCHAR}, #{companyId,jdbcType=VARCHAR}, 
+      #{questionDbId,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, #{lastUpdatedTime,jdbcType=BIGINT}, 
+      #{createTime,jdbcType=BIGINT}, #{memo,jdbcType=VARCHAR}, #{paperMinutes,jdbcType=INTEGER}, 
+      #{totalScore,jdbcType=REAL}, #{paperType,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.kaipin.enterprise.model.exam.ExamPaper" >
+    insert into exam_paper
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="paperName != null" >
+        paper_name,
+      </if>
+      <if test="companyId != null" >
+        company_id,
+      </if>
+      <if test="questionDbId != null" >
+        question_db_id,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="lastUpdatedTime != null" >
+        last_updated_time,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="memo != null" >
+        memo,
+      </if>
+      <if test="paperMinutes != null" >
+        paper_minutes,
+      </if>
+      <if test="totalScore != null" >
+        total_score,
+      </if>
+      <if test="paperType != null" >
+        paper_type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="paperName != null" >
+        #{paperName,jdbcType=VARCHAR},
+      </if>
+      <if test="companyId != null" >
+        #{companyId,jdbcType=VARCHAR},
+      </if>
+      <if test="questionDbId != null" >
+        #{questionDbId,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="lastUpdatedTime != null" >
+        #{lastUpdatedTime,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="memo != null" >
+        #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="paperMinutes != null" >
+        #{paperMinutes,jdbcType=INTEGER},
+      </if>
+      <if test="totalScore != null" >
+        #{totalScore,jdbcType=REAL},
+      </if>
+      <if test="paperType != null" >
+        #{paperType,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.kaipin.enterprise.model.exam.ExamPaper" >
+    update exam_paper
+    <set >
+      <if test="paperName != null" >
+        paper_name = #{paperName,jdbcType=VARCHAR},
+      </if>
+      <if test="companyId != null" >
+        company_id = #{companyId,jdbcType=VARCHAR},
+      </if>
+      <if test="questionDbId != null" >
+        question_db_id = #{questionDbId,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="lastUpdatedTime != null" >
+        last_updated_time = #{lastUpdatedTime,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="memo != null" >
+        memo = #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="paperMinutes != null" >
+        paper_minutes = #{paperMinutes,jdbcType=INTEGER},
+      </if>
+      <if test="totalScore != null" >
+        total_score = #{totalScore,jdbcType=REAL},
+      </if>
+      <if test="paperType != null" >
+        paper_type = #{paperType,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.kaipin.enterprise.model.exam.ExamPaper" >
+    update exam_paper
+    set paper_name = #{paperName,jdbcType=VARCHAR},
+      company_id = #{companyId,jdbcType=VARCHAR},
+      question_db_id = #{questionDbId,jdbcType=VARCHAR},
+      status = #{status,jdbcType=TINYINT},
+      last_updated_time = #{lastUpdatedTime,jdbcType=BIGINT},
+      create_time = #{createTime,jdbcType=BIGINT},
+      memo = #{memo,jdbcType=VARCHAR},
+      paper_minutes = #{paperMinutes,jdbcType=INTEGER},
+      total_score = #{totalScore,jdbcType=REAL},
+      paper_type = #{paperType,jdbcType=TINYINT}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

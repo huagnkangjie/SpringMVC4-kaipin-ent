@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kaipin.university.repository.dao.user.ISchBaseUserDao" >
+
+	<!-- 获取粉丝和关注的统计数 -->
+	<select id="getFollowAndFans" parameterType="map" resultType="map">
+		select count(*) counts from follow_following where 1=1
+		<if test="from_uid != null"><if test="from_uid != ''">
+			and from_uid = #{from_uid}
+		</if></if>
+		<if test="to_uid != null"><if test="to_uid != ''">
+			and to_uid = #{to_uid}
+		</if></if>
+		<if test="to_user_type != null"><if test="to_user_type != ''">
+			and to_user_type = #{to_user_type}
+		</if></if>
+		<if test="from_user_type != null"><if test="from_user_type != ''">
+			and from_user_type = #{from_user_type}
+		</if></if>
+		
+	</select>
+	
+	<!-- 获取粉丝、关注列表 -->
+	<select id="getFollowAndFansList" parameterType="map" resultType="map">
+		select * from follow_following where 1=1
+		<if test="from_uid != null"><if test="from_uid != ''">
+			and from_uid = #{from_uid}
+		</if></if>
+		<if test="to_uid != null"><if test="to_uid != ''">
+			and to_uid = #{to_uid}
+		</if></if>
+		<if test="to_user_type != null"><if test="to_user_type != ''">
+			and to_user_type = #{to_user_type}
+		</if></if>
+		<if test="from_user_type != null"><if test="from_user_type != ''">
+			and from_user_type = #{from_user_type}
+		</if></if>
+		order by create_time desc
+  		limit ${page_start},${page_size}
+	</select>
+	
+	<!-- 获取资质证件 -->
+	<select id="selectDoc" parameterType="map" resultType="map">
+		select * from school_user_document where sch_user_id = #{uid}
+	</select>
+	
+	<!-- 	插入学生资质 -->
+	<insert id="insertDoc" parameterType="map">
+	INSERT INTO 
+  		school_user_document
+	VALUES
+		(
+			#{sch_user_id},#{document_path},#{document_type},
+			#{last_updated_time},#{create_time})
+	</insert>
+	
+	  <!-- 删除资质认证-->
+  <delete id="deleteDoc" parameterType="map">
+  	DELETE
+	FROM
+		school_user_document
+	WHERE 1=1
+		 and sch_user_id = #{sch_user_id}
+  </delete>
+   <!-- 验证手机唯一性-->
+  <select id="validataPhone" parameterType="string" resultType="map">
+  	select * from user_localauth where phone = #{phone}
+  </select>
+  
+   <!-- 根据用户id获取  企业  基本信息-->
+  <select id="getCompanyInfoByUserId" parameterType="string" resultType="map">
+  		SELECT
+			a.*
+		FROM
+			company_info a,
+			company_user_info b,
+			company_base_user c
+		WHERE
+			a.id = c.company_id
+		AND b.id = c.company_user_id
+		AND b.id = #{uid}
+  </select>
+  
+   <!-- 根据用户id获取  学校  基本信息-->
+  <select id="getSchoolInfoByUserId" parameterType="string" resultType="map">
+  	SELECT
+		a.school_name,
+		c.*
+	FROM
+		school_info a,
+		school_user_info b,
+		school_info_link c
+	WHERE
+		a.id = b.school_id
+	AND a.id = c.id
+	AND b.id = #{uid}
+  </select>
+  
+   <!-- 根据用户id获取  学生  基本信息-->
+  <select id="getStuInfoByUserId" parameterType="string" resultType="map">
+  	select * from stu_user where id = #{uid}
+  </select>
+  
+   <!-- 获取推荐的企业-->
+  <select id="getPushEntList" parameterType="map" resultType="map">
+  	SELECT
+		*
+	FROM
+		company_info a,
+		company_base_user b,
+		company_user_info c
+	WHERE
+		b.company_id = a.id
+	and b.company_user_id = c.id
+	and a.verify_status = 2
+	
+	and a.id not in (select to_uid from follow_following where from_uid = #{orgId})
+	
+	<if test="ids != null"><if test="ids != ''">
+	and a.id not in (${ids})
+	</if></if>
+	and a.id != #{orgId}
+	and a.ent_name is not NULL
+	and a.id not in( select relate_obj_id from follow_recommend_company where obj_id = #{orgId})	
+	
+	ORDER BY a.create_time ASC
+	LIMIT ${page},${pageSize}
+  </select>
+  
+   <!-- 获取推荐的学生-->
+  <select id="getPushStuList" parameterType="map" resultType="map">
+  	select c.school_name,a.* from 
+		stu_user a,
+		resume_info b,
+		school_info c,
+		user_localauth d
+	where 1=1
+		and a.id = b.stu_user_id
+		and a.id = d.id
+		and b.surname is not NULL
+		and b.surname != ''
+		and b.miss_surname is not NULL
+		and b.miss_surname != ''
+		and a.school_code = c.school_code 
+		and a.id not in (select to_uid from follow_following where from_uid = #{orgId})
+	<if test="schoolCode != null"><if test="schoolCode != ''">
+		and a.school_code = #{schoolCode}
+	</if></if>
+	<if test="ids != null"><if test="ids != ''">
+	and a.id not in (${ids})
+	</if></if>
+	
+	and a.id != #{orgId}
+	and a.id not in( select relate_obj_id from follow_recommend_student where obj_id = #{orgId})
+	
+	ORDER BY a.create_time ASC
+	LIMIT ${page},${pageSize}
+  </select>
+  
+   <!-- 获取推荐的学校-->
+  <select id="getPushSchList" parameterType="map" resultType="map">
+  	SELECT
+		b.school_name,a.*
+	FROM
+		school_info_link a,
+		school_info b
+	WHERE
+		a.id = b.id
+	and a.id not in (select to_uid from follow_following where from_uid = #{orgId})
+	and a.location_code in (select location_code from comm_location where code LIKE CONCAT((SELECT LEFT (CODE, 2) FROM	comm_location	WHERE location_code = '${location_code}'), '%' ))
+	<if test="ids != null"><if test="ids != ''">
+	and a.id not in (${ids})
+	</if></if>
+	and a.id != #{orgId}
+	and a.id not in( select relate_obj_id from follow_recommend_school where obj_id = #{orgId})
+	
+	and a.verify_status = 2
+	ORDER BY a.create_time ASC
+	LIMIT ${page},${pageSize}
+  </select>
+  
+ 	 <!-- 添加关注 -->
+	<insert id="addPushFoloow" parameterType="map">
+		insert into follow_following values(#{id},#{from_uid},#{to_uid},#{remark},#{create_time},#{to_user_type},#{from_user_type},#{relation})
+	</insert>
+	<!-- 删除关注 -->
+	<delete id="delPushFoloow" parameterType="map">
+		delete from follow_following where 1=1
+		<if test="id != null"><if test="id != ''"> and id = #{id}</if></if>
+		<if test="fromId != null"><if test="fromId != ''"> and from_uid = #{fromId}</if></if>
+		<if test="toId != null"><if test="toId != ''"> and to_uid = #{toId}</if></if>
+	</delete>
+	
+	<!-- 判断某个用户是否关注了某用户list -->
+	<select id="checkIsFollow" parameterType="map" resultType="map">
+		select * from follow_following where to_uid = #{to_uid} and from_uid = #{from_uid}
+	</select>
+ 	
+ 	<!-- 更新关注关系 -->
+ 	<update id="updatePushFoloow" parameterType="map">
+ 		update follow_following set relation = ${relation} where to_uid = #{to_uid} and from_uid = #{from_uid}
+ 	</update>
+ 	
+ 	<!-- 获取审核反馈信息 -->
+ 	<select id="getFeedbackList" parameterType="map" resultType="map">
+	 	SELECT
+			b.title,
+			a.content
+		FROM
+			school_info_feedback_relation a,
+			school_info_feedback_config b
+		WHERE
+			a.config_id = b.id
+		AND a.feedback_id = #{feedbackId}
+ 	</select>
+ 	
+ 	<!-- 添加企业更换记录 -->
+ 	<insert id="insertFollowRecommendEnt" parameterType="map">
+ 		insert into follow_recommend_company values(#{obj_id}, #{relate_obj_id}, #{create_time})
+ 	</insert>
+ 	
+ 	<!-- 添加学校更换记录 -->
+ 	<insert id="insertFollowRecommendSch" parameterType="map">
+ 		insert into follow_recommend_school values(#{obj_id}, #{relate_obj_id}, #{create_time})
+ 	</insert>
+ 	
+ 	<!-- 添加学生更换记录 -->
+ 	<insert id="insertFollowRecommendStu" parameterType="map">
+ 		insert into follow_recommend_student values(#{obj_id}, #{relate_obj_id}, #{create_time})
+ 	</insert>
+ 	
+ 	<!-- 首页检查是否进行了资质认证 -->
+ 	<select id="checkCertificate" resultType="map" parameterType="map">
+ 		select * from school_user_document where sch_user_id = #{sch_user_id} and document_type = #{document_type}
+ 	</select>
+</mapper>

@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="PositionInfoMapper">
+
+	<resultMap id="BaseResultMap" type="com.kaipin.search.entity.PositionInfo">
+		<id column="id" property="id" />
+
+		<result column="position_name" property="positionName" />
+
+		<result column="industry_code" property="industryCode" />
+
+		<result column="location_code" property="locationCode" />
+
+
+		<result column="create_time" property="createTime" />
+
+		<result column="last_updated_time" property="lastUpdatedTime" />
+
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id,
+		position_name,
+		location_code,
+		industry_code,
+		create_time,
+		last_updated_time
+	</sql>
+
+	<!-- 构建搜索条件 -->
+	<select id="getSearchAll" resultType="map" parameterType="map">
+ 	 <![CDATA[
+	SELECT
+		a.id,
+		a.position_name,
+		a.location_code,
+		a.industry_code,
+		a.create_time,
+		ifnull(a.last_updated_time,a.create_time) as last_updated_time
+		FROM
+		position_info a,
+		company_info b
+		WHERE
+		a. STATUS = 0
+		AND a.company_id = b.id
+		AND b.`enable` = 1
+		AND b.is_del = 0
+		AND (
+		(unix_timestamp(now()) * 1000) - a.end_time
+		) <= 0
+		AND a.is_del = 0
+		ORDER BY
+		a.last_updated_time ASC
+	]]>
+
+	</select>
+
+
+
+
+	<select id="selectByPrimaryKey" resultType="map" parameterType="string">
+
+		select
+
+		<include refid="Base_Column_List" />
+
+		from
+		position_info
+		where
+
+		id =#{id}
+
+	</select>
+
+
+
+
+	<!-- 搜索记录数总数 -->
+	<select id="getSearchAllCount" resultType="long" parameterType="map">
+	
+	 	 <![CDATA[	
+	 	 SELECT
+		
+		count(1) as total
+		FROM
+		position_info a,
+		company_info b
+		WHERE
+		a. STATUS = 0
+		AND a.company_id = b.id
+		AND b.`enable` = 1
+		AND b.is_del = 0
+		AND (
+		(unix_timestamp(now()) * 1000) - a.end_time
+		) <= 0
+		AND a.is_del = 0
+	 	]]>
+
+	</select>
+
+
+
+	<!-- 推荐职位 -->
+	<select id="selectAppSearchRecommend" resultType="map"
+		parameterType="list">
+
+		select
+		id, position_name, IFNULL(
+		last_updated_time,
+		create_time
+		) AS
+		last_updated_time
+		from
+		position_info
+		where
+		id in
+		<foreach item="item" index="index" collection="list" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+
+		ORDER BY
+		field(
+
+		id,
+
+		<foreach item="item" index="index" collection="list" open=""
+			separator="," close="">
+			#{item}
+		</foreach>
+		)
+	</select>
+
+
+
+
+
+	<!-- 搜索职位结果 -->
+	<select id="selectAppSearchResult" resultType="map"
+		parameterType="list">
+
+		select
+		t1.id,t1.position_name,t1.last_updated_time,t1.company_id,
+		t1.create_time,t1.last_updated_time,
+
+		get_location_name(t1.location_code)
+
+		as
+		location_name,t3.ent_name,t3.ent_simple_name,t3.logo
+
+		from
+		position_info
+		as t1
+
+		LEFT
+		JOIN company_info as t3
+		on
+		t1.company_id=t3.id
+
+		where
+		t1.id in
+		<foreach item="item" index="index" collection="list" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+
+		ORDER BY
+		field(
+
+		t1.id,
+
+		<foreach item="item" index="index" collection="list" open=""
+			separator="," close="">
+			#{item}
+		</foreach>
+		)
+	</select>
+
+
+
+
+	<!-- web 搜索结果 参数为list -->
+	<select id="selectWebSearchResult" resultType="map"
+		parameterType="list">
+		SELECT
+		a.id, a.company_id, a.position_name, a.location_code,
+		a.last_updated_time,
+		a.create_time,
+		b.location_name,
+		c.ent_name, c.logo
+		FROM
+		position_info a,
+		comm_location b,
+		company_info c
+		WHERE
+		a.location_code = b.location_code
+		AND c.id = a.company_id
+		and
+		(a.end_time -
+		a.last_updated_time)>=0
+		and a.is_del=0
+		and a.status != 3
+		and a.id in
+		<foreach item="item" index="index" collection="list" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+
+		order by a.last_updated_time desc
+	</select>
+
+
+	<!-- web 参数为map -->
+	<select id="selectWebSearchResultByMap" resultType="map"
+		parameterType="map">
+		SELECT
+		a.id, a.company_id, a.position_name, a.location_code,
+		a.last_updated_time,
+		a.create_time,
+		b.location_name,
+		c.ent_name, c.logo
+		FROM
+		position_info a,
+		comm_location b,
+		company_info c
+		WHERE
+		a.location_code = b.location_code
+		AND c.id = a.company_id
+		and
+		(a.end_time -
+		a.last_updated_time)>=0
+		and a.is_del=0
+		and a.status != 3
+
+		<if test="ids != null">
+			<if test="ids != ''">
+				and a.id in ( ${ids} )
+			</if>
+		</if>
+
+		<if test="location != null">
+			<if test="location != ''">
+				and a.location_code in ( ${location} )
+			</if>
+		</if>
+
+		order by a.last_updated_time desc
+	</select>
+
+	<!-- 查询当前企业招聘岗位总数 -->
+	<select id="getPositionCountByEntId" resultType="map"
+		parameterType="string">
+		select
+		count(*) counts
+		from
+		position_info
+		where
+		company_id =
+		#{companyId}
+		and end_time > unix_timestamp(now())
+		and status != 3
+		and
+		is_del=0
+	</select>
+	<!-- 过期职位 -->
+
+
+	<select id="getExpireSearch" resultType="map" parameterType="map">
+ 	 <![CDATA[
+	SELECT
+		a.id,
+		a.position_name,
+		a.location_code,
+		a.industry_code,
+		a.create_time,
+		ifnull(a.last_updated_time,a.create_time) as last_updated_time
+		FROM
+		position_info a  
+		WHERE
+		a. STATUS = 0
+
+ 
+		AND (
+		(unix_timestamp(now()) * 1000) - a.end_time
+		) > 0
+		AND a.is_del = 0
+		and
+		a.id not in(
+		
+		select obj_id from search_expire_object where obj_type=1
+ 
+		)
+ 
+		ORDER BY
+		last_updated_time ASC
+	]]>
+
+	</select>
+
+
+
+
+
+	<!-- 搜索记录数总数 -->
+	<select id="getExpireSearchCount" resultType="long"
+		parameterType="map">
+	
+	 	 <![CDATA[	
+	 	 SELECT
+		
+		count(1) as total
+		FROM
+		position_info a  
+		WHERE
+		a. STATUS = 0
+  
+		AND (
+		(unix_timestamp(now()) * 1000) - a.end_time
+		) > 0
+		AND a.is_del = 0
+ and
+		a.id not in(
+		select obj_id from search_expire_object where obj_type=1)
+	 
+		
+	 	]]>
+
+	</select>
+
+
+
+
+</mapper>

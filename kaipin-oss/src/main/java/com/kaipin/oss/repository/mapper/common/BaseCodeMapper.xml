@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kaipin.common.repository.dao.common.IBaseCodeDao" >
+  <!-- 获取code表list -->
+  <select id="getCodeList" resultType="map" parameterType="map" statementType="STATEMENT">
+  	select * from ${tableName } where  1=1 and ${parameters}
+  </select>
+  
+  
+  <!-- 获取code表Map -->
+  <select id="getCodeMap" resultType="map" parameterType="map" statementType="STATEMENT">
+  	select * from ${tableName } where  1=1 and ${parameters}
+  </select>
+  
+  <!-- 执行sql -->
+  <select id="getBaseList" resultType="map" parameterType="map" statementType="STATEMENT">
+  		${sql}
+  </select>
+  
+  
+</mapper>

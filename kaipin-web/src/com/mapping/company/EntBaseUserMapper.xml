@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mapper.company.EntBaseUserMapper" >
+  <!-- 获取企业基本信息 -->
+  <select id="getBaseEntUser" parameterType="map" resultType="map">
+  	select * from company_base_user where 1=1
+  	<if test="companyId != null" ><if test="companyId != ''" > and company_id = #{companyId}</if></if>
+  	<if test="userId != null" ><if test="userId != ''" >and  company_user_id = #{userId}</if></if>
+  </select>
+  <!-- 插入用户中间关系表 -->
+  <insert id="insertSelective" parameterType="com.model.company.EntBaseUser" >
+    insert into company_base_user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="companyId != null" >
+        company_id,
+      </if>
+      <if test="companyUserId != null" >
+        company_user_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="isSystem != null" >
+        is_system,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="companyId != null" >
+        #{companyId,jdbcType=VARCHAR},
+      </if>
+      <if test="companyUserId != null" >
+        #{companyUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="isSystem != null" >
+        #{isSystem,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  
+  <!-- 添加资质认证-->
+  <insert id="insertDoc" parameterType="map">
+  	INSERT INTO 
+  		company_user_document
+	VALUES
+		(
+			#{ent_user_id},#{document_path},#{document_type},
+			#{last_updated_time},#{create_time})
+  </insert>
+  
+  <!-- 删除资质认证-->
+  <delete id="deleteDoc" parameterType="map">
+  	DELETE
+	FROM
+		company_user_document
+	WHERE 1=1
+		 and ent_user_id = #{ent_user_id}
+  </delete>
+  
+  <!-- 更新资质表-->
+  <update id="updateDoc" parameterType="map">
+  	update company_user_document
+	  	<set>
+	      <if test="document_path != null">
+	        document_path = #{document_path,jdbcType=VARCHAR},
+	      </if>
+	      <if test="document_type != null">
+	        document_type = #{document_type,jdbcType=TINYINT},
+	      </if>
+	      <if test="last_updated_time != null">
+	        last_updated_time = #{last_updated_time,jdbcType=TINYINT},
+	      </if>
+	    </set>
+    where ent_user_id = #{ent_user_id}
+  </update>
+  
+  <!-- 添加资质认证历史-->
+  <insert id="insertDocHistory" parameterType="map">
+  	INSERT INTO 
+  		company_user_document_history
+	VALUES
+		(
+			#{ent_user_id},#{document_path},#{document_type},
+			#{last_updated_time},#{create_time})
+  
+  </insert>
+  
+  <!-- 查下资质认证-->
+  <select id="selectDoc" parameterType="map" resultType="map">
+  	SELECT
+		*
+	FROM
+		company_user_document
+	WHERE
+		ent_user_id = #{ent_user_id}
+  </select>
+  
+  <!-- 查询资质认证历史-->
+  <select id="selectDocHistory" parameterType="map" resultType="map"></select>
+  
+  <!-- 获取企业推荐列表-->
+  <select id="getFushFollowList">
+  	select a.id resumeId ,a.stu_user_id stuId from resume_info a,
+	(
+		select count(*),m.* from 
+		(
+			select a.resume_id from 
+			(
+				select * from resume_like_job_area where location_code in 
+				(
+					select location_code from comm_location where location_code = #{locationCode} or parent_code = #{locationCode}
+				 )
+			 ) a ,comm_location b where a.location_code = b.location_code 
+		 ) m GROUP BY m.resume_id
+	 ) b where a.id = b.resume_id
+  </select>
+</mapper>

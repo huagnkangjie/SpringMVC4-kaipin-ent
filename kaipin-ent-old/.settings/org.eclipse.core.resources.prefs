@@ -1,0 +1,13 @@
+eclipse.preferences.version=1
+encoding//WebRoot/WEB-INF/pages/main/footer.jsp=UTF-8
+encoding//WebRoot/WEB-INF/pages/test/fileLoad.jsp=UTF-8
+encoding//WebRoot/WEB-INF/pages/test/mytest.jsp=UTF-8
+encoding//WebRoot/WEB-INF/pages/test/weixin.jsp=UTF-8
+encoding//WebRoot/inc/path.jsp=UTF-8
+encoding//WebRoot/js/editor/themes/default/css/ueditor.css=UTF-8
+encoding//src/com/enterprise/web/area/AreaController.java=gbk
+encoding//src/config.properties=UTF-8
+encoding//src/constants.properties=UTF-8
+encoding//src/filePath.properties=UTF-8
+encoding//src/log4j.properties=UTF-8
+encoding/<project>=UTF-8

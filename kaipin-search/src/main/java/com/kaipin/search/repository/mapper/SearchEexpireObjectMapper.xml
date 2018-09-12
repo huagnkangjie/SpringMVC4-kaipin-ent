@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="SearchExpireObjectMapper">
+	<resultMap id="BaseResultMap" type="com.kaipin.search.entity.SearchExpireObject">
+		<id column="id" property="id" />
+		<result column="obj_id" property="objId" />
+		<result column="obj_type" property="objType" />
+
+		<result column="create_time" property="createTime" />
+
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id, obj_id, obj_type, create_time
+	</sql>
+
+	<!-- 插入记录 -->
+	<insert id="insertLog" parameterType="map">
+		insert into
+		search_expire_object(
+		id,obj_id,obj_type,create_time
+
+		) values
+		(#{id},#{obj_id},#{obj_type},#{create_time} )
+	</insert>
+
+	<delete id="deleteLog" parameterType="string">
+		delete from search_expire_object where obj_id=#{obj_id}
+
+	</delete>
+
+</mapper>

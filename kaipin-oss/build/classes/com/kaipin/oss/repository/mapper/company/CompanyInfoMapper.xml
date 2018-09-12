@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kaipin.oss.repository.mapper.company.CompanyInfo" >
+  <resultMap id="BaseResultMap" type="com.kaipin.oss.model.company.CompanyInfo" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="ent_name" property="entName" jdbcType="VARCHAR" />
+    <result column="ent_simple_name" property="entSimpleName" jdbcType="VARCHAR" />
+    <result column="industry_code" property="industryCode" jdbcType="VARCHAR" />
+    <result column="postal_code" property="postalCode" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="office_telphone" property="officeTelphone" jdbcType="VARCHAR" />
+    <result column="office_area" property="officeArea" jdbcType="VARCHAR" />
+    <result column="office_address" property="officeAddress" jdbcType="VARCHAR" />
+    <result column="detail" property="detail" jdbcType="VARCHAR" />
+    <result column="website" property="website" jdbcType="VARCHAR" />
+    <result column="people_number" property="peopleNumber" jdbcType="INTEGER" />
+    <result column="regedit_date" property="regeditDate" jdbcType="VARCHAR" />
+    <result column="logo" property="logo" jdbcType="VARCHAR" />
+    <result column="bg_url" property="bgUrl" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="BIGINT" />
+    <result column="last_updated_time" property="lastUpdatedTime" jdbcType="BIGINT" />
+    <result column="level" property="level" jdbcType="INTEGER" />
+    <result column="verify_status" property="verifyStatus" jdbcType="TINYINT" />
+    <result column="enable" property="enable" jdbcType="TINYINT" />
+    <result column="ent_code" property="entCode" jdbcType="BIGINT" />
+    <result column="business_domain" property="businessDomain" jdbcType="VARCHAR" />
+    <result column="company_type_code" property="companyTypeCode" jdbcType="VARCHAR" />
+    <result column="feedback_id" property="feedbackId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, ent_name, ent_simple_name, industry_code, postal_code, email, phone, office_telphone, 
+    office_area, office_address, detail, website, people_number, regedit_date, logo, 
+    bg_url, create_time, last_updated_time, level, verify_status, enable, ent_code, business_domain, 
+    company_type_code,feedback_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from company_info
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from company_info
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.kaipin.oss.model.company.CompanyInfo" >
+    insert into company_info (id, ent_name, ent_simple_name, 
+      industry_code, postal_code, email, 
+      phone, office_telphone, office_area, 
+      office_address, detail, website, 
+      people_number, regedit_date, logo, 
+      bg_url, create_time, last_updated_time, 
+      level, verify_status, enable, 
+      ent_code, business_domain, company_type_code,feedback_id
+      )
+    values (#{id,jdbcType=VARCHAR}, #{entName,jdbcType=VARCHAR}, #{entSimpleName,jdbcType=VARCHAR}, 
+      #{industryCode,jdbcType=VARCHAR}, #{postalCode,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
+      #{phone,jdbcType=VARCHAR}, #{officeTelphone,jdbcType=VARCHAR}, #{officeArea,jdbcType=VARCHAR}, 
+      #{officeAddress,jdbcType=VARCHAR}, #{detail,jdbcType=VARCHAR}, #{website,jdbcType=VARCHAR}, 
+      #{peopleNumber,jdbcType=INTEGER}, #{regeditDate,jdbcType=VARCHAR}, #{logo,jdbcType=VARCHAR}, 
+      #{bgUrl,jdbcType=VARCHAR}, #{createTime,jdbcType=BIGINT}, #{lastUpdatedTime,jdbcType=BIGINT}, 
+      #{level,jdbcType=INTEGER}, #{verifyStatus,jdbcType=TINYINT}, #{enable,jdbcType=TINYINT}, 
+      #{entCode,jdbcType=BIGINT}, #{businessDomain,jdbcType=VARCHAR}, #{companyTypeCode,jdbcType=VARCHAR},
+      #{feedbackId,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.kaipin.oss.model.company.CompanyInfo" >
+    insert into company_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="entName != null" >
+        ent_name,
+      </if>
+      <if test="entSimpleName != null" >
+        ent_simple_name,
+      </if>
+      <if test="industryCode != null" >
+        industry_code,
+      </if>
+      <if test="postalCode != null" >
+        postal_code,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="phone != null" >
+        phone,
+      </if>
+      <if test="officeTelphone != null" >
+        office_telphone,
+      </if>
+      <if test="officeArea != null" >
+        office_area,
+      </if>
+      <if test="officeAddress != null" >
+        office_address,
+      </if>
+      <if test="detail != null" >
+        detail,
+      </if>
+      <if test="website != null" >
+        website,
+      </if>
+      <if test="peopleNumber != null" >
+        people_number,
+      </if>
+      <if test="regeditDate != null" >
+        regedit_date,
+      </if>
+      <if test="logo != null" >
+        logo,
+      </if>
+      <if test="bgUrl != null" >
+        bg_url,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="lastUpdatedTime != null" >
+        last_updated_time,
+      </if>
+      <if test="level != null" >
+        level,
+      </if>
+      <if test="verifyStatus != null" >
+        verify_status,
+      </if>
+      <if test="enable != null" >
+        enable,
+      </if>
+      <if test="entCode != null" >
+        ent_code,
+      </if>
+      <if test="businessDomain != null" >
+        business_domain,
+      </if>
+      <if test="companyTypeCode != null" >
+        company_type_code,
+      </if>
+      <if test="feedbackId != null" >
+        feedback_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="entName != null" >
+        #{entName,jdbcType=VARCHAR},
+      </if>
+      <if test="entSimpleName != null" >
+        #{entSimpleName,jdbcType=VARCHAR},
+      </if>
+      <if test="industryCode != null" >
+        #{industryCode,jdbcType=VARCHAR},
+      </if>
+      <if test="postalCode != null" >
+        #{postalCode,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="officeTelphone != null" >
+        #{officeTelphone,jdbcType=VARCHAR},
+      </if>
+      <if test="officeArea != null" >
+        #{officeArea,jdbcType=VARCHAR},
+      </if>
+      <if test="officeAddress != null" >
+        #{officeAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="detail != null" >
+        #{detail,jdbcType=VARCHAR},
+      </if>
+      <if test="website != null" >
+        #{website,jdbcType=VARCHAR},
+      </if>
+      <if test="peopleNumber != null" >
+        #{peopleNumber,jdbcType=INTEGER},
+      </if>
+      <if test="regeditDate != null" >
+        #{regeditDate,jdbcType=VARCHAR},
+      </if>
+      <if test="logo != null" >
+        #{logo,jdbcType=VARCHAR},
+      </if>
+      <if test="bgUrl != null" >
+        #{bgUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="lastUpdatedTime != null" >
+        #{lastUpdatedTime,jdbcType=BIGINT},
+      </if>
+      <if test="level != null" >
+        #{level,jdbcType=INTEGER},
+      </if>
+      <if test="verifyStatus != null" >
+        #{verifyStatus,jdbcType=TINYINT},
+      </if>
+      <if test="enable != null" >
+        #{enable,jdbcType=TINYINT},
+      </if>
+      <if test="entCode != null" >
+        #{entCode,jdbcType=BIGINT},
+      </if>
+      <if test="businessDomain != null" >
+        #{businessDomain,jdbcType=VARCHAR},
+      </if>
+      <if test="companyTypeCode != null" >
+        #{companyTypeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="feedbackId != null" >
+        #{feedback_id,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.kaipin.oss.model.company.CompanyInfo" >
+    update company_info
+    <set >
+      <if test="entName != null" >
+        ent_name = #{entName,jdbcType=VARCHAR},
+      </if>
+      <if test="entSimpleName != null" >
+        ent_simple_name = #{entSimpleName,jdbcType=VARCHAR},
+      </if>
+      <if test="industryCode != null" >
+        industry_code = #{industryCode,jdbcType=VARCHAR},
+      </if>
+      <if test="postalCode != null" >
+        postal_code = #{postalCode,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="officeTelphone != null" >
+        office_telphone = #{officeTelphone,jdbcType=VARCHAR},
+      </if>
+      <if test="officeArea != null" >
+        office_area = #{officeArea,jdbcType=VARCHAR},
+      </if>
+      <if test="officeAddress != null" >
+        office_address = #{officeAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="detail != null" >
+        detail = #{detail,jdbcType=VARCHAR},
+      </if>
+      <if test="website != null" >
+        website = #{website,jdbcType=VARCHAR},
+      </if>
+      <if test="peopleNumber != null" >
+        people_number = #{peopleNumber,jdbcType=INTEGER},
+      </if>
+      <if test="regeditDate != null" >
+        regedit_date = #{regeditDate,jdbcType=VARCHAR},
+      </if>
+      <if test="logo != null" >
+        logo = #{logo,jdbcType=VARCHAR},
+      </if>
+      <if test="bgUrl != null" >
+        bg_url = #{bgUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="lastUpdatedTime != null" >
+        last_updated_time = #{lastUpdatedTime,jdbcType=BIGINT},
+      </if>
+      <if test="level != null" >
+        level = #{level,jdbcType=INTEGER},
+      </if>
+      <if test="verifyStatus != null" >
+        verify_status = #{verifyStatus,jdbcType=TINYINT},
+      </if>
+      <if test="enable != null" >
+        enable = #{enable,jdbcType=TINYINT},
+      </if>
+      <if test="entCode != null" >
+        ent_code = #{entCode,jdbcType=BIGINT},
+      </if>
+      <if test="businessDomain != null" >
+        business_domain = #{businessDomain,jdbcType=VARCHAR},
+      </if>
+      <if test="companyTypeCode != null" >
+        company_type_code = #{companyTypeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="feedbackId != null" >
+        feedback_id = #{feedbackId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.kaipin.oss.model.company.CompanyInfo" >
+    update company_info
+    set ent_name = #{entName,jdbcType=VARCHAR},
+      ent_simple_name = #{entSimpleName,jdbcType=VARCHAR},
+      industry_code = #{industryCode,jdbcType=VARCHAR},
+      postal_code = #{postalCode,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      office_telphone = #{officeTelphone,jdbcType=VARCHAR},
+      office_area = #{officeArea,jdbcType=VARCHAR},
+      office_address = #{officeAddress,jdbcType=VARCHAR},
+      detail = #{detail,jdbcType=VARCHAR},
+      website = #{website,jdbcType=VARCHAR},
+      people_number = #{peopleNumber,jdbcType=INTEGER},
+      regedit_date = #{regeditDate,jdbcType=VARCHAR},
+      logo = #{logo,jdbcType=VARCHAR},
+      bg_url = #{bgUrl,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=BIGINT},
+      last_updated_time = #{lastUpdatedTime,jdbcType=BIGINT},
+      level = #{level,jdbcType=INTEGER},
+      verify_status = #{verifyStatus,jdbcType=TINYINT},
+      enable = #{enable,jdbcType=TINYINT},
+      ent_code = #{entCode,jdbcType=BIGINT},
+      business_domain = #{businessDomain,jdbcType=VARCHAR},
+      company_type_code = #{companyTypeCode,jdbcType=VARCHAR},
+      feedback_id = #{feedbackId,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

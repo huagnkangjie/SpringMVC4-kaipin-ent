@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kaipin.oss.repository.dao.count.ICountBaseDao" >
+  <resultMap id="BaseResultMap" type="com.kaipin.oss.model.count.CountBase" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <!-- 获取职位详细投递情况 SQL-->
+  <sql id="getDeliveryPositionListSQL">
+  	select t1.*, t2.content,FROM_UNIXTIME(t2.create_time/1000,'%Y-%m-%d %H:%i:%s') handle_time from 
+	(
+		select 
+				a.* , view.count_m face, view.count_n times,
+				view.inviter_handle_status req_status, 
+				view.company_handle_status pass_status, 
+				view.student_handle_status accept_status,
+				view.current_status
+			from (
+				select s.*,education.major,education.start_time st,education.end_time et 
+					from 
+					(select 
+						relation.id as id, position.company_id, relation.resume_id,relation.position_id, FROM_UNIXTIME(relation.create_time/1000,'%Y-%m-%d %H:%i:%s') create_time,
+						position.position_name position_name, companyInfo.ent_name, companyInfo.ent_simple_name,relation.stu_user_id, relation.is_pass,relation.is_look, resume.id as resumeId, resume.resume_name, resume.email, resume.surname, resume.miss_surname, resume.sex_code, resume.salary, d_view.interview_id, d_view.offer_id, d_view.exam_invite_id,
+						stuUser.phone stu_phone,companyUser.phone company_phone,resume.user_name
+					from 
+						(select a.*, b.user_name from resume_info a, (select CONCAT(a.surname, a.miss_surname) user_name, a.id from resume_info a ) b
+						where a.id = b.id) resume, 
+						position_delivery relation, 
+						position_info position,
+						position_delivery_interview d_view,
+						company_info companyInfo,
+						user_localauth stuUser,
+						user_localauth companyUser	
+					WHERE 1=1 
+						and resume.id = relation.resume_id 
+						and relation.position_id = position.id 
+						and relation.id = d_view.position_delivery_id
+						and position.company_id = companyInfo.id
+						and stuUser.organization_id = resume.stu_user_id
+						and companyUser.organization_id = position.company_id
+						<if test="entName != null"><if test="entName != ''">
+							and companyInfo.ent_name like '%${entName}%'
+						</if></if>
+						<if test="userName != null"><if test="userName != ''">
+							and resume.user_name like '%${userName}%'
+						</if></if>
+						
+					) s
+					LEFT JOIN 
+						(select cedu.education_name major,edu.start_time,edu.end_time,edu.resume_id  
+							from resume_education_background edu,comm_education cedu 
+							where type = 1 and  edu.education_code = cedu.education_code) education
+					on 
+						s.resume_id = education.resume_id
+				)a 
+			LEFT JOIN 
+				position_interview view
+			on a.interview_id = view.id
+			ORDER BY a.create_time desc
+	) t1, 
+	(
+			select create_time,position_delivery_id,content from position_process_log where create_time in(SELECT max(create_time) create_time FROM position_process_log
+			WHERE position_delivery_id IN (select id from position_delivery) group by position_delivery_id ORDER BY create_time desc) ORDER BY create_time desc
+	 	) t2
+	where t1.id = t2.position_delivery_id
+	ORDER BY t2.create_time desc
+
+
+
+					
+  </sql>
+  
+  <!-- 获取职位详细投递情况 	List-->
+  <select id="getDeliveryPositionList" resultType="map" parameterType="map">
+		<include refid="getDeliveryPositionListSQL"></include>
+  </select>
+	
+  <!-- 获取职位详细投递情况	Count-->
+  <select id="getDeliveryPositionListCount" resultType="java.lang.Integer" parameterType="map">
+		select count(*) from (
+			<include refid="getDeliveryPositionListSQL"></include>
+		) m
+  </select>
+  
+  <!-- 周 -->
+  <select id="getWeekCount" parameterType="map" resultType="map">
+  	
+  		select IFNULL(sum(tt1.count), 0) counts, tt1.weeks xValue  FROM
+		(
+			select * from 
+			(
+				SELECT
+					WEEK (date) weeks,
+					date
+				FROM
+					`comm_date`
+				WHERE
+					date >= DATE_SUB(
+						CURDATE(),
+						INTERVAL dayofyear(now()) - 1 DAY
+					)
+				<![CDATA[
+				AND date <= NOW()
+				]]>
+				AND WEEK (date) > 0
+			) t1
+			LEFT JOIN
+			(
+				select 
+					count(*) count, left(FROM_UNIXTIME(create_time/1000,'%Y-%m-%d %H:%i:%s'), 10) create_time 
+				from 
+					user_localauth 
+				where 1=1
+				<if test="userType != null"><if test="userType != ''">
+					and category_id = #{userType}
+				</if></if>
+				GROUP BY left(FROM_UNIXTIME(create_time/1000,'%Y-%m-%d %H:%i:%s'), 10) 
+			 ) t2
+			ON t1.date = t2.create_time
+		) tt1
+		GROUP BY tt1.weeks
+  	
+  	
+  </select>
+  
+  <!-- 月 -->
+  <select id="getMonthCount" parameterType="map" resultType="map">
+  	select CONCAT(t1.mouth,'月') xValue, IFNULL(t2.counts,0) counts from
+	(
+		SELECT
+			MONTH(date) mouth
+		FROM
+			`comm_date`
+		WHERE
+			date >= DATE_SUB(
+					CURDATE(),
+					INTERVAL dayofyear(now()) - 1 DAY
+				)
+		<![CDATA[
+			AND date <= NOW()
+		]]>
+	  GROUP BY MONTH(date)
+	 ) t1
+	LEFT JOIN 
+	(
+		select 
+			count(*) counts, MONTH(FROM_UNIXTIME(create_time/1000,'%Y-%m-%d %H:%i:%s')) mouth 
+		from 
+			user_localauth 
+		where 1=1
+		<if test="userType != null"><if test="userType != ''">
+			and category_id = #{userType}
+		</if></if>
+		GROUP BY MONTH(FROM_UNIXTIME(create_time/1000,'%Y-%m-%d %H:%i:%s'))
+	 ) t2
+	ON t1.mouth = t2.mouth
+  	
+  </select>
+  
+  <!-- 季度 -->
+  <select id="getQuarterCount" parameterType="map" resultType="map">
+  	select CONCAT(t1.`quarter`, '季度') xValue, IFNULL(t2.counts, 0) counts from 
+	(
+		select QUARTER(date) quarter from comm_date where date >= DATE_SUB(
+					CURDATE(),
+					INTERVAL dayofyear(now()) - 1 DAY
+				)
+		<![CDATA[
+			AND date <= concat(YEAR(now()), '-12-31') GROUP BY QUARTER(date)
+		]]>
+	 ) t1
+	LEFT JOIN 
+	(
+		select 	
+			quarter(FROM_UNIXTIME(create_time/1000,'%Y-%m-%d %H:%i:%s')) quarter,COUNT(*) counts 
+		from 
+			user_localauth
+		where 1=1
+		<if test="userType != null"><if test="userType != ''">
+			and category_id = #{userType}
+		</if></if>
+		and FROM_UNIXTIME(create_time/1000,'%Y-%m-%d') = YEAR(NOW())
+		GROUP BY quarter(FROM_UNIXTIME(create_time/1000,'%Y-%m-%d %H:%i:%s'))
+	 ) t2
+	ON
+	 t1.`quarter` = t2.`quarter`
+  </select>
+  
+  <!-- 年 -->
+  <select id="getYearCount" parameterType="map" resultType="map">
+  	select t1.year xValue, IFNULL(t2.counts, 0) counts from 
+	(
+		select 
+			left(date,4) year 
+		from 
+			comm_date 
+		where 
+		<![CDATA[ date <= NOW() ]]>
+		GROUP BY left(date,4)
+	 ) t1
+	LEFT JOIN
+	(
+		select 
+		count(*) counts,FROM_UNIXTIME(create_time/1000,'%Y') year 
+		from 
+		user_localauth
+		where 1=1
+		<if test="userType != null"><if test="userType != ''">
+			and category_id = #{userType}
+		</if></if> 
+		GROUP BY FROM_UNIXTIME(create_time/1000,'%Y')
+	 ) t2
+	ON
+	 t1.year = t2.year
+  </select>
+  
+  <!-- 时间段 -->
+  <select id="getTimeToTimeCount" parameterType="map" resultType="map">
+  	select t1.date xValue, IFNULL(t2.counts, 0) counts from 
+	(
+		select date from comm_date where date >= #{startTime} and date <![CDATA[ <= ]]>  #{endTime}
+	 ) t1
+	LEFT JOIN
+	(
+		select 
+		count(*) counts,left(FROM_UNIXTIME(create_time/1000,'%Y-%m-%d %H:%i:%s'), 10) date
+		from 
+		user_localauth 
+		where 1=1
+		<if test="userType != null"><if test="userType != ''">
+			and category_id = #{userType}
+		</if></if>
+		GROUP BY left(FROM_UNIXTIME(create_time/1000,'%Y-%m-%d %H:%i:%s'), 10) 
+	 ) t2
+	ON
+	t1.date = t2.date
+  </select>
+  
+  <!-- 统计所有用户注册量 -->
+  <select id="getUserCount" parameterType="map" resultType="map">
+  	select count(*) count,category_id from user_localauth GROUP BY category_id 
+  </select>
+  
+  <!-- 月活跃量 -->
+  <select id="getMonthActiveCount" parameterType="map" resultType="map">
+	select IFNULL(t2.count,0) counts, t1.date xValue from 
+		(
+			select date from comm_date where date  >=  #{beforeMonthDay}  and date <![CDATA[ <= ]]> NOW()
+			
+		) t1
+	LEFT JOIN
+		(
+			SELECT count(*) count,LEFT(FROM_UNIXTIME(last_login_time/1000,'%Y-%m-%d %H:%i:%s'),10) last_login_time
+			FROM `user_localauth` where last_login_time >= #{beforeMonthDay} and last_login_time <![CDATA[ <= ]]> NOW() and category_id = #{userType}
+			GROUP BY LEFT(FROM_UNIXTIME(last_login_time/1000,'%Y-%m-%d %H:%i:%s'),10)
+		) t2
+	ON
+	t2.last_login_time = t1.date
+  
+  </select>
+  
+</mapper>

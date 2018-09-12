@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kaipin.enterprise.repository.dao.msg.IMsgEntInterviewDao" >
+  <resultMap id="BaseResultMap" type="com.kaipin.enterprise.model.msg.MsgEntInterview" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="BIGINT" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="TINYINT" />
+    <result column="company_id" property="companyId" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="hint" property="hint" jdbcType="VARCHAR" />
+    <result column="object_id" property="objectId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, create_time, title, type, company_id, status, content, hint, object_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from msg_company_interview
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from msg_company_interview
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.kaipin.enterprise.model.msg.MsgEntInterview" >
+    insert into msg_company_interview (id, create_time, title, 
+      type, company_id, status, 
+      content, hint, object_id
+      )
+    values (#{id,jdbcType=VARCHAR}, #{createTime,jdbcType=BIGINT}, #{title,jdbcType=VARCHAR}, 
+      #{type,jdbcType=TINYINT}, #{companyId,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, 
+      #{content,jdbcType=VARCHAR}, #{hint,jdbcType=VARCHAR}, #{objectId,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.kaipin.enterprise.model.msg.MsgEntInterview" >
+    insert into msg_company_interview
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="companyId != null" >
+        company_id,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+      <if test="hint != null" >
+        hint,
+      </if>
+      <if test="objectId != null" >
+        object_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=TINYINT},
+      </if>
+      <if test="companyId != null" >
+        #{companyId,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="hint != null" >
+        #{hint,jdbcType=VARCHAR},
+      </if>
+      <if test="objectId != null" >
+        #{objectId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.kaipin.enterprise.model.msg.MsgEntInterview" >
+    update msg_company_interview
+    <set >
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=TINYINT},
+      </if>
+      <if test="companyId != null" >
+        company_id = #{companyId,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="hint != null" >
+        hint = #{hint,jdbcType=VARCHAR},
+      </if>
+      <if test="objectId != null" >
+        object_id = #{objectId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.kaipin.enterprise.model.msg.MsgEntInterview" >
+    update msg_company_interview
+    set create_time = #{createTime,jdbcType=BIGINT},
+      title = #{title,jdbcType=VARCHAR},
+      type = #{type,jdbcType=TINYINT},
+      company_id = #{companyId,jdbcType=VARCHAR},
+      status = #{status,jdbcType=TINYINT},
+      content = #{content,jdbcType=VARCHAR},
+      hint = #{hint,jdbcType=VARCHAR},
+      object_id = #{objectId,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+<!-- 表数据 -->
+	<sql id="msgEntViewSql">
+		<if test="companyId != null" ><if test="companyId != '' " >
+		and company_id = #{companyId,jdbcType=VARCHAR}</if></if>
+		<if test="status != null" ><if test="status != '' " >
+		and status = #{status,jdbcType=VARCHAR}</if></if>
+	</sql>
+<!-- 获取企业面试所有通知 -->
+	<select id="getMsgEntViewList" resultType="map" parameterType="map">
+		SELECT
+			*,FROM_UNIXTIME(create_time/1000,'%Y-%m-%d %H:%i') createTime
+		FROM
+			msg_company_interview
+		WHERE
+			1 = 1
+		AND company_id = #{companyId}
+		ORDER BY
+			STATUS ASC,
+			create_time DESC
+	</select>
+<!-- 获取企业面试通知总数 -->
+	<select id="getMsgEntViewCount" resultType="map" parameterType="map">
+		SELECT
+			count(*) counts
+		FROM
+			msg_company_interview
+		WHERE 1=1
+			and company_id = #{companyId}
+			and status = #{status}
+	</select>
+	<!-- 根据id获取面试消息对象 -->
+	<select id="getMsgEntViewById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+		select
+			<include refid="Base_Column_List"></include>
+		from msg_ent_interview where id = #{id,jdbcType=VARCHAR}
+	</select>
+	<!-- 更新阅读状态 -->
+	<update id="updateStatusById" parameterType="java.lang.String" >
+		update msg_company_interview set status = 1 where id = #{id,jdbcType=VARCHAR}
+	</update>
+</mapper>

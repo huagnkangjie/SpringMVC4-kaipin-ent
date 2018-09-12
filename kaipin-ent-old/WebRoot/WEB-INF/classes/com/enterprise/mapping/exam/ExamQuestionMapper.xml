@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.enterprise.mapper.exam.ExamQuestionMapper" >
+  <resultMap id="BaseResultMap" type="com.enterprise.model.exam.ExamQuestion" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="question_db_id" property="questionDbId" jdbcType="VARCHAR" />
+    <result column="question_type" property="questionType" jdbcType="VARCHAR" />
+    <result column="question_content" property="questionContent" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="create_time" property="createTime" jdbcType="BIGINT" />
+    <result column="answer" property="answer" jdbcType="VARCHAR" />
+    <result column="score" property="score" jdbcType="INTEGER" />
+    <result column="input_type" property="inputType" jdbcType="TINYINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, question_db_id, question_type, question_content, status, create_time, answer, 
+    score, input_type
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from exam_question
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from exam_question
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.enterprise.model.exam.ExamQuestion" >
+    insert into exam_question (id, question_db_id, question_type, 
+      question_content, status, create_time, 
+      answer, score, input_type
+      )
+    values (#{id,jdbcType=VARCHAR}, #{questionDbId,jdbcType=VARCHAR}, #{questionType,jdbcType=VARCHAR}, 
+      #{questionContent,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, #{createTime,jdbcType=BIGINT}, 
+      #{answer,jdbcType=VARCHAR}, #{score,jdbcType=INTEGER}, #{inputType,jdbcType=TINYINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.enterprise.model.exam.ExamQuestion" >
+    insert into exam_question
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="questionDbId != null" >
+        question_db_id,
+      </if>
+      <if test="questionType != null" >
+        question_type,
+      </if>
+      <if test="questionContent != null" >
+        question_content,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="answer != null" >
+        answer,
+      </if>
+      <if test="score != null" >
+        score,
+      </if>
+      <if test="inputType != null" >
+        input_type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="questionDbId != null" >
+        #{questionDbId,jdbcType=VARCHAR},
+      </if>
+      <if test="questionType != null" >
+        #{questionType,jdbcType=VARCHAR},
+      </if>
+      <if test="questionContent != null" >
+        #{questionContent,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="answer != null" >
+        #{answer,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null" >
+        #{score,jdbcType=INTEGER},
+      </if>
+      <if test="inputType != null" >
+        #{inputType,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.enterprise.model.exam.ExamQuestion" >
+    update exam_question
+    <set >
+      <if test="questionDbId != null" >
+        question_db_id = #{questionDbId,jdbcType=VARCHAR},
+      </if>
+      <if test="questionType != null" >
+        question_type = #{questionType,jdbcType=VARCHAR},
+      </if>
+      <if test="questionContent != null" >
+        question_content = #{questionContent,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="answer != null" >
+        answer = #{answer,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null" >
+        score = #{score,jdbcType=INTEGER},
+      </if>
+      <if test="inputType != null" >
+        input_type = #{inputType,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.enterprise.model.exam.ExamQuestion" >
+    update exam_question
+    set question_db_id = #{questionDbId,jdbcType=VARCHAR},
+      question_type = #{questionType,jdbcType=VARCHAR},
+      question_content = #{questionContent,jdbcType=VARCHAR},
+      status = #{status,jdbcType=TINYINT},
+      create_time = #{createTime,jdbcType=BIGINT},
+      answer = #{answer,jdbcType=VARCHAR},
+      score = #{score,jdbcType=INTEGER},
+      input_type = #{inputType,jdbcType=TINYINT}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  
+  <!-- 获取试卷下的所有题目 -->
+  <select id="questionList" resultType="map" parameterType="map">
+  	select 
+		question.* 
+	from 
+		exam_paper_question paperQuestion,
+		exam_question question
+	where 1=1
+		and paperQuestion.paper_id = #{paperId}
+  </select>
+  
+  <!-- 删除试卷下的问题 -->
+  <delete id="deletePaperQuestion" parameterType="map">
+    DELETE
+	FROM
+		exam_question
+	WHERE
+		id IN (
+			SELECT
+				paperQuestion.question_id
+			FROM
+				exam_paper_question paperQuestion
+			WHERE
+				1 = 1
+			AND paperQuestion.paper_id = #{paperId}
+		)
+  </delete>
+</mapper>

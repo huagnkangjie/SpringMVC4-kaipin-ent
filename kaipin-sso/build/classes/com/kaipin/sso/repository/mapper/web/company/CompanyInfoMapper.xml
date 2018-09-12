@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="web.CompanyInfoMapper">
+
+
+  <resultMap id="BaseResultMap" type="com.kaipin.sso.entity.web.company.CompanyInfo">
+
+    <id column="ent_code"    property="entCode" />
+      <result column="id"  property="id" />
+    <result column="ent_name" property="entName" />
+    <result column="ent_simple_name"  property="entSimpleName" />
+    <result column="industry_code"    property="industryCode" />
+    <result column="postal_code"    property="postalCode" />
+    <result column="email"   property="email" />
+    <result column="phone"   property="phone" />
+    <result column="office_telphone"    property="officeTelphone" />
+    <result column="office_area"  property="officeArea" />
+    <result column="office_address"  property="officeAddress" />
+    <result column="website"   property="website" />
+    <result column="people_number" property="peopleNumber" />
+    <result column="regedit_date"  property="regeditDate" />
+    <result column="logo"  property="logo" />
+    <result column="bg_url"   property="bgUrl" />
+    <result column="create_time"  property="createTime" />
+    <result column="last_updated_time"   property="lastUpdatedTime" />
+    <result column="level"   property="level" />
+    <result column="verify_status"  property="verifyStatus" />
+    <result column="enable"  property="enable" />
+    <result column="business_domain"  property="businessDomain" />
+    <result column="company_type_code" property="companyTypeCode" />
+    <result column="is_del"   property="isDel" />
+    <result column="feedback_id" property="feedbackId" />
+    
+    
+    
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.kaipin.sso.entity.web.company.CompanyInfo">
+    <result column="detail"  property="detail" />
+  </resultMap>
+  
+  <sql id="Base_Column_List">
+    ent_code, id, ent_name, ent_simple_name, industry_code, postal_code, email, phone, 
+    office_telphone, office_area, office_address, website, people_number, regedit_date, 
+    logo, bg_url, create_time, last_updated_time, level, verify_status, enable, business_domain, 
+    company_type_code, is_del, feedback_id
+  </sql>
+  
+  
+  <sql id="Blob_Column_List">
+    detail
+  </sql>
+  
+  
+  <select id="selectById"  parameterType="string" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from company_info
+    where id = #{id}
+  </select>
+  
+  
+  
+</mapper>

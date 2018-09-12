@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kaipin.oss.repository.mapper.common.CommonCode" >
+  <!-- 区域  开始--> 
+  <resultMap id="LocationResultMap" type="com.kaipin.oss.model.common.CommLocation" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="location_name" property="locationName" jdbcType="VARCHAR" />
+    <result column="location_en_name" property="locationEnName" jdbcType="VARCHAR" />
+    <result column="is_municipality" property="isMunicipality" jdbcType="TINYINT" />
+    <result column="parent_code" property="parentCode" jdbcType="VARCHAR" />
+    <result column="is_hot" property="isHot" jdbcType="TINYINT" />
+    <result column="location_code" property="locationCode" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Location_Column_List" >
+    id, location_name, location_en_name, is_municipality, parent_code, is_hot, location_code
+  </sql>
+  <select id="getLocationByCode" resultMap="LocationResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Location_Column_List" />
+    from comm_location
+    where location_code = #{code,jdbcType=INTEGER}
+  </select>
+  <select id="getLocationByParentCode" resultMap="LocationResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Location_Column_List" />
+    from comm_location
+    where location_code = #{code,jdbcType=INTEGER}
+  </select>
+  <!-- 区域 结束--> 
+  
+  <!-- 行业开始-->
+  <resultMap id="IndustryResultMap" type="com.kaipin.oss.model.common.CommIndustry" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="industry_name" property="industryName" jdbcType="VARCHAR" />
+    <result column="industry_en_name" property="industryEnName" jdbcType="VARCHAR" />
+    <result column="industry_code" property="industryCode" jdbcType="VARCHAR" />
+    <result column="parent_code" property="parentCode" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <select id="getCommIndustry" parameterType="java.lang.String" resultMap="IndustryResultMap">
+  	select * from comm_industry where industry_code = #{code}
+  </select>
+  <!-- 行业结束-->
+  
+  <!-- 学历开始-->
+  <resultMap id="EducationResultMap" type="com.kaipin.oss.model.common.CommEducation">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="education_name" jdbcType="VARCHAR" property="educationName" />
+    <result column="education_en_name" jdbcType="VARCHAR" property="educationEnName" />
+    <result column="education_code" jdbcType="VARCHAR" property="educationCode" />
+    <result column="parent_code" jdbcType="VARCHAR" property="parentCode" />
+  </resultMap>
+  
+  <select id="getEducation" parameterType="java.lang.String" resultMap="EducationResultMap">
+  	select * from comm_education where education_code = #{code}
+  </select>
+  <!-- 学历结束-->
+  
+  
+  <!-- 证件类型开始-->
+  <resultMap id="CardTypeResultMap" type="com.kaipin.oss.model.common.CommCardType">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="card_type_name" jdbcType="VARCHAR" property="cardTypeName" />
+    <result column="card_type_en_name" jdbcType="VARCHAR" property="cardTypeEnName" />
+    <result column="card_type_code" jdbcType="VARCHAR" property="cardTypeCode" />
+    <result column="parent_code" jdbcType="VARCHAR" property="parentCode" />
+  </resultMap>
+  
+  <select id="getCardType" parameterType="java.lang.String" resultMap="CardTypeResultMap">
+  	select * from comm_card_type where card_type_code = #{code}
+  </select>
+  <!-- 证件类型结束-->
+  
+  
+  <!-- 企业类型 开始-->
+   <resultMap id="CompanyTypeResultMap" type="com.kaipin.oss.model.common.CommCompanyType">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="company_type_name" jdbcType="VARCHAR" property="companyTypeName" />
+    <result column="company_type_en_name" jdbcType="VARCHAR" property="companyTypeEnName" />
+    <result column="company_type_code" jdbcType="VARCHAR" property="companyTypeCode" />
+    <result column="parent_code" jdbcType="VARCHAR" property="parentCode" />
+  </resultMap>
+  
+  <select id="getCompanyType" parameterType="java.lang.String" resultMap="CompanyTypeResultMap">
+  	select * from comm_company_type where company_type_code = #{code}
+  </select>
+  <!-- 企业类型 结束-->
+  
+  
+  <!-- 雇佣类型 开始-->
+  <resultMap id="EmploymentTypeResultMap" type="com.kaipin.oss.model.common.CommEmploymentType">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="employment_type_name" jdbcType="VARCHAR" property="employmentTypeName" />
+    <result column="employment_type_en_name" jdbcType="VARCHAR" property="employmentTypeEnName" />
+    <result column="employment_type_code" jdbcType="VARCHAR" property="employmentTypeCode" />
+    <result column="parent_code" jdbcType="VARCHAR" property="parentCode" />
+  </resultMap>
+  
+  <select id="getEmploymentType" parameterType="java.lang.String" resultMap="EmploymentTypeResultMap">
+  	select * from comm_employment_type where employment_type_code = #{code}
+  </select>
+  <!-- 雇佣类型 结束-->
+  
+  
+  <!-- 分组类型 开始-->
+  <resultMap id="GlobalGroupResultMap" type="com.kaipin.oss.model.common.CommGlobalGroup">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="version_name" jdbcType="VARCHAR" property="versionName" />
+    <result column="version_code" jdbcType="VARCHAR" property="versionCode" />
+    <result column="en_name" jdbcType="VARCHAR" property="enName" />
+    <result column="version" jdbcType="INTEGER" property="version" />
+  </resultMap>
+  
+  <select id="getGlobalGroup" parameterType="java.lang.String" resultMap="GlobalGroupResultMap">
+  	select * from comm_global_group where version_code = #{code}
+  </select>
+  <!-- 分组类型 结束-->
+  
+  
+  <!-- 语言 开始-->
+  <resultMap id="LanguageResultMap" type="com.kaipin.oss.model.common.CommLanguage">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="language_name" jdbcType="VARCHAR" property="languageName" />
+    <result column="language_en_name" jdbcType="VARCHAR" property="languageEnName" />
+    <result column="language_code" jdbcType="VARCHAR" property="languageCode" />
+    <result column="parent_code" jdbcType="VARCHAR" property="parentCode" />
+  </resultMap>
+  
+  <select id="getLanguage" parameterType="java.lang.String" resultMap="LanguageResultMap">
+  	select * from comm_language where language_code = #{code}
+  </select>
+  <!-- 语言 结束-->
+  
+  
+  <!-- 专业开始-->
+  <resultMap id="MajorResultMap" type="com.kaipin.oss.model.common.CommMajor">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="major_name" jdbcType="VARCHAR" property="majorName" />
+    <result column="major_en_name" jdbcType="VARCHAR" property="majorEnName" />
+    <result column="major_code" jdbcType="VARCHAR" property="majorCode" />
+    <result column="parent_code" jdbcType="VARCHAR" property="parentCode" />
+  </resultMap>
+  
+  <select id="getMajor" parameterType="java.lang.String" resultMap="MajorResultMap">
+  	select * from comm_major where major_code = #{code}
+  </select>
+  <!-- 专业结束-->
+  
+  <!-- 工资开始-->
+  <resultMap id="SalaryResultMap" type="com.kaipin.oss.model.common.CommSalary">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="salary_name" jdbcType="VARCHAR" property="salaryName" />
+    <result column="salary_en_name" jdbcType="VARCHAR" property="salaryEnName" />
+    <result column="salary_code" jdbcType="VARCHAR" property="salaryCode" />
+    <result column="parent_code" jdbcType="VARCHAR" property="parentCode" />
+  </resultMap>
+  
+  <select id="getSalary" parameterType="java.lang.String" resultMap="SalaryResultMap">
+  	select * from comm_salary where salary_code = #{code}
+  </select>
+  <!-- 工资结束-->
+  
+  <!-- 工作经验开始-->
+  <resultMap id="WorkExperienceResultMap" type="com.kaipin.oss.model.common.CommWorkExperience">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="work_experience_name" jdbcType="VARCHAR" property="workExperienceName" />
+    <result column="work_experience_en_name" jdbcType="VARCHAR" property="workExperienceEnName" />
+    <result column="work_experience_code" jdbcType="VARCHAR" property="workExperienceCode" />
+    <result column="parent_code" jdbcType="VARCHAR" property="parentCode" />
+  </resultMap>
+  
+  <select id="getWorkExperience" parameterType="java.lang.String" resultMap="WorkExperienceResultMap">
+  	select * from comm_work_experience where work_experience_code = #{code}
+  </select>
+  <!-- 工作经验结束-->
+  
+  <!-- 工作职能 开始-->
+  <resultMap id="JobTypeResultMap" type="com.kaipin.oss.model.common.CommJobType">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="job_type_name" jdbcType="VARCHAR" property="jobTypeName" />
+    <result column="job_type_en_name" jdbcType="VARCHAR" property="jobTypeEnName" />
+    <result column="job_type_code" jdbcType="VARCHAR" property="jobTypeCode" />
+    <result column="parent_code" jdbcType="VARCHAR" property="parentCode" />
+  </resultMap>
+  
+  <select id="getJobType" parameterType="java.lang.String" resultMap="JobTypeResultMap">
+  	select * from comm_job_type where job_type_code = #{code}
+  </select>
+  <!-- 工作职能结束-->
+  
+  
+  <!-- 学校信息     开始-->
+  <resultMap id="SchoolInfoResultMap" type="com.kaipin.oss.model.common.SchoolInfo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="school_name" jdbcType="VARCHAR" property="schoolName" />
+    <result column="school_code" jdbcType="VARCHAR" property="schoolCode" />
+    <result column="school_en_name" jdbcType="VARCHAR" property="schoolEnName" />
+  </resultMap>
+  
+  <select id="getSchoolInfo" parameterType="java.lang.String" resultMap="SchoolInfoResultMap">
+  	select * from school_info where school_code = #{code}
+  </select>
+  <!-- 学校信息    结束-->
+  
+  
+</mapper>

@@ -1,0 +1,401 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.enterprise.mapper.login.EntBaseinfoMapper" >
+  <resultMap id="BaseResultMap" type="com.enterprise.model.EntBaseinfo" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="ent_name" property="entName" jdbcType="VARCHAR" />
+    <result column="ent_simple_name" property="entSimpleName" jdbcType="VARCHAR" />
+    <result column="login_name" property="loginName" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="industry_type" property="industryType" jdbcType="VARCHAR" />
+    <result column="numbers" property="numbers" jdbcType="VARCHAR" />
+    <result column="apply_date" property="applyDate" jdbcType="VARCHAR" />
+    <result column="apply_code" property="applyCode" jdbcType="VARCHAR" />
+    <result column="path" property="path" jdbcType="VARCHAR" />
+    <result column="telphone" property="telphone" jdbcType="VARCHAR" />
+    <result column="postal_code" property="postalCode" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="office_tel" property="officeTel" jdbcType="VARCHAR" />
+    <result column="office_address" property="officeAddress" jdbcType="VARCHAR" />
+    <result column="detail" property="detail" jdbcType="VARCHAR" />
+    <result column="follow_area" property="followArea" jdbcType="VARCHAR" />
+    <result column="website" property="website" jdbcType="VARCHAR" />
+    <result column="ent_type" property="entType" jdbcType="VARCHAR" />
+    <result column="ent_size" property="entSize" jdbcType="VARCHAR" />
+    <result column="regedit_time" property="regeditTime" jdbcType="VARCHAR" />
+    <result column="annex_id" property="annexId" jdbcType="VARCHAR" />
+    <result column="logo" property="logo" jdbcType="VARCHAR" />
+    <result column="bg_url" property="bgUrl" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="VARCHAR" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+    <result column="modify_time" property="modifyTime" jdbcType="VARCHAR" />
+    <result column="modify_user" property="modifyUser" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, ent_name, ent_simple_name, login_name, password, industry_type, numbers, apply_date, 
+    apply_code, path, telphone, postal_code, email, office_tel, office_address, detail, 
+    follow_area, website, ent_type, ent_size, regedit_time, annex_id, logo, bg_url, status, 
+    create_time, create_user, modify_time, modify_user
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from ent_baseinfo
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from ent_baseinfo
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.enterprise.model.EntBaseinfo" >
+    insert into ent_baseinfo (id, ent_name, ent_simple_name, 
+      login_name, password, industry_type, 
+      numbers, apply_date, apply_code, 
+      path, telphone, postal_code, 
+      email, office_tel, office_address, 
+      detail, follow_area, website, 
+      ent_type, ent_size, regedit_time, 
+      annex_id, logo, bg_url, 
+      status, create_time, create_user, 
+      modify_time, modify_user)
+    values (#{id,jdbcType=VARCHAR}, #{entName,jdbcType=VARCHAR}, #{entSimpleName,jdbcType=VARCHAR}, 
+      #{loginName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{industryType,jdbcType=VARCHAR}, 
+      #{numbers,jdbcType=VARCHAR}, #{applyDate,jdbcType=VARCHAR}, #{applyCode,jdbcType=VARCHAR}, 
+      #{path,jdbcType=VARCHAR}, #{telphone,jdbcType=VARCHAR}, #{postalCode,jdbcType=VARCHAR}, 
+      #{email,jdbcType=VARCHAR}, #{officeTel,jdbcType=VARCHAR}, #{officeAddress,jdbcType=VARCHAR}, 
+      #{detail,jdbcType=VARCHAR}, #{followArea,jdbcType=VARCHAR}, #{website,jdbcType=VARCHAR}, 
+      #{entType,jdbcType=VARCHAR}, #{entSize,jdbcType=VARCHAR}, #{regeditTime,jdbcType=VARCHAR}, 
+      #{annexId,jdbcType=VARCHAR}, #{logo,jdbcType=VARCHAR}, #{bgUrl,jdbcType=VARCHAR}, 
+      #{status,jdbcType=INTEGER}, #{createTime,jdbcType=VARCHAR}, #{createUser,jdbcType=VARCHAR}, 
+      #{modifyTime,jdbcType=VARCHAR}, #{modifyUser,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.enterprise.model.EntBaseinfo" >
+    insert into ent_baseinfo
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="entName != null" >
+        ent_name,
+      </if>
+      <if test="entSimpleName != null" >
+        ent_simple_name,
+      </if>
+      <if test="loginName != null" >
+        login_name,
+      </if>
+      <if test="password != null" >
+        password,
+      </if>
+      <if test="industryType != null" >
+        industry_type,
+      </if>
+      <if test="numbers != null" >
+        numbers,
+      </if>
+      <if test="applyDate != null" >
+        apply_date,
+      </if>
+      <if test="applyCode != null" >
+        apply_code,
+      </if>
+      <if test="path != null" >
+        path,
+      </if>
+      <if test="telphone != null" >
+        telphone,
+      </if>
+      <if test="postalCode != null" >
+        postal_code,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="officeTel != null" >
+        office_tel,
+      </if>
+      <if test="officeAddress != null" >
+        office_address,
+      </if>
+      <if test="detail != null" >
+        detail,
+      </if>
+      <if test="followArea != null" >
+        follow_area,
+      </if>
+      <if test="website != null" >
+        website,
+      </if>
+      <if test="entType != null" >
+        ent_type,
+      </if>
+      <if test="entSize != null" >
+        ent_size,
+      </if>
+      <if test="regeditTime != null" >
+        regedit_time,
+      </if>
+      <if test="annexId != null" >
+        annex_id,
+      </if>
+      <if test="logo != null" >
+        logo,
+      </if>
+      <if test="bgUrl != null" >
+        bg_url,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="createUser != null" >
+        create_user,
+      </if>
+      <if test="modifyTime != null" >
+        modify_time,
+      </if>
+      <if test="modifyUser != null" >
+        modify_user,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="entName != null" >
+        #{entName,jdbcType=VARCHAR},
+      </if>
+      <if test="entSimpleName != null" >
+        #{entSimpleName,jdbcType=VARCHAR},
+      </if>
+      <if test="loginName != null" >
+        #{loginName,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="industryType != null" >
+        #{industryType,jdbcType=VARCHAR},
+      </if>
+      <if test="numbers != null" >
+        #{numbers,jdbcType=VARCHAR},
+      </if>
+      <if test="applyDate != null" >
+        #{applyDate,jdbcType=VARCHAR},
+      </if>
+      <if test="applyCode != null" >
+        #{applyCode,jdbcType=VARCHAR},
+      </if>
+      <if test="path != null" >
+        #{path,jdbcType=VARCHAR},
+      </if>
+      <if test="telphone != null" >
+        #{telphone,jdbcType=VARCHAR},
+      </if>
+      <if test="postalCode != null" >
+        #{postalCode,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="officeTel != null" >
+        #{officeTel,jdbcType=VARCHAR},
+      </if>
+      <if test="officeAddress != null" >
+        #{officeAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="detail != null" >
+        #{detail,jdbcType=VARCHAR},
+      </if>
+      <if test="followArea != null" >
+        #{followArea,jdbcType=VARCHAR},
+      </if>
+      <if test="website != null" >
+        #{website,jdbcType=VARCHAR},
+      </if>
+      <if test="entType != null" >
+        #{entType,jdbcType=VARCHAR},
+      </if>
+      <if test="entSize != null" >
+        #{entSize,jdbcType=VARCHAR},
+      </if>
+      <if test="regeditTime != null" >
+        #{regeditTime,jdbcType=VARCHAR},
+      </if>
+      <if test="annexId != null" >
+        #{annexId,jdbcType=VARCHAR},
+      </if>
+      <if test="logo != null" >
+        #{logo,jdbcType=VARCHAR},
+      </if>
+      <if test="bgUrl != null" >
+        #{bgUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyTime != null" >
+        #{modifyTime,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyUser != null" >
+        #{modifyUser,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.enterprise.model.EntBaseinfo" >
+    update ent_baseinfo
+    <set >
+      <if test="entName != null" >
+        ent_name = #{entName,jdbcType=VARCHAR},
+      </if>
+      <if test="entSimpleName != null" >
+        ent_simple_name = #{entSimpleName,jdbcType=VARCHAR},
+      </if>
+      <if test="loginName != null" >
+        login_name = #{loginName,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="industryType != null" >
+        industry_type = #{industryType,jdbcType=VARCHAR},
+      </if>
+      <if test="numbers != null" >
+        numbers = #{numbers,jdbcType=VARCHAR},
+      </if>
+      <if test="applyDate != null" >
+        apply_date = #{applyDate,jdbcType=VARCHAR},
+      </if>
+      <if test="applyCode != null" >
+        apply_code = #{applyCode,jdbcType=VARCHAR},
+      </if>
+      <if test="path != null" >
+        path = #{path,jdbcType=VARCHAR},
+      </if>
+      <if test="telphone != null" >
+        telphone = #{telphone,jdbcType=VARCHAR},
+      </if>
+      <if test="postalCode != null" >
+        postal_code = #{postalCode,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="officeTel != null" >
+        office_tel = #{officeTel,jdbcType=VARCHAR},
+      </if>
+      <if test="officeAddress != null" >
+        office_address = #{officeAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="detail != null" >
+        detail = #{detail,jdbcType=VARCHAR},
+      </if>
+      <if test="followArea != null" >
+        follow_area = #{followArea,jdbcType=VARCHAR},
+      </if>
+      <if test="website != null" >
+        website = #{website,jdbcType=VARCHAR},
+      </if>
+      <if test="entType != null" >
+        ent_type = #{entType,jdbcType=VARCHAR},
+      </if>
+      <if test="entSize != null" >
+        ent_size = #{entSize,jdbcType=VARCHAR},
+      </if>
+      <if test="regeditTime != null" >
+        regedit_time = #{regeditTime,jdbcType=VARCHAR},
+      </if>
+      <if test="annexId != null" >
+        annex_id = #{annexId,jdbcType=VARCHAR},
+      </if>
+      <if test="logo != null" >
+        logo = #{logo,jdbcType=VARCHAR},
+      </if>
+      <if test="bgUrl != null" >
+        bg_url = #{bgUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null" >
+        create_user = #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyTime != null" >
+        modify_time = #{modifyTime,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyUser != null" >
+        modify_user = #{modifyUser,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.enterprise.model.EntBaseinfo" >
+    update ent_baseinfo
+    set ent_name = #{entName,jdbcType=VARCHAR},
+      ent_simple_name = #{entSimpleName,jdbcType=VARCHAR},
+      login_name = #{loginName,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      industry_type = #{industryType,jdbcType=VARCHAR},
+      numbers = #{numbers,jdbcType=VARCHAR},
+      apply_date = #{applyDate,jdbcType=VARCHAR},
+      apply_code = #{applyCode,jdbcType=VARCHAR},
+      path = #{path,jdbcType=VARCHAR},
+      telphone = #{telphone,jdbcType=VARCHAR},
+      postal_code = #{postalCode,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      office_tel = #{officeTel,jdbcType=VARCHAR},
+      office_address = #{officeAddress,jdbcType=VARCHAR},
+      detail = #{detail,jdbcType=VARCHAR},
+      follow_area = #{followArea,jdbcType=VARCHAR},
+      website = #{website,jdbcType=VARCHAR},
+      ent_type = #{entType,jdbcType=VARCHAR},
+      ent_size = #{entSize,jdbcType=VARCHAR},
+      regedit_time = #{regeditTime,jdbcType=VARCHAR},
+      annex_id = #{annexId,jdbcType=VARCHAR},
+      logo = #{logo,jdbcType=VARCHAR},
+      bg_url = #{bgUrl,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=VARCHAR},
+      create_user = #{createUser,jdbcType=VARCHAR},
+      modify_time = #{modifyTime,jdbcType=VARCHAR},
+      modify_user = #{modifyUser,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+ <!-- 登录 -->
+  <select id="login" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from ent_baseinfo
+    	where status = '1'
+    	and
+    		email = #{login_name,jdbcType=VARCHAR}
+    	and
+    		password = #{password,jdbcType=VARCHAR}
+  </select>
+<!--   邮箱有验证 -->
+  <select id="emailValidata" resultType="map" parameterType="map">
+  	select 
+  		count(*) count
+  	from 
+  		ent_baseinfo 
+  	where 1=1
+  		<if test="email != null" ><if test="email != ''">
+	    and  email = #{email,jdbcType=VARCHAR} </if></if>
+	    
+  		<if test="entName != null" ><if test="entName != ''">
+	    and  ent_name = #{entName,jdbcType=VARCHAR}</if></if>
+	    
+  </select>
+</mapper>

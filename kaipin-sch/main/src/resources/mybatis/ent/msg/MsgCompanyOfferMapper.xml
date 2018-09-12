@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kaipin.enterprise.repository.dao.msg.IMsgCompanyOfferDao" >
+  <resultMap id="BaseResultMap" type="com.kaipin.enterprise.model.msg.MsgCompanyOffer" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="BIGINT" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="company_id" property="companyId" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="hint" property="hint" jdbcType="VARCHAR" />
+    <result column="object_id" property="objectId" jdbcType="VARCHAR" />
+    <result column="handle_time" property="handleTime" jdbcType="BIGINT" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.kaipin.enterprise.model.msg.MsgCompanyOffer" extends="BaseResultMap" >
+    <result column="content" property="content" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, create_time, title, company_id, status, hint, object_id, handle_time
+  </sql>
+  <sql id="Blob_Column_List" >
+    content
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from msg_company_offer
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from msg_company_offer
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.kaipin.enterprise.model.msg.MsgCompanyOffer" >
+    insert into msg_company_offer (id, create_time, title, 
+      company_id, status, hint, 
+      object_id, handle_time, content
+      )
+    values (#{id,jdbcType=VARCHAR}, #{createTime,jdbcType=BIGINT}, #{title,jdbcType=VARCHAR}, 
+      #{companyId,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, #{hint,jdbcType=VARCHAR}, 
+      #{objectId,jdbcType=VARCHAR}, #{handleTime,jdbcType=BIGINT}, #{content,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.kaipin.enterprise.model.msg.MsgCompanyOffer" >
+    insert into msg_company_offer
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="companyId != null" >
+        company_id,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="hint != null" >
+        hint,
+      </if>
+      <if test="objectId != null" >
+        object_id,
+      </if>
+      <if test="handleTime != null" >
+        handle_time,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="companyId != null" >
+        #{companyId,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="hint != null" >
+        #{hint,jdbcType=VARCHAR},
+      </if>
+      <if test="objectId != null" >
+        #{objectId,jdbcType=VARCHAR},
+      </if>
+      <if test="handleTime != null" >
+        #{handleTime,jdbcType=BIGINT},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.kaipin.enterprise.model.msg.MsgCompanyOffer" >
+    update msg_company_offer
+    <set >
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="companyId != null" >
+        company_id = #{companyId,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="hint != null" >
+        hint = #{hint,jdbcType=VARCHAR},
+      </if>
+      <if test="objectId != null" >
+        object_id = #{objectId,jdbcType=VARCHAR},
+      </if>
+      <if test="handleTime != null" >
+        handle_time = #{handleTime,jdbcType=BIGINT},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.kaipin.enterprise.model.msg.MsgCompanyOffer" >
+    update msg_company_offer
+    set create_time = #{createTime,jdbcType=BIGINT},
+      title = #{title,jdbcType=VARCHAR},
+      company_id = #{companyId,jdbcType=VARCHAR},
+      status = #{status,jdbcType=TINYINT},
+      hint = #{hint,jdbcType=VARCHAR},
+      object_id = #{objectId,jdbcType=VARCHAR},
+      handle_time = #{handleTime,jdbcType=BIGINT},
+      content = #{content,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.kaipin.enterprise.model.msg.MsgCompanyOffer" >
+    update msg_company_offer
+    set create_time = #{createTime,jdbcType=BIGINT},
+      title = #{title,jdbcType=VARCHAR},
+      company_id = #{companyId,jdbcType=VARCHAR},
+      status = #{status,jdbcType=TINYINT},
+      hint = #{hint,jdbcType=VARCHAR},
+      object_id = #{objectId,jdbcType=VARCHAR},
+      handle_time = #{handleTime,jdbcType=BIGINT}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+<!--   表数据 -->
+
+	<!-- 每分钟获取需要发送的邮件 -->
+	<select id="getNeedSendOfferList" resultMap="BaseResultMap">
+		select a.*, d.email from 
+			msg_company_offer a,
+			position_delivery b,
+			user_localauth c,
+			resume_info d
+		where 1=1
+			and a.`status` = 0 
+			and a.object_id = b.id
+			and b.stu_user_id = c.id
+			and b.resume_id = d.id
+		ORDER BY a.create_time asc LIMIT 0,5
+	</select>
+
+</mapper>

@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kaipin.oss.repository.dao.stu.IResumeInfoDao" >
+  <resultMap id="BaseResultMap" type="com.kaipin.oss.model.stu.resume.ResumeInfo" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="resume_name" property="resumeName" jdbcType="VARCHAR" />
+    <result column="stu_user_id" property="stuUserId" jdbcType="VARCHAR" />
+    <result column="surname" property="surname" jdbcType="VARCHAR" />
+    <result column="miss_surname" property="missSurname" jdbcType="VARCHAR" />
+    <result column="salary" property="salary" jdbcType="VARCHAR" />
+    <result column="sex_code" property="sexCode" jdbcType="VARCHAR" />
+    <result column="birth_date" property="birthDate" jdbcType="VARCHAR" />
+    <result column="height" property="height" jdbcType="INTEGER" />
+    <result column="weight" property="weight" jdbcType="INTEGER" />
+    <result column="marital_status_code" property="maritalStatusCode" jdbcType="VARCHAR" />
+    <result column="political_stance" property="politicalStance" jdbcType="VARCHAR" />
+    <result column="post_code" property="postCode" jdbcType="VARCHAR" />
+    <result column="live_address" property="liveAddress" jdbcType="VARCHAR" />
+    <result column="location_code" property="locationCode" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="interest" property="interest" jdbcType="VARCHAR" />
+    <result column="cover_letter" property="coverLetter" jdbcType="VARCHAR" />
+    <result column="follow_status" property="followStatus" jdbcType="TINYINT" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="keywords" property="keywords" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="BIGINT" />
+    <result column="last_updated_time" property="lastUpdatedTime" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, resume_name, stu_user_id, surname, miss_surname, salary, sex_code, birth_date, 
+    height, weight, marital_status_code, political_stance, post_code, live_address, location_code, 
+    phone, email, interest, cover_letter, follow_status, status, keywords, create_time, 
+    last_updated_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from resume_info
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from resume_info
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.kaipin.oss.model.stu.resume.ResumeInfo" >
+    insert into resume_info (id, resume_name, stu_user_id, 
+      surname, miss_surname, salary, 
+      sex_code, birth_date, height, 
+      weight, marital_status_code, political_stance, 
+      post_code, live_address, location_code, 
+      phone, email, interest, 
+      cover_letter, follow_status, status, 
+      keywords, create_time, last_updated_time
+      )
+    values (#{id,jdbcType=VARCHAR}, #{resumeName,jdbcType=VARCHAR}, #{stuUserId,jdbcType=VARCHAR}, 
+      #{surname,jdbcType=VARCHAR}, #{missSurname,jdbcType=VARCHAR}, #{salary,jdbcType=VARCHAR}, 
+      #{sexCode,jdbcType=VARCHAR}, #{birthDate,jdbcType=VARCHAR}, #{height,jdbcType=INTEGER}, 
+      #{weight,jdbcType=INTEGER}, #{maritalStatusCode,jdbcType=VARCHAR}, #{politicalStance,jdbcType=VARCHAR}, 
+      #{postCode,jdbcType=VARCHAR}, #{liveAddress,jdbcType=VARCHAR}, #{locationCode,jdbcType=VARCHAR}, 
+      #{phone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{interest,jdbcType=VARCHAR}, 
+      #{coverLetter,jdbcType=VARCHAR}, #{followStatus,jdbcType=TINYINT}, #{status,jdbcType=TINYINT}, 
+      #{keywords,jdbcType=VARCHAR}, #{createTime,jdbcType=BIGINT}, #{lastUpdatedTime,jdbcType=BIGINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.kaipin.oss.model.stu.resume.ResumeInfo" >
+    insert into resume_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="resumeName != null" >
+        resume_name,
+      </if>
+      <if test="stuUserId != null" >
+        stu_user_id,
+      </if>
+      <if test="surname != null" >
+        surname,
+      </if>
+      <if test="missSurname != null" >
+        miss_surname,
+      </if>
+      <if test="salary != null" >
+        salary,
+      </if>
+      <if test="sexCode != null" >
+        sex_code,
+      </if>
+      <if test="birthDate != null" >
+        birth_date,
+      </if>
+      <if test="height != null" >
+        height,
+      </if>
+      <if test="weight != null" >
+        weight,
+      </if>
+      <if test="maritalStatusCode != null" >
+        marital_status_code,
+      </if>
+      <if test="politicalStance != null" >
+        political_stance,
+      </if>
+      <if test="postCode != null" >
+        post_code,
+      </if>
+      <if test="liveAddress != null" >
+        live_address,
+      </if>
+      <if test="locationCode != null" >
+        location_code,
+      </if>
+      <if test="phone != null" >
+        phone,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="interest != null" >
+        interest,
+      </if>
+      <if test="coverLetter != null" >
+        cover_letter,
+      </if>
+      <if test="followStatus != null" >
+        follow_status,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="keywords != null" >
+        keywords,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="lastUpdatedTime != null" >
+        last_updated_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="resumeName != null" >
+        #{resumeName,jdbcType=VARCHAR},
+      </if>
+      <if test="stuUserId != null" >
+        #{stuUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="surname != null" >
+        #{surname,jdbcType=VARCHAR},
+      </if>
+      <if test="missSurname != null" >
+        #{missSurname,jdbcType=VARCHAR},
+      </if>
+      <if test="salary != null" >
+        #{salary,jdbcType=VARCHAR},
+      </if>
+      <if test="sexCode != null" >
+        #{sexCode,jdbcType=VARCHAR},
+      </if>
+      <if test="birthDate != null" >
+        #{birthDate,jdbcType=VARCHAR},
+      </if>
+      <if test="height != null" >
+        #{height,jdbcType=INTEGER},
+      </if>
+      <if test="weight != null" >
+        #{weight,jdbcType=INTEGER},
+      </if>
+      <if test="maritalStatusCode != null" >
+        #{maritalStatusCode,jdbcType=VARCHAR},
+      </if>
+      <if test="politicalStance != null" >
+        #{politicalStance,jdbcType=VARCHAR},
+      </if>
+      <if test="postCode != null" >
+        #{postCode,jdbcType=VARCHAR},
+      </if>
+      <if test="liveAddress != null" >
+        #{liveAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="locationCode != null" >
+        #{locationCode,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="interest != null" >
+        #{interest,jdbcType=VARCHAR},
+      </if>
+      <if test="coverLetter != null" >
+        #{coverLetter,jdbcType=VARCHAR},
+      </if>
+      <if test="followStatus != null" >
+        #{followStatus,jdbcType=TINYINT},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="keywords != null" >
+        #{keywords,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="lastUpdatedTime != null" >
+        #{lastUpdatedTime,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.kaipin.oss.model.stu.resume.ResumeInfo" >
+    update resume_info
+    <set >
+      <if test="resumeName != null" >
+        resume_name = #{resumeName,jdbcType=VARCHAR},
+      </if>
+      <if test="stuUserId != null" >
+        stu_user_id = #{stuUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="surname != null" >
+        surname = #{surname,jdbcType=VARCHAR},
+      </if>
+      <if test="missSurname != null" >
+        miss_surname = #{missSurname,jdbcType=VARCHAR},
+      </if>
+      <if test="salary != null" >
+        salary = #{salary,jdbcType=VARCHAR},
+      </if>
+      <if test="sexCode != null" >
+        sex_code = #{sexCode,jdbcType=VARCHAR},
+      </if>
+      <if test="birthDate != null" >
+        birth_date = #{birthDate,jdbcType=VARCHAR},
+      </if>
+      <if test="height != null" >
+        height = #{height,jdbcType=INTEGER},
+      </if>
+      <if test="weight != null" >
+        weight = #{weight,jdbcType=INTEGER},
+      </if>
+      <if test="maritalStatusCode != null" >
+        marital_status_code = #{maritalStatusCode,jdbcType=VARCHAR},
+      </if>
+      <if test="politicalStance != null" >
+        political_stance = #{politicalStance,jdbcType=VARCHAR},
+      </if>
+      <if test="postCode != null" >
+        post_code = #{postCode,jdbcType=VARCHAR},
+      </if>
+      <if test="liveAddress != null" >
+        live_address = #{liveAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="locationCode != null" >
+        location_code = #{locationCode,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="interest != null" >
+        interest = #{interest,jdbcType=VARCHAR},
+      </if>
+      <if test="coverLetter != null" >
+        cover_letter = #{coverLetter,jdbcType=VARCHAR},
+      </if>
+      <if test="followStatus != null" >
+        follow_status = #{followStatus,jdbcType=TINYINT},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="keywords != null" >
+        keywords = #{keywords,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="lastUpdatedTime != null" >
+        last_updated_time = #{lastUpdatedTime,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.kaipin.oss.model.stu.resume.ResumeInfo" >
+    update resume_info
+    set resume_name = #{resumeName,jdbcType=VARCHAR},
+      stu_user_id = #{stuUserId,jdbcType=VARCHAR},
+      surname = #{surname,jdbcType=VARCHAR},
+      miss_surname = #{missSurname,jdbcType=VARCHAR},
+      salary = #{salary,jdbcType=VARCHAR},
+      sex_code = #{sexCode,jdbcType=VARCHAR},
+      birth_date = #{birthDate,jdbcType=VARCHAR},
+      height = #{height,jdbcType=INTEGER},
+      weight = #{weight,jdbcType=INTEGER},
+      marital_status_code = #{maritalStatusCode,jdbcType=VARCHAR},
+      political_stance = #{politicalStance,jdbcType=VARCHAR},
+      post_code = #{postCode,jdbcType=VARCHAR},
+      live_address = #{liveAddress,jdbcType=VARCHAR},
+      location_code = #{locationCode,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      interest = #{interest,jdbcType=VARCHAR},
+      cover_letter = #{coverLetter,jdbcType=VARCHAR},
+      follow_status = #{followStatus,jdbcType=TINYINT},
+      status = #{status,jdbcType=TINYINT},
+      keywords = #{keywords,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=BIGINT},
+      last_updated_time = #{lastUpdatedTime,jdbcType=BIGINT}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <!-- 表数据 -->
+  
+  <!-- 根据uid获取简历信息 -->
+  <select id="selectByUid" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from resume_info
+    where stu_user_id = #{uId,jdbcType=VARCHAR}
+  </select>
+</mapper>

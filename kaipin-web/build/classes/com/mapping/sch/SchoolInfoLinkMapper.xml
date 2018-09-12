@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mapper.sch.SchoolInfoLinkMapper" >
+  <resultMap id="BaseResultMap" type="com.model.sch.SchoolInfoLink" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="school_code" property="schoolCode" jdbcType="VARCHAR" />
+    <result column="school_type_id" property="schoolTypeId" jdbcType="VARCHAR" />
+    <result column="school_nature_id" property="schoolNatureId" jdbcType="VARCHAR" />
+    <result column="school_feature_id" property="schoolFeatureId" jdbcType="VARCHAR" />
+    <result column="school_class_id" property="schoolClassId" jdbcType="VARCHAR" />
+    <result column="direction" property="direction" jdbcType="VARCHAR" />
+    <result column="school_short_name" property="schoolShortName" jdbcType="VARCHAR" />
+    <result column="school_logo" property="schoolLogo" jdbcType="VARCHAR" />
+    <result column="school_bg" property="schoolBg" jdbcType="VARCHAR" />
+    <result column="location_code" property="locationCode" jdbcType="VARCHAR" />
+    <result column="student_count" property="studentCount" jdbcType="VARCHAR" />
+    <result column="student_total" property="studentTotal" jdbcType="VARCHAR" />
+    <result column="verify_status" property="verifyStatus" jdbcType="TINYINT" />
+    <result column="document_id" property="documentId" jdbcType="VARCHAR" />
+    <result column="employment_name" property="employmentName" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="website" property="website" jdbcType="VARCHAR" />
+    <result column="birth_year" property="birthYear" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, school_code, school_type_id, school_nature_id, school_feature_id, school_class_id, 
+    direction, school_short_name, school_logo, school_bg, location_code, student_count, 
+    student_total, verify_status, document_id, employment_name, address, website, birth_year, 
+    create_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from school_info_link
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from school_info_link
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.model.sch.SchoolInfoLink" >
+    insert into school_info_link (id, school_code, school_type_id, 
+      school_nature_id, school_feature_id, school_class_id, 
+      direction, school_short_name, school_logo, 
+      school_bg, location_code, student_count, 
+      student_total, verify_status, document_id, 
+      employment_name, address, website, 
+      birth_year, create_time)
+    values (#{id,jdbcType=VARCHAR}, #{schoolCode,jdbcType=VARCHAR}, #{schoolTypeId,jdbcType=VARCHAR}, 
+      #{schoolNatureId,jdbcType=VARCHAR}, #{schoolFeatureId,jdbcType=VARCHAR}, #{schoolClassId,jdbcType=VARCHAR}, 
+      #{direction,jdbcType=VARCHAR}, #{schoolShortName,jdbcType=VARCHAR}, #{schoolLogo,jdbcType=VARCHAR}, 
+      #{schoolBg,jdbcType=VARCHAR}, #{locationCode,jdbcType=VARCHAR}, #{studentCount,jdbcType=VARCHAR}, 
+      #{studentTotal,jdbcType=VARCHAR}, #{verifyStatus,jdbcType=TINYINT}, #{documentId,jdbcType=VARCHAR}, 
+      #{employmentName,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{website,jdbcType=VARCHAR}, 
+      #{birthYear,jdbcType=VARCHAR}, #{createTime,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.model.sch.SchoolInfoLink" >
+    insert into school_info_link
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="schoolCode != null" >
+        school_code,
+      </if>
+      <if test="schoolTypeId != null" >
+        school_type_id,
+      </if>
+      <if test="schoolNatureId != null" >
+        school_nature_id,
+      </if>
+      <if test="schoolFeatureId != null" >
+        school_feature_id,
+      </if>
+      <if test="schoolClassId != null" >
+        school_class_id,
+      </if>
+      <if test="direction != null" >
+        direction,
+      </if>
+      <if test="schoolShortName != null" >
+        school_short_name,
+      </if>
+      <if test="schoolLogo != null" >
+        school_logo,
+      </if>
+      <if test="schoolBg != null" >
+        school_bg,
+      </if>
+      <if test="locationCode != null" >
+        location_code,
+      </if>
+      <if test="studentCount != null" >
+        student_count,
+      </if>
+      <if test="studentTotal != null" >
+        student_total,
+      </if>
+      <if test="verifyStatus != null" >
+        verify_status,
+      </if>
+      <if test="documentId != null" >
+        document_id,
+      </if>
+      <if test="employmentName != null" >
+        employment_name,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="website != null" >
+        website,
+      </if>
+      <if test="birthYear != null" >
+        birth_year,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolCode != null" >
+        #{schoolCode,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolTypeId != null" >
+        #{schoolTypeId,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolNatureId != null" >
+        #{schoolNatureId,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolFeatureId != null" >
+        #{schoolFeatureId,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolClassId != null" >
+        #{schoolClassId,jdbcType=VARCHAR},
+      </if>
+      <if test="direction != null" >
+        #{direction,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolShortName != null" >
+        #{schoolShortName,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolLogo != null" >
+        #{schoolLogo,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolBg != null" >
+        #{schoolBg,jdbcType=VARCHAR},
+      </if>
+      <if test="locationCode != null" >
+        #{locationCode,jdbcType=VARCHAR},
+      </if>
+      <if test="studentCount != null" >
+        #{studentCount,jdbcType=VARCHAR},
+      </if>
+      <if test="studentTotal != null" >
+        #{studentTotal,jdbcType=VARCHAR},
+      </if>
+      <if test="verifyStatus != null" >
+        #{verifyStatus,jdbcType=TINYINT},
+      </if>
+      <if test="documentId != null" >
+        #{documentId,jdbcType=VARCHAR},
+      </if>
+      <if test="employmentName != null" >
+        #{employmentName,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="website != null" >
+        #{website,jdbcType=VARCHAR},
+      </if>
+      <if test="birthYear != null" >
+        #{birthYear,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.model.sch.SchoolInfoLink" >
+    update school_info_link
+    <set >
+      <if test="schoolCode != null" >
+        school_code = #{schoolCode,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolTypeId != null" >
+        school_type_id = #{schoolTypeId,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolNatureId != null" >
+        school_nature_id = #{schoolNatureId,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolFeatureId != null" >
+        school_feature_id = #{schoolFeatureId,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolClassId != null" >
+        school_class_id = #{schoolClassId,jdbcType=VARCHAR},
+      </if>
+      <if test="direction != null" >
+        direction = #{direction,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolShortName != null" >
+        school_short_name = #{schoolShortName,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolLogo != null" >
+        school_logo = #{schoolLogo,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolBg != null" >
+        school_bg = #{schoolBg,jdbcType=VARCHAR},
+      </if>
+      <if test="locationCode != null" >
+        location_code = #{locationCode,jdbcType=VARCHAR},
+      </if>
+      <if test="studentCount != null" >
+        student_count = #{studentCount,jdbcType=VARCHAR},
+      </if>
+      <if test="studentTotal != null" >
+        student_total = #{studentTotal,jdbcType=VARCHAR},
+      </if>
+      <if test="verifyStatus != null" >
+        verify_status = #{verifyStatus,jdbcType=TINYINT},
+      </if>
+      <if test="documentId != null" >
+        document_id = #{documentId,jdbcType=VARCHAR},
+      </if>
+      <if test="employmentName != null" >
+        employment_name = #{employmentName,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="website != null" >
+        website = #{website,jdbcType=VARCHAR},
+      </if>
+      <if test="birthYear != null" >
+        birth_year = #{birthYear,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.model.sch.SchoolInfoLink" >
+    update school_info_link
+    set school_code = #{schoolCode,jdbcType=VARCHAR},
+      school_type_id = #{schoolTypeId,jdbcType=VARCHAR},
+      school_nature_id = #{schoolNatureId,jdbcType=VARCHAR},
+      school_feature_id = #{schoolFeatureId,jdbcType=VARCHAR},
+      school_class_id = #{schoolClassId,jdbcType=VARCHAR},
+      direction = #{direction,jdbcType=VARCHAR},
+      school_short_name = #{schoolShortName,jdbcType=VARCHAR},
+      school_logo = #{schoolLogo,jdbcType=VARCHAR},
+      school_bg = #{schoolBg,jdbcType=VARCHAR},
+      location_code = #{locationCode,jdbcType=VARCHAR},
+      student_count = #{studentCount,jdbcType=VARCHAR},
+      student_total = #{studentTotal,jdbcType=VARCHAR},
+      verify_status = #{verifyStatus,jdbcType=TINYINT},
+      document_id = #{documentId,jdbcType=VARCHAR},
+      employment_name = #{employmentName,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      website = #{website,jdbcType=VARCHAR},
+      birth_year = #{birthYear,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=BIGINT}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

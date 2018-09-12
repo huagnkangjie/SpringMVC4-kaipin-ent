@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="web.UserCategoryMapper">
+
+<!-- 用户分类 -->
+  <resultMap id="BaseResultMap" type="com.kaipin.sso.entity.web.user.UserCategory">
+    <id column="id"  property="id" />
+    <result column="title" property="title" />
+    <result column="priority"  property="priority" />
+    <result column="user_table" property="userTable" />
+    <result column="user_type" property="userType" />
+    <result column="redirect_uri"  property="redirectUri" />
+  </resultMap>
+  
+  
+  
+  <sql id="user_category_column">
+    id, title, priority, user_table, user_type, redirect_uri
+  </sql>
+  
+  <!-- 用户类型 -->
+  <select id="selectById" parameterType="string"  resultMap="BaseResultMap">
+    select 
+    <include refid="user_category_column" />
+    from user_category
+    where id = #{value}
+  </select>
+  
+  
+  
+</mapper>

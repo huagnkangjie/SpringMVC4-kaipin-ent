@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.enterprise.mapper.user.EntBaseUserMapper" >
+  <!-- 插入用户中间关系表 -->
+  <insert id="insertSelective" parameterType="com.enterprise.model.user.EntBaseUser" >
+    insert into company_base_user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="companyId != null" >
+        company_id,
+      </if>
+      <if test="companyUserId != null" >
+        company_user_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="isSystem != null" >
+        is_system,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="companyId != null" >
+        #{companyId,jdbcType=VARCHAR},
+      </if>
+      <if test="companyUserId != null" >
+        #{companyUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="isSystem != null" >
+        #{isSystem,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  
+  <!-- 邮箱校验 -->
+  <select id="emailValidata" parameterType="map" resultType="map">
+  	SELECT
+		count(*) counts
+	FROM
+		company_user_info
+	WHERE
+		email = #{email}
+  </select>
+  
+  <!-- 登录-->
+  <select id="login" parameterType="map" resultType="map">
+  	select 
+  		* 
+	from 
+		company_user_info user,
+		company_info info,
+		company_base_user base
+	where 1=1
+		and  ( user.email = #{userName} or user.phone = #{userName})
+  		and password = #{password}
+		and base.company_id = info.id
+		and base.company_user_id = user.id
+  </select>
+  
+  <!-- 邮箱发过来的验证-->
+  <select id="cheackmail" resultType="map" parameterType="map">
+  	select 
+  		* 
+  	from 
+  		company_user_info user ,
+  		company_base_user base
+  	where 1=1 
+  	<if test="id != null" ><if test="id != '' " >and id = #{id} </if></if>
+  	<if test="email != null" ><if test="email != '' " >and email = #{email} </if></if>
+  	<if test="checkMail != null" ><if test="checkMail != '' " >and is_check_mail = #{checkMail} </if></if>
+  	and user.id = base.company_user_id
+  </select>
+  
+  <!-- 手机号唯一性验证-->
+  <select id="validataPhone" resultType="map" parameterType="map">
+  	select * from user_localauth where 1=1 
+  	and phone = #{phone}
+  </select>
+  
+  <!-- 添加资质认证-->
+  <insert id="insertDoc" parameterType="map">
+  	INSERT INTO 
+  		company_user_document
+	VALUES
+		(
+			#{ent_user_id},#{document_path},#{document_type},
+			#{last_updated_time},#{create_time})
+  </insert>
+  
+  <!-- 删除资质认证-->
+  <delete id="deleteDoc" parameterType="map">
+  	DELETE
+	FROM
+		company_user_document
+	WHERE 1=1
+		 and ent_user_id = #{ent_user_id}
+  </delete>
+  
+  <!-- 更新资质表-->
+  <update id="updateDoc" parameterType="map">
+  	update company_user_document
+	  	<set>
+	      <if test="document_path != null">
+	        document_path = #{document_path,jdbcType=VARCHAR},
+	      </if>
+	      <if test="document_type != null">
+	        document_type = #{document_type,jdbcType=TINYINT},
+	      </if>
+	    </set>
+    where ent_user_id = #{ent_user_id}
+  </update>
+  
+  <!-- 添加资质认证历史-->
+  <insert id="insertDocHistory" parameterType="map">
+  	INSERT INTO 
+  		company_user_document_history
+	VALUES
+		(
+			#{ent_user_id},#{document_path},#{document_type},
+			#{last_updated_time},#{create_time})
+  
+  </insert>
+  
+  <!-- 查下资质认证-->
+  <select id="selectDoc" parameterType="map" resultType="map">
+  	SELECT
+		*
+	FROM
+		company_user_document
+	WHERE
+		ent_user_id = #{ent_user_id}
+  </select>
+  
+  <!-- 查询资质认证历史-->
+  <select id="selectDocHistory" parameterType="map" resultType="map"></select>
+  
+  <!-- 重新获取邮件判断-->
+  <select id="againMail" parameterType="map" resultType="map">
+  	SELECT
+		*
+	FROM
+		company_user_info
+	WHERE
+		(phone = #{userName} OR email = #{userName})
+	AND ENABLE = 1
+	AND is_check_mail = 0
+  </select>
+  
+  <!-- 获取审核意见-->
+  <select id="getFeedbackList" parameterType="map" resultType="map">
+  	SELECT
+		b.title,
+		a.content
+	FROM
+		company_info_feedback_relation a,
+		company_info_feedback_config b
+	WHERE
+		a.config_id = b.id
+	AND a.feedback_id = #{feedbackId}
+  </select>
+  
+</mapper>

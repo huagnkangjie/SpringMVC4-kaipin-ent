@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="SearchLuceneTasksMapper">
+	<resultMap id="BaseResultMap" type="com.kaipin.search.entity.SearchLuceneTasks">
+		<id column="id" property="id" />
+		<result column="obj_id" property="objId" />
+		<result column="obj_type" property="objType" />
+		<result column="opt" property="opt" />
+		<result column="create_time" property="createTime" />
+		<result column="status" property="status" />
+		<result column="handle_time" property="handleTime" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id, obj_id, obj_type, opt, create_time, status, handle_time
+	</sql>
+	
+	<!-- 插入作业 -->
+	<insert id="insertLuceneTask" parameterType="map">
+		insert into search_lucene_tasks(
+		id,obj_id,obj_type,opt,create_time
+		
+		) values
+		(#{id},#{obj_id},#{obj_type},#{opt},#{create_time} )
+	</insert>
+
+<!-- 通过id查询指定 -->
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from search_lucene_tasks
+		where id = #{id}
+	</select>
+
+<!-- 未处理数据 -->
+	<select id="selectUnHandle" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from search_lucene_tasks
+		where status = 0
+		order by create_time asc
+	</select>
+
+	<select id="selectUnHandleCount"  resultType="long"  parameterType="map">
+		select
+			count(1) as total 
+		from search_lucene_tasks
+		where status = 0
+		
+	</select>
+
+
+
+
+	<!-- 更新已经处理-->
+	<update id="updateHandled" parameterType="string">
+		update search_lucene_tasks
+	set
+		status = 1,
+
+	handle_time = (unix_timestamp()*1000)
+
+		where id = #{id}
+
+
+	</update>  
+	
+	<!-- 批量更新 -->
+	<select id="updateBatchHandle" parameterType="list">
+ 
+			update search_lucene_tasks
+				set
+				status = 1,
+				
+				handle_time = (unix_timestamp()*1000)
+				
+		where id in
+
+		<foreach item="item" index="index" collection="list" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	 
+ 
+	</select>
+
+
+
+	
+	
+
+<!-- 更新选中部分 -->
+
+	<update id="updateByPrimaryKeySelective" parameterType="com.kaipin.search.entity.SearchLuceneTasks">
+		update search_lucene_tasks
+		<set>
+			<if test="objId != null">
+				obj_id = #{objId},
+			</if>
+			<if test="objType != null">
+				obj_type = #{objType},
+			</if>
+			<if test="opt != null">
+				opt = #{opt},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime},
+			</if>
+			<if test="status != null">
+				status = #{status},
+			</if>
+			<if test="handleTime != null">
+				handle_time = #{handleTime},
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+
+</mapper>

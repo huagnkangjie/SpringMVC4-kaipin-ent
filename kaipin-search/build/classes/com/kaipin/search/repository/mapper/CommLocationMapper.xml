@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="CommLocationMapper">
+
+
+	<select id="selectParentCode" resultType="map" parameterType="string">
+ 
+		select t1.*,t2.location_name as location_parent_name from (
+		select * from comm_location
+		where location_code=#{location_code}
+		) as t1
+		LEFT JOIN
+		comm_location as t2
+		ON
+		t1.parent_code=t2.location_code
+	</select>
+
+
+	<select id="selectGroupLoactionCode" resultType="map" parameterType="string">
+
+	SELECT
+
+	group_concat(location_name SEPARATOR ',') AS location_name,
+
+	group_concat(location_code SEPARATOR ',') AS location_code,
+	parent_code
+
+	FROM
+
+	comm_location
+
+	where parent_code =#{parent_code}
+ 
+ 
+	</select>
+
+</mapper>

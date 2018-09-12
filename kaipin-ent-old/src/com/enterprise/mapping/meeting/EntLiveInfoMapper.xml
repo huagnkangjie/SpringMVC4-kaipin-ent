@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.enterprise.mapper.meeting.EntLiveInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.enterprise.model.EntLiveInfo" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="room_id" property="roomId" jdbcType="INTEGER" />
+    <result column="organization_id" property="organizationId" jdbcType="VARCHAR" />
+    <result column="user_type" property="userType" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="strat_time" property="stratTime" jdbcType="VARCHAR" />
+    <result column="end_time" property="endTime" jdbcType="VARCHAR" />
+    <result column="subject" property="subject" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="TINYINT" />
+    <result column="change_type" property="changeType" jdbcType="VARCHAR" />
+    <result column="cover_image_path" property="coverImagePath" jdbcType="VARCHAR" />
+    <result column="enable" property="enable" jdbcType="TINYINT" />
+    <result column="create_time" property="createTime" jdbcType="BIGINT" />
+    <result column="memo" property="memo" jdbcType="VARCHAR" />
+    <result column="is_del" property="isDel" jdbcType="TINYINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, room_id, organization_id, user_type, status, strat_time, end_time, subject, type, 
+    change_type, cover_image_path, enable, create_time, memo, is_del
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from live_info
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from live_info
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.enterprise.model.EntLiveInfo" >
+    insert into live_info (id, room_id, organization_id, 
+      user_type, status, strat_time, 
+      end_time, subject, type, 
+      change_type, cover_image_path, enable, 
+      create_time, memo, is_del
+      )
+    values (#{id,jdbcType=VARCHAR}, #{roomId,jdbcType=INTEGER}, #{organizationId,jdbcType=VARCHAR}, 
+      #{userType,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, #{stratTime,jdbcType=VARCHAR}, 
+      #{endTime,jdbcType=VARCHAR}, #{subject,jdbcType=VARCHAR}, #{type,jdbcType=TINYINT}, 
+      #{changeType,jdbcType=VARCHAR}, #{coverImagePath,jdbcType=VARCHAR}, #{enable,jdbcType=TINYINT}, 
+      #{createTime,jdbcType=BIGINT}, #{memo,jdbcType=VARCHAR}, #{isDel,jdbcType=TINYINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.enterprise.model.EntLiveInfo" >
+    insert into live_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="roomId != null" >
+        room_id,
+      </if>
+      <if test="organizationId != null" >
+        organization_id,
+      </if>
+      <if test="userType != null" >
+        user_type,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="stratTime != null" >
+        strat_time,
+      </if>
+      <if test="endTime != null" >
+        end_time,
+      </if>
+      <if test="subject != null" >
+        subject,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="changeType != null" >
+        change_type,
+      </if>
+      <if test="coverImagePath != null" >
+        cover_image_path,
+      </if>
+      <if test="enable != null" >
+        enable,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="memo != null" >
+        memo,
+      </if>
+      <if test="isDel != null" >
+        is_del,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="roomId != null" >
+        #{roomId,jdbcType=INTEGER},
+      </if>
+      <if test="organizationId != null" >
+        #{organizationId,jdbcType=VARCHAR},
+      </if>
+      <if test="userType != null" >
+        #{userType,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="stratTime != null" >
+        #{stratTime,jdbcType=VARCHAR},
+      </if>
+      <if test="endTime != null" >
+        #{endTime,jdbcType=VARCHAR},
+      </if>
+      <if test="subject != null" >
+        #{subject,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=TINYINT},
+      </if>
+      <if test="changeType != null" >
+        #{changeType,jdbcType=VARCHAR},
+      </if>
+      <if test="coverImagePath != null" >
+        #{coverImagePath,jdbcType=VARCHAR},
+      </if>
+      <if test="enable != null" >
+        #{enable,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="memo != null" >
+        #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="isDel != null" >
+        #{isDel,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.enterprise.model.EntLiveInfo" >
+    update live_info
+    <set >
+      <if test="roomId != null" >
+        room_id = #{roomId,jdbcType=INTEGER},
+      </if>
+      <if test="organizationId != null" >
+        organization_id = #{organizationId,jdbcType=VARCHAR},
+      </if>
+      <if test="userType != null" >
+        user_type = #{userType,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="stratTime != null" >
+        strat_time = #{stratTime,jdbcType=VARCHAR},
+      </if>
+      <if test="endTime != null" >
+        end_time = #{endTime,jdbcType=VARCHAR},
+      </if>
+      <if test="subject != null" >
+        subject = #{subject,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=TINYINT},
+      </if>
+      <if test="changeType != null" >
+        change_type = #{changeType,jdbcType=VARCHAR},
+      </if>
+      <if test="coverImagePath != null" >
+        cover_image_path = #{coverImagePath,jdbcType=VARCHAR},
+      </if>
+      <if test="enable != null" >
+        enable = #{enable,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="memo != null" >
+        memo = #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="isDel != null" >
+        is_del = #{isDel,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.enterprise.model.EntLiveInfo" >
+    update live_info
+    set room_id = #{roomId,jdbcType=INTEGER},
+      organization_id = #{organizationId,jdbcType=VARCHAR},
+      user_type = #{userType,jdbcType=VARCHAR},
+      status = #{status,jdbcType=TINYINT},
+      strat_time = #{stratTime,jdbcType=VARCHAR},
+      end_time = #{endTime,jdbcType=VARCHAR},
+      subject = #{subject,jdbcType=VARCHAR},
+      type = #{type,jdbcType=TINYINT},
+      change_type = #{changeType,jdbcType=VARCHAR},
+      cover_image_path = #{coverImagePath,jdbcType=VARCHAR},
+      enable = #{enable,jdbcType=TINYINT},
+      create_time = #{createTime,jdbcType=BIGINT},
+      memo = #{memo,jdbcType=VARCHAR},
+      is_del = #{isDel,jdbcType=TINYINT}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <!--   表数据 -->
+  <!--   获取宣讲会预告首页list -->
+  <select id="getList" resultType="map" parameterType="map">
+  	SELECT
+		a.*, b.*,FROM_UNIXTIME(a.create_time,'%Y-%m-%d %H:%i:%S') createTime,
+		(CASE when (SELECT UNIX_TIMESTAMP()*1000) -  (select UNIX_TIMESTAMP(a.strat_time)*1000) > 0 then '已过期' else '预告' end) sfgq
+	FROM
+		live_info a
+	LEFT JOIN live_video_info b ON a.id = b.video_id
+	WHERE
+		1 = 1
+	AND a.organization_id = #{companyId,jdbcType=VARCHAR}
+	AND a.enable = 0
+	ORDER BY
+	a.create_time DESC
+  	limit ${page_start},${page_size}
+  </select>
+<!--   获取公司所有的宣讲会 总数-->
+  <select id="getListCounts" resultType="map" parameterType="map">
+  	select 
+  		count(*) counts
+  	from 
+  		live_info 
+  	where 1=1
+  		and organization_id = #{companyId,jdbcType=VARCHAR} 
+  		AND enable = 0
+  	GROUP BY organization_id
+  </select>
+<!--   获取map -->
+  <select id="getMap" resultType="map" parameterType="map">
+	SELECT
+		*
+	FROM
+		live_info a
+	LEFT JOIN live_video_info b ON a.id = b.video_id
+	WHERE
+		a.id = #{meetingId,jdbcType=VARCHAR}
+		AND a.enable = 0
+  </select>
+<!--   插入房间信息 -->
+  <insert id="insertRoom" useGeneratedKeys="true" keyProperty="id"
+		parameterType="map">  
+	
+	 <![CDATA[
+	
+	    insert into room_info(object_id,create_time)  
+	   	values(#{object_id},#{create_time})  
+
+	]]>
+
+	</insert>
+	
+<!--   插入点播视频信息 -->
+  <insert id="insertVedio"  parameterType="map">  
+	
+	 <![CDATA[
+	
+	    insert into live_video_info(video_id,video_url)  
+	   	values(#{video_id},#{video_url})  
+
+	]]>
+
+	</insert>
+	<!-- 更新视频表 -->
+	<update id="updateVedio" parameterType="map">
+		UPDATE 
+			live_video_info
+		SET 
+			video_url = #{videoUrl}
+		WHERE
+			video_id = #{videoId}
+	</update>
+
+</mapper>

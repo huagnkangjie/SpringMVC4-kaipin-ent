@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.enterprise.mapper.resume.SystemConfigMapper" >
+ <resultMap id="BaseResultMap" type="com.enterprise.model.SystemConfig" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="company_id" property="companyId" jdbcType="VARCHAR" />
+    <result column="mail_host" property="mailHost" jdbcType="VARCHAR" />
+    <result column="mail_port" property="mailPort" jdbcType="INTEGER" />
+    <result column="mail_ssl" property="mailSsl" jdbcType="CHAR" />
+    <result column="mail_username" property="mailUsername" jdbcType="VARCHAR" />
+    <result column="mail_password" property="mailPassword" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, company_id, mail_host, mail_port, mail_ssl, mail_username, mail_password
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from comm_mail_config
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from comm_mail_config
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.enterprise.model.SystemConfig" >
+    insert into comm_mail_config (id, company_id, mail_host, 
+      mail_port, mail_ssl, mail_username, 
+      mail_password)
+    values (#{id,jdbcType=VARCHAR}, #{companyId,jdbcType=VARCHAR}, #{mailHost,jdbcType=VARCHAR}, 
+      #{mailPort,jdbcType=INTEGER}, #{mailSsl,jdbcType=CHAR}, #{mailUsername,jdbcType=VARCHAR}, 
+      #{mailPassword,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.enterprise.model.SystemConfig" >
+    insert into comm_mail_config
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="companyId != null" >
+        company_id,
+      </if>
+      <if test="mailHost != null" >
+        mail_host,
+      </if>
+      <if test="mailPort != null" >
+        mail_port,
+      </if>
+      <if test="mailSsl != null" >
+        mail_ssl,
+      </if>
+      <if test="mailUsername != null" >
+        mail_username,
+      </if>
+      <if test="mailPassword != null" >
+        mail_password,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="companyId != null" >
+        #{companyId,jdbcType=VARCHAR},
+      </if>
+      <if test="mailHost != null" >
+        #{mailHost,jdbcType=VARCHAR},
+      </if>
+      <if test="mailPort != null" >
+        #{mailPort,jdbcType=INTEGER},
+      </if>
+      <if test="mailSsl != null" >
+        #{mailSsl,jdbcType=CHAR},
+      </if>
+      <if test="mailUsername != null" >
+        #{mailUsername,jdbcType=VARCHAR},
+      </if>
+      <if test="mailPassword != null" >
+        #{mailPassword,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.enterprise.model.SystemConfig" >
+    update comm_mail_config
+    <set >
+      <if test="companyId != null" >
+        company_id = #{companyId,jdbcType=VARCHAR},
+      </if>
+      <if test="mailHost != null" >
+        mail_host = #{mailHost,jdbcType=VARCHAR},
+      </if>
+      <if test="mailPort != null" >
+        mail_port = #{mailPort,jdbcType=INTEGER},
+      </if>
+      <if test="mailSsl != null" >
+        mail_ssl = #{mailSsl,jdbcType=CHAR},
+      </if>
+      <if test="mailUsername != null" >
+        mail_username = #{mailUsername,jdbcType=VARCHAR},
+      </if>
+      <if test="mailPassword != null" >
+        mail_password = #{mailPassword,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.enterprise.model.SystemConfig" >
+    update comm_mail_config
+    set company_id = #{companyId,jdbcType=VARCHAR},
+      mail_host = #{mailHost,jdbcType=VARCHAR},
+      mail_port = #{mailPort,jdbcType=INTEGER},
+      mail_ssl = #{mailSsl,jdbcType=CHAR},
+      mail_username = #{mailUsername,jdbcType=VARCHAR},
+      mail_password = #{mailPassword,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+	<!-- 获取list --> 
+  <select id="getList" resultType="map" parameterType="map">
+  	select 
+  	<include refid="Base_Column_List"></include>
+  	from 
+  	comm_mail_config
+  	where
+  	<if test="companyId != null" ><if test="companyId !=''">company_id = #{companyId,jdbcType=INTEGER}</if></if>
+  </select>
+</mapper>

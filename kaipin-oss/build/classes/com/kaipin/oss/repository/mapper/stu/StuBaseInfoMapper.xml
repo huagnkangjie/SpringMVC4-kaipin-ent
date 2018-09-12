@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kaipin.oss.repository.dao.stu.IStuBaseInfoDao">
+
+	<!-- 基础属性 -->
+	<resultMap id="baseRusltMap" type="com.kaipin.oss.model.stu.StuBaseInfo">
+		<result column="uid" property="uid" />
+		<result column="location_code" property="locationCode" />
+		<result column="education_code" property="educationCode" />
+		<result column="major_code" property="majorCode" />
+		<result column="school_code" property="schoolCode" />
+		<result column="create_time" property="createTime" />
+		<result column="create_time" property="createTime" />
+		<result column="oneToOneCount" property="oneToOneCount" />
+		<result column="oneToOnePositionCount" property="oneToOnePositionCount" />
+		
+		<!-- 学生 -->
+		<association property="stuUser" column="uid" 
+			javaType="com.kaipin.oss.model.stu.StuUser" 
+			select="com.kaipin.oss.repository.dao.stu.IStuUserDao.selectByPrimaryKey"></association>	
+				
+		<!-- 本地用户 -->
+		<association property="localUser" column="uid" 
+			javaType="com.kaipin.oss.model.common.UserLocalauth" 
+			select="com.kaipin.oss.repository.dao.common.IUserLocalAuthDao.selectByPrimaryKey"></association>		
+			
+		<!-- 区域-->
+		<association property="commLocation" column="location_code" 
+			javaType="com.kaipin.oss.model.common.CommLocation" 
+			select="com.kaipin.oss.repository.mapper.common.CommonCode.getLocationByCode"></association>		
+		
+			
+		<!-- 学历-->
+		<association property="education" column="education_code" 
+			javaType="com.kaipin.oss.model.common.CommEducation" 
+			select="com.kaipin.oss.repository.mapper.common.CommonCode.getEducation"></association>		
+		
+			
+		<!-- 专业-->
+		<association property="major" column="major_code" 
+			javaType="com.kaipin.oss.model.common.CommMajor" 
+			select="com.kaipin.oss.repository.mapper.common.CommonCode.getMajor"></association>		
+			
+		<!-- 学校-->
+		<association property="schoolInfo" column="school_code" 
+			javaType="com.kaipin.oss.model.common.SchoolInfo" 
+			select="com.kaipin.oss.repository.mapper.common.CommonCode.getSchoolInfo"></association>		
+		
+	</resultMap>
+	
+	<!-- 查询列表 -->
+	<select id="getStuList" parameterType="map" resultMap="baseRusltMap">
+		<include refid="getStuListSQL"></include>
+	</select>
+	
+	<!-- 查询列表 -->
+	<select id="getStuListCount" resultType="java.lang.Integer" parameterType="map">
+		select count(*) from 
+		(
+			<include refid="getStuListSQL"></include>
+		 ) m
+	</select>
+	
+	
+	<!-- 查询列表SQL -->
+	<sql id="getStuListSQL">
+		select 
+			a.id uid,  CONCAT(a.surname,a.miss_surname) userName, a.location_code, a.education_code, a.major_code, a.school_code,
+			b.phone, b.email, b.is_del, b.enable,FROM_UNIXTIME( b.create_time/1000,'%Y-%m-%d %H:%i:%s') create_time,
+			c.id resumeId
+		from (select a.*, b.userNames from stu_user a, (select CONCAT(surname,miss_surname) userNames, id from stu_user ) b where a.id = b.id) a, user_localauth b, resume_info c
+		where a.id = b.id and a.id = c.stu_user_id
+			
+			<if test="userName != null"><if test="userName != ''">
+				and a.userNames like '%${userName}%'
+			</if></if>
+
+		ORDER BY b.create_time DESC
+	</sql>
+	
+	
+	<!-- 查询列表VIP -->
+	<select id="getStuVipList" parameterType="map" resultMap="baseRusltMap">
+		<include refid="getStuVipListSQL"></include>
+	</select>
+	
+	<!-- 查询列表VIP count -->
+	<select id="getStuVipListCount" resultType="java.lang.Integer" parameterType="map">
+		select count(*) from 
+		(
+			<include refid="getStuVipListSQL"></include>
+		 ) m
+	</select>
+	
+	
+	<!-- 查询列表VIP SQL -->
+	<sql id="getStuVipListSQL">
+		select ttt1.*, ttt2.oneToOnePositionCount from 
+		(
+			SELECT tt1.*, tt2.oneToOneCount from 
+		 (
+				 select 
+						a.id uid,  CONCAT(a.surname,a.miss_surname) userName, a.location_code, a.education_code, a.major_code, a.school_code,
+						b.phone, b.email, b.is_del, b.enable,FROM_UNIXTIME( b.create_time/1000,'%Y-%m-%d %H:%i:%s') create_time,
+						c.id resumeId
+					from (select a.*, b.userNames from stu_user a, (select CONCAT(surname,miss_surname) userNames, id from stu_user ) b where a.id = b.id) a, user_localauth b, resume_info c
+					where a.id = b.id and a.id = c.stu_user_id
+					
+					<if test="userName != null"><if test="userName != ''">
+						and a.userNames like '%${userName}%'
+					</if></if>
+				
+					and ( b.id in ( 
+							select t.id 
+							from ( 
+											select cc.id from user_localauth cc, stu_user dd where cc.id = dd.id ORDER BY cc.create_time desc LIMIT 0,5
+										) as 
+							t) 
+					or b.id in ( select ee.id from  user_localauth ee, stu_user ff where ee.id = ff.id and (ee.invitation_parent_code != null or ee.invitation_parent_code != '')))
+					ORDER BY b.create_time DESC
+			 ) tt1
+			LEFT JOIN 
+			(
+				select count(*) oneToOneCount, uid from vip_recommend_group GROUP BY uid
+			 ) tt2 
+			ON tt1.uid = tt2.uid
+		) ttt1
+		LEFT JOIN
+		(
+		 select count(*) oneToOnePositionCount, a.uid uid from vip_recommend_group a, vip_recommend_position b where a.id = b.group_id
+		) ttt2
+		ON ttt1.uid = ttt2.uid 
+		ORDER BY ttt1.oneToOneCount ASC
+					
+
+	</sql>
+	
+	<!-- 获取意向职位 意向地区的列表 -->
+	<select id="getLikePositionList" resultType="map" parameterType="map">
+		select t1.resume_id, t1.position_tag, t2.location_name, t2.location_code, t2.userId  from 
+		(
+			select a.* from resume_like_job_position a, resume_info b, stu_user c where c.id = b.stu_user_id and b.id = a.resume_id and c.id = #{userId}
+		 ) t1
+		LEFT JOIN
+		(
+			select 
+				group_concat( b.location_name ORDER BY b.location_name separator "," )  AS location_name,
+				group_concat( b.location_code ORDER BY b.location_code separator "," )  AS location_code,
+				a.resume_id,
+				d.id userId
+			from  
+				resume_like_job_area a, 
+				comm_location b,
+				resume_info c,
+				stu_user d
+			where 
+				a.location_code = b.location_code
+				and d.id = c.stu_user_id
+				and a.resume_id = c.id
+				and d.id = #{userId}
+		 ) t2
+		ON t1.resume_id = t2.resume_id
+		
+	</select>
+	
+	<!-- 统计1对1服务的次数 -->
+	<select id="getOneToOneCount" parameterType="String" resultType="map">
+		select 
+			count(*) counts 
+		from 
+			vip_recommend_group 
+		where 
+			uid = #{uid} GROUP BY uid
+	</select>
+	
+	<!-- 统计1对1服务的推荐职位的总数 -->
+	<select id="getOneToOnePositionCount" parameterType="String" resultType="map">
+		select 
+			count(*) counts 
+		from 
+			vip_recommend_group a, vip_recommend_position b
+		where 
+			a.id = b.group_id and a.uid = #{uid}
+	</select>
+	
+	<!-- 添加分组 -->
+	<insert id="insertVipRecodGroup" parameterType="map">
+		insert into vip_recommend_group values(#{id}, #{create_time}, #{group_name}, #{uid})
+	</insert>
+	
+	<!-- 添加每次推荐的具体职位 -->
+	<insert id="insertVipRecod" parameterType="map">
+		insert into vip_recommend_position values(#{id}, #{create_time}, #{status}, #{position_id}, #{group_id})
+	</insert>
+	
+</mapper>

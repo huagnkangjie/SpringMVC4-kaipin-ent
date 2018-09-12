@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kaipin.oss.repository.mapper.platform.PlatformModule">
+
+
+	<resultMap type="com.kaipin.oss.model.platform.PlatformModule"
+		id="moduleResultMap">
+		<id column="id" property="id" />
+		<result column="class_name" property="className" />
+		<result column="description" property="description" />
+		<result column="name" property="name" />
+		<result column="priority" property="priority" />
+		<result column="sn" property="sn" />
+		<result column="url" property="url" />
+		<result column="parent_id" property="parentId" />
+			<result column="icon" property="icon" />
+		
+		<collection property="permissions"  ofType="PlatformPermission"
+			column="id"
+			select="com.kaipin.oss.repository.mapper.platform.PlatformPermission.getModulePermissions" />
+
+	</resultMap>
+
+
+	<!-- 表名 -->
+	<sql id="tableNameSql">
+		platform_module
+	</sql>
+
+
+	<sql id="commonSelectColumnsPrefix">
+		id, class_name, description, name, priority, sn, url,
+		parent_id,icon
+	</sql>
+
+	<sql id="mainSql">
+		SELECT
+		<include refid="commonSelectColumnsPrefix" />
+		FROM
+		<include refid="tableNameSql" />
+		p
+	</sql>
+
+
+	<!-- 按主键查找条件语句 -->
+	<sql id="conditionOnlyId">
+		id = #{id}
+	</sql>
+
+
+	<select id="getById" resultMap="moduleResultMap" parameterType="string">
+
+		<include refid="mainSql" />
+		where p.id=#{value}
+	</select>
+
+
+	<select id="getList" resultMap="moduleResultMap">
+		<include refid="mainSql" />
+	</select>
+
+	<select id="getListNotRoot" resultMap="moduleResultMap">
+
+		<include refid="mainSql" />
+		where p.parent_id is not null or   p.parent_id !=''
+
+	</select>
+
+
+	<update id="updateSelect" parameterType="PlatformModule">
+		update platform_module
+		<set>
+			<if test="className != null">
+				class_name = #{className},
+			</if>
+			<if test="description != null">
+				description = #{description},
+			</if>
+			<if test="name != null">
+				name = #{name},
+			</if>
+			<if test="priority != null">
+				priority = #{priority},
+			</if>
+			<if test="sn != null">
+				sn = #{sn},
+			</if>
+			<if test="url != null">
+				url = #{url},
+			</if>
+			<if test="parentId != null">
+				parent_id = #{parentId}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+
+
+	<update id="update" parameterType="PlatformModule">
+		update platform_module
+		set
+		class_name = #{className},
+		description = #{description},
+		name = #{name},
+		priority = #{priority},
+		sn = #{sn},
+		url = #{url},
+		parent_id = #{parentId}
+		where id = #{id}
+	</update>
+
+
+	<insert id="save" parameterType="PlatformModule"
+		useGeneratedKeys="true" keyProperty="id">
+
+		insert into platform_module (id, class_name, description,
+		name, priority, sn,
+		url, parent_id)
+		values (#{id}, #{className}, #{description},
+		#{name},
+		#{priority}, #{sn},
+		#{url}, #{parentId})
+
+	</insert>
+
+
+ 
+	<delete id="deleteByIds" parameterType="Object[]">
+		delete from
+		<include refid="tableNameSql" />
+		where id in
+		<foreach index="index" item="item" collection="array"
+			separator="," open="(" close=")">#{item}</foreach>
+	</delete>
+
+	<delete id="deleteById" parameterType="Object">
+		delete from
+		<include refid="tableNameSql" />
+		where
+		<include refid="conditionOnlyId" />
+	</delete>
+	
+	<!-- 根据parentId 获取子集 -->
+	<select id="getListByParentId" resultMap="moduleResultMap" parameterType="map">
+		<include refid="getListByParentIdSQL"></include>
+	</select>
+	
+	<!-- 根据parentId 获取子集  count-->
+	<select id="getListByParentIdCount" resultType="java.lang.Integer" parameterType="map">
+		select 
+			count(*) 
+		from 
+			(<include refid="getListByParentIdSQL"></include>) m
+	</select>
+	
+	<sql id="getListByParentIdSQL">
+		SELECT
+			*
+		FROM
+			platform_module
+		WHERE 1=1
+		 and parent_id = #{parentId}
+	</sql>
+	
+	<delete id="delModule" parameterType="java.lang.String">
+		delete from platform_module where id = #{id}
+	</delete>
+
+</mapper>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.enterprise.mapper.common.BaseMapper" >
+  <!--   公共插入数据 -->
+  <insert id="insertVal" parameterType="map" statementType="STATEMENT">
+  	${sql}
+  </insert>
+  
+  <!--   公共查询数据  返回list -->
+  <select id="getList" parameterType="map" resultType="map" statementType="STATEMENT">
+  	${sql}
+  </select>
+  
+  <!--   公共查询数据  返回list String Map  -->
+  <select id="getListStr" parameterType="map" resultType="map" statementType="STATEMENT">
+  	${sql}
+  </select>
+</mapper>

@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kaipin.student.repository.dao.resume.IUserInterviewDao" >
+  <resultMap id="BaseResultMap" type="com.kaipin.student.model.resume.UserInterview" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="company_id" property="companyId" jdbcType="VARCHAR" />
+    <result column="resume_id" property="resumeId" jdbcType="VARCHAR" />
+    <result column="postion_id" property="postionId" jdbcType="VARCHAR" />
+    <result column="face_time" property="faceTime" jdbcType="VARCHAR" />
+    <result column="face_type" property="faceType" jdbcType="VARCHAR" />
+    <result column="memo" property="memo" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="face_class" property="faceClass" jdbcType="INTEGER" />
+    <result column="detail" property="detail" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="VARCHAR" />
+    <result column="relation_id" property="relationId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, company_id, resume_id, postion_id, face_time, face_type, memo, user_id, status, 
+    face_class, detail, create_time, relation_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from user_interview
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from user_interview
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.kaipin.student.model.resume.UserInterview" >
+    insert into user_interview (id, company_id, resume_id, 
+      postion_id, face_time, face_type, 
+      memo, user_id, status, 
+      face_class, detail, create_time, 
+      relation_id)
+    values (#{id,jdbcType=VARCHAR}, #{companyId,jdbcType=VARCHAR}, #{resumeId,jdbcType=VARCHAR}, 
+      #{postionId,jdbcType=VARCHAR}, #{faceTime,jdbcType=VARCHAR}, #{faceType,jdbcType=VARCHAR}, 
+      #{memo,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
+      #{faceClass,jdbcType=INTEGER}, #{detail,jdbcType=VARCHAR}, #{createTime,jdbcType=VARCHAR}, 
+      #{relationId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.kaipin.student.model.resume.UserInterview" >
+    insert into user_interview
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="companyId != null" >
+        company_id,
+      </if>
+      <if test="resumeId != null" >
+        resume_id,
+      </if>
+      <if test="postionId != null" >
+        postion_id,
+      </if>
+      <if test="faceTime != null" >
+        face_time,
+      </if>
+      <if test="faceType != null" >
+        face_type,
+      </if>
+      <if test="memo != null" >
+        memo,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="faceClass != null" >
+        face_class,
+      </if>
+      <if test="detail != null" >
+        detail,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="relationId != null" >
+        relation_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="companyId != null" >
+        #{companyId,jdbcType=VARCHAR},
+      </if>
+      <if test="resumeId != null" >
+        #{resumeId,jdbcType=VARCHAR},
+      </if>
+      <if test="postionId != null" >
+        #{postionId,jdbcType=VARCHAR},
+      </if>
+      <if test="faceTime != null" >
+        #{faceTime,jdbcType=VARCHAR},
+      </if>
+      <if test="faceType != null" >
+        #{faceType,jdbcType=VARCHAR},
+      </if>
+      <if test="memo != null" >
+        #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="faceClass != null" >
+        #{faceClass,jdbcType=INTEGER},
+      </if>
+      <if test="detail != null" >
+        #{detail,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="relationId != null" >
+        #{relationId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.kaipin.student.model.resume.UserInterview" >
+    update user_interview
+    <set >
+      <if test="companyId != null" >
+        company_id = #{companyId,jdbcType=VARCHAR},
+      </if>
+      <if test="resumeId != null" >
+        resume_id = #{resumeId,jdbcType=VARCHAR},
+      </if>
+      <if test="postionId != null" >
+        postion_id = #{postionId,jdbcType=VARCHAR},
+      </if>
+      <if test="faceTime != null" >
+        face_time = #{faceTime,jdbcType=VARCHAR},
+      </if>
+      <if test="faceType != null" >
+        face_type = #{faceType,jdbcType=VARCHAR},
+      </if>
+      <if test="memo != null" >
+        memo = #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="faceClass != null" >
+        face_class = #{faceClass,jdbcType=INTEGER},
+      </if>
+      <if test="detail != null" >
+        detail = #{detail,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="relationId != null" >
+        relation_id = #{relationId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.kaipin.student.model.resume.UserInterview" >
+    update user_interview
+    set company_id = #{companyId,jdbcType=VARCHAR},
+      resume_id = #{resumeId,jdbcType=VARCHAR},
+      postion_id = #{postionId,jdbcType=VARCHAR},
+      face_time = #{faceTime,jdbcType=VARCHAR},
+      face_type = #{faceType,jdbcType=VARCHAR},
+      memo = #{memo,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      face_class = #{faceClass,jdbcType=INTEGER},
+      detail = #{detail,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=VARCHAR},
+      relation_id = #{relationId,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <!-- 表数据 -->
+  <!-- 获取日志 -->
+  <select id="getLog" resultType="map" parameterType="map">
+  	select 
+  	<include refid="Base_Column_List" />
+  	from user_interview
+  	where 
+  	resume_id = #{resumeId,jdbcType=VARCHAR}
+  	and postion_id = #{postionId,jdbcType=VARCHAR}
+  	order by create_time desc
+  </select>
+  <!-- 获取消息 -->
+  <select id="getMsg" resultType="map" parameterType="map">
+  	select 
+  		*
+  	from 
+  		user_interview
+  	where 1=1
+  		<if test="companyId != null" ><if test="companyId != ''" > and company_id = #{companyId,jdbcType=VARCHAR}</if></if>
+  		<if test="status != null" ><if test="status != ''" > and status = #{status,jdbcType=VARCHAR}</if></if>
+  	order by 
+  		create_time desc
+  	limit ${page_start},${page_size}
+  </select>
+</mapper>

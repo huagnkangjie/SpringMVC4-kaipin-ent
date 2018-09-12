@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mapper.sch.SchoolFeatureMapper" >
+  <resultMap id="BaseResultMap" type="com.model.sch.SchoolFeature" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="group_name" property="groupName" jdbcType="VARCHAR" />
+    <result column="memo" property="memo" jdbcType="VARCHAR" />
+    <result column="score" property="score" jdbcType="INTEGER" />
+    <result column="school_group_code" property="schoolGroupCode" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, group_name, memo, score, school_group_code
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from school_feature
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from school_feature
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.model.sch.SchoolFeature" >
+    insert into school_feature (id, group_name, memo, 
+      score, school_group_code)
+    values (#{id,jdbcType=VARCHAR}, #{groupName,jdbcType=VARCHAR}, #{memo,jdbcType=VARCHAR}, 
+      #{score,jdbcType=INTEGER}, #{schoolGroupCode,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.model.sch.SchoolFeature" >
+    insert into school_feature
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="groupName != null" >
+        group_name,
+      </if>
+      <if test="memo != null" >
+        memo,
+      </if>
+      <if test="score != null" >
+        score,
+      </if>
+      <if test="schoolGroupCode != null" >
+        school_group_code,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="groupName != null" >
+        #{groupName,jdbcType=VARCHAR},
+      </if>
+      <if test="memo != null" >
+        #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null" >
+        #{score,jdbcType=INTEGER},
+      </if>
+      <if test="schoolGroupCode != null" >
+        #{schoolGroupCode,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.model.sch.SchoolFeature" >
+    update school_feature
+    <set >
+      <if test="groupName != null" >
+        group_name = #{groupName,jdbcType=VARCHAR},
+      </if>
+      <if test="memo != null" >
+        memo = #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null" >
+        score = #{score,jdbcType=INTEGER},
+      </if>
+      <if test="schoolGroupCode != null" >
+        school_group_code = #{schoolGroupCode,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.model.sch.SchoolFeature" >
+    update school_feature
+    set group_name = #{groupName,jdbcType=VARCHAR},
+      memo = #{memo,jdbcType=VARCHAR},
+      score = #{score,jdbcType=INTEGER},
+      school_group_code = #{schoolGroupCode,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kaipin.oss.repository.dao.stu.IStuUserDao" >
+  <resultMap id="BaseResultMap" type="com.kaipin.oss.model.stu.StuUser" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="is_check_phone" property="isCheckPhone" jdbcType="TINYINT" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="surname" property="surname" jdbcType="VARCHAR" />
+    <result column="miss_surname" property="missSurname" jdbcType="VARCHAR" />
+    <result column="nick_name" property="nickName" jdbcType="VARCHAR" />
+    <result column="avatar" property="avatar" jdbcType="VARCHAR" />
+    <result column="is_del" property="isDel" jdbcType="TINYINT" />
+    <result column="enable" property="enable" jdbcType="TINYINT" />
+    <result column="source" property="source" jdbcType="VARCHAR" />
+    <result column="head_url" property="headUrl" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="TINYINT" />
+    <result column="age" property="age" jdbcType="TINYINT" />
+    <result column="location_code" property="locationCode" jdbcType="VARCHAR" />
+    <result column="school_code" property="schoolCode" jdbcType="VARCHAR" />
+    <result column="major_code" property="majorCode" jdbcType="VARCHAR" />
+    <result column="education_code" property="educationCode" jdbcType="VARCHAR" />
+    <result column="level" property="level" jdbcType="INTEGER" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="is_check_email" property="isCheckEmail" jdbcType="TINYINT" />
+    <result column="create_time" property="createTime" jdbcType="BIGINT" />
+    <result column="last_updated_time" property="lastUpdatedTime" jdbcType="BIGINT" />
+    <result column="follow_status" property="followStatus" jdbcType="TINYINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, phone, is_check_phone, password, surname, miss_surname, nick_name, avatar, is_del, 
+    enable, source, head_url, sex, age, location_code, school_code, major_code, education_code, 
+    level, email, is_check_email, create_time, last_updated_time, follow_status
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from stu_user
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from stu_user
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.kaipin.oss.model.stu.StuUser" >
+    insert into stu_user (id, phone, is_check_phone, 
+      password, surname, miss_surname, 
+      nick_name, avatar, is_del, 
+      enable, source, head_url, 
+      sex, age, location_code, 
+      school_code, major_code, education_code, 
+      level, email, is_check_email, 
+      create_time, last_updated_time, follow_status
+      )
+    values (#{id,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{isCheckPhone,jdbcType=TINYINT}, 
+      #{password,jdbcType=VARCHAR}, #{surname,jdbcType=VARCHAR}, #{missSurname,jdbcType=VARCHAR}, 
+      #{nickName,jdbcType=VARCHAR}, #{avatar,jdbcType=VARCHAR}, #{isDel,jdbcType=TINYINT}, 
+      #{enable,jdbcType=TINYINT}, #{source,jdbcType=VARCHAR}, #{headUrl,jdbcType=VARCHAR}, 
+      #{sex,jdbcType=TINYINT}, #{age,jdbcType=TINYINT}, #{locationCode,jdbcType=VARCHAR}, 
+      #{schoolCode,jdbcType=VARCHAR}, #{majorCode,jdbcType=VARCHAR}, #{educationCode,jdbcType=VARCHAR}, 
+      #{level,jdbcType=INTEGER}, #{email,jdbcType=VARCHAR}, #{isCheckEmail,jdbcType=TINYINT}, 
+      #{createTime,jdbcType=BIGINT}, #{lastUpdatedTime,jdbcType=BIGINT}, #{followStatus,jdbcType=TINYINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.kaipin.oss.model.stu.StuUser" >
+    insert into stu_user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="phone != null" >
+        phone,
+      </if>
+      <if test="isCheckPhone != null" >
+        is_check_phone,
+      </if>
+      <if test="password != null" >
+        password,
+      </if>
+      <if test="surname != null" >
+        surname,
+      </if>
+      <if test="missSurname != null" >
+        miss_surname,
+      </if>
+      <if test="nickName != null" >
+        nick_name,
+      </if>
+      <if test="avatar != null" >
+        avatar,
+      </if>
+      <if test="isDel != null" >
+        is_del,
+      </if>
+      <if test="enable != null" >
+        enable,
+      </if>
+      <if test="source != null" >
+        source,
+      </if>
+      <if test="headUrl != null" >
+        head_url,
+      </if>
+      <if test="sex != null" >
+        sex,
+      </if>
+      <if test="age != null" >
+        age,
+      </if>
+      <if test="locationCode != null" >
+        location_code,
+      </if>
+      <if test="schoolCode != null" >
+        school_code,
+      </if>
+      <if test="majorCode != null" >
+        major_code,
+      </if>
+      <if test="educationCode != null" >
+        education_code,
+      </if>
+      <if test="level != null" >
+        level,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="isCheckEmail != null" >
+        is_check_email,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="lastUpdatedTime != null" >
+        last_updated_time,
+      </if>
+      <if test="followStatus != null" >
+        follow_status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="isCheckPhone != null" >
+        #{isCheckPhone,jdbcType=TINYINT},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="surname != null" >
+        #{surname,jdbcType=VARCHAR},
+      </if>
+      <if test="missSurname != null" >
+        #{missSurname,jdbcType=VARCHAR},
+      </if>
+      <if test="nickName != null" >
+        #{nickName,jdbcType=VARCHAR},
+      </if>
+      <if test="avatar != null" >
+        #{avatar,jdbcType=VARCHAR},
+      </if>
+      <if test="isDel != null" >
+        #{isDel,jdbcType=TINYINT},
+      </if>
+      <if test="enable != null" >
+        #{enable,jdbcType=TINYINT},
+      </if>
+      <if test="source != null" >
+        #{source,jdbcType=VARCHAR},
+      </if>
+      <if test="headUrl != null" >
+        #{headUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        #{sex,jdbcType=TINYINT},
+      </if>
+      <if test="age != null" >
+        #{age,jdbcType=TINYINT},
+      </if>
+      <if test="locationCode != null" >
+        #{locationCode,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolCode != null" >
+        #{schoolCode,jdbcType=VARCHAR},
+      </if>
+      <if test="majorCode != null" >
+        #{majorCode,jdbcType=VARCHAR},
+      </if>
+      <if test="educationCode != null" >
+        #{educationCode,jdbcType=VARCHAR},
+      </if>
+      <if test="level != null" >
+        #{level,jdbcType=INTEGER},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="isCheckEmail != null" >
+        #{isCheckEmail,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="lastUpdatedTime != null" >
+        #{lastUpdatedTime,jdbcType=BIGINT},
+      </if>
+      <if test="followStatus != null" >
+        #{followStatus,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.kaipin.oss.model.stu.StuUser" >
+    update stu_user
+    <set >
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="isCheckPhone != null" >
+        is_check_phone = #{isCheckPhone,jdbcType=TINYINT},
+      </if>
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="surname != null" >
+        surname = #{surname,jdbcType=VARCHAR},
+      </if>
+      <if test="missSurname != null" >
+        miss_surname = #{missSurname,jdbcType=VARCHAR},
+      </if>
+      <if test="nickName != null" >
+        nick_name = #{nickName,jdbcType=VARCHAR},
+      </if>
+      <if test="avatar != null" >
+        avatar = #{avatar,jdbcType=VARCHAR},
+      </if>
+      <if test="isDel != null" >
+        is_del = #{isDel,jdbcType=TINYINT},
+      </if>
+      <if test="enable != null" >
+        enable = #{enable,jdbcType=TINYINT},
+      </if>
+      <if test="source != null" >
+        source = #{source,jdbcType=VARCHAR},
+      </if>
+      <if test="headUrl != null" >
+        head_url = #{headUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        sex = #{sex,jdbcType=TINYINT},
+      </if>
+      <if test="age != null" >
+        age = #{age,jdbcType=TINYINT},
+      </if>
+      <if test="locationCode != null" >
+        location_code = #{locationCode,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolCode != null" >
+        school_code = #{schoolCode,jdbcType=VARCHAR},
+      </if>
+      <if test="majorCode != null" >
+        major_code = #{majorCode,jdbcType=VARCHAR},
+      </if>
+      <if test="educationCode != null" >
+        education_code = #{educationCode,jdbcType=VARCHAR},
+      </if>
+      <if test="level != null" >
+        level = #{level,jdbcType=INTEGER},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="isCheckEmail != null" >
+        is_check_email = #{isCheckEmail,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="lastUpdatedTime != null" >
+        last_updated_time = #{lastUpdatedTime,jdbcType=BIGINT},
+      </if>
+      <if test="followStatus != null" >
+        follow_status = #{followStatus,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.kaipin.oss.model.stu.StuUser" >
+    update stu_user
+    set phone = #{phone,jdbcType=VARCHAR},
+      is_check_phone = #{isCheckPhone,jdbcType=TINYINT},
+      password = #{password,jdbcType=VARCHAR},
+      surname = #{surname,jdbcType=VARCHAR},
+      miss_surname = #{missSurname,jdbcType=VARCHAR},
+      nick_name = #{nickName,jdbcType=VARCHAR},
+      avatar = #{avatar,jdbcType=VARCHAR},
+      is_del = #{isDel,jdbcType=TINYINT},
+      enable = #{enable,jdbcType=TINYINT},
+      source = #{source,jdbcType=VARCHAR},
+      head_url = #{headUrl,jdbcType=VARCHAR},
+      sex = #{sex,jdbcType=TINYINT},
+      age = #{age,jdbcType=TINYINT},
+      location_code = #{locationCode,jdbcType=VARCHAR},
+      school_code = #{schoolCode,jdbcType=VARCHAR},
+      major_code = #{majorCode,jdbcType=VARCHAR},
+      education_code = #{educationCode,jdbcType=VARCHAR},
+      level = #{level,jdbcType=INTEGER},
+      email = #{email,jdbcType=VARCHAR},
+      is_check_email = #{isCheckEmail,jdbcType=TINYINT},
+      create_time = #{createTime,jdbcType=BIGINT},
+      last_updated_time = #{lastUpdatedTime,jdbcType=BIGINT},
+      follow_status = #{followStatus,jdbcType=TINYINT}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

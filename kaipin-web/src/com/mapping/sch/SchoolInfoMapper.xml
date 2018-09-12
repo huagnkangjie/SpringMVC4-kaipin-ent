@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mapper.sch.SchoolInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.model.sch.SchoolInfo" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="school_name" property="schoolName" jdbcType="VARCHAR" />
+    <result column="school_en_name" property="schoolEnName" jdbcType="VARCHAR" />
+    <result column="memo" property="memo" jdbcType="VARCHAR" />
+    <result column="score" property="score" jdbcType="INTEGER" />
+    <result column="school_code" property="schoolCode" jdbcType="VARCHAR" />
+    <result column="class_id" property="classId" jdbcType="INTEGER" />
+    <result column="type_id" property="typeId" jdbcType="INTEGER" />
+    <result column="nature_id" property="natureId" jdbcType="INTEGER" />
+    <result column="location_code" property="locationCode" jdbcType="VARCHAR" />
+    <result column="school_logo" property="schoolIcon" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, school_name, school_en_name, memo, score, school_code, class_id, type_id, nature_id, 
+    location_code, school_logo
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from school_info
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from school_info
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.model.sch.SchoolInfo" >
+    insert into school_info (id, school_name, school_en_name, 
+      memo, score, school_code, 
+      class_id, type_id, nature_id, 
+      location_code, school_logo)
+    values (#{id,jdbcType=VARCHAR}, #{schoolName,jdbcType=VARCHAR}, #{schoolEnName,jdbcType=VARCHAR}, 
+      #{memo,jdbcType=VARCHAR}, #{score,jdbcType=INTEGER}, #{schoolCode,jdbcType=VARCHAR}, 
+      #{classId,jdbcType=INTEGER}, #{typeId,jdbcType=INTEGER}, #{natureId,jdbcType=INTEGER}, 
+      #{locationCode,jdbcType=VARCHAR}, #{schoolIcon,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.model.sch.SchoolInfo" >
+    insert into school_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="schoolName != null" >
+        school_name,
+      </if>
+      <if test="schoolEnName != null" >
+        school_en_name,
+      </if>
+      <if test="memo != null" >
+        memo,
+      </if>
+      <if test="score != null" >
+        score,
+      </if>
+      <if test="schoolCode != null" >
+        school_code,
+      </if>
+      <if test="classId != null" >
+        class_id,
+      </if>
+      <if test="typeId != null" >
+        type_id,
+      </if>
+      <if test="natureId != null" >
+        nature_id,
+      </if>
+      <if test="locationCode != null" >
+        location_code,
+      </if>
+      <if test="schoolIcon != null" >
+        school_logo,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolName != null" >
+        #{schoolName,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolEnName != null" >
+        #{schoolEnName,jdbcType=VARCHAR},
+      </if>
+      <if test="memo != null" >
+        #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null" >
+        #{score,jdbcType=INTEGER},
+      </if>
+      <if test="schoolCode != null" >
+        #{schoolCode,jdbcType=VARCHAR},
+      </if>
+      <if test="classId != null" >
+        #{classId,jdbcType=INTEGER},
+      </if>
+      <if test="typeId != null" >
+        #{typeId,jdbcType=INTEGER},
+      </if>
+      <if test="natureId != null" >
+        #{natureId,jdbcType=INTEGER},
+      </if>
+      <if test="locationCode != null" >
+        #{locationCode,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolIcon != null" >
+        #{schoolIcon,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.model.sch.SchoolInfo" >
+    update school_info
+    <set >
+      <if test="schoolName != null" >
+        school_name = #{schoolName,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolEnName != null" >
+        school_en_name = #{schoolEnName,jdbcType=VARCHAR},
+      </if>
+      <if test="memo != null" >
+        memo = #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null" >
+        score = #{score,jdbcType=INTEGER},
+      </if>
+      <if test="schoolCode != null" >
+        school_code = #{schoolCode,jdbcType=VARCHAR},
+      </if>
+      <if test="classId != null" >
+        class_id = #{classId,jdbcType=INTEGER},
+      </if>
+      <if test="typeId != null" >
+        type_id = #{typeId,jdbcType=INTEGER},
+      </if>
+      <if test="natureId != null" >
+        nature_id = #{natureId,jdbcType=INTEGER},
+      </if>
+      <if test="locationCode != null" >
+        location_code = #{locationCode,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolIcon != null" >
+        school_logo = #{schoolIcon,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.model.sch.SchoolInfo" >
+    update school_info
+    set school_name = #{schoolName,jdbcType=VARCHAR},
+      school_en_name = #{schoolEnName,jdbcType=VARCHAR},
+      memo = #{memo,jdbcType=VARCHAR},
+      score = #{score,jdbcType=INTEGER},
+      school_code = #{schoolCode,jdbcType=VARCHAR},
+      class_id = #{classId,jdbcType=INTEGER},
+      type_id = #{typeId,jdbcType=INTEGER},
+      nature_id = #{natureId,jdbcType=INTEGER},
+      location_code = #{locationCode,jdbcType=VARCHAR},
+      school_logo = #{schoolIcon,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

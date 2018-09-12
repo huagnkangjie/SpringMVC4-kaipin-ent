@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kaipin.common.repository.dao.followfans.ICommFollowFansDao" >
+  
+	<!-- 添加关注和粉丝表的统计数 -->
+	<insert id="insertFollowCount" parameterType="String">
+		INSERT into  follow_count(uid, follower_count, following_count) 
+		select 
+		(#{org_id}) a,
+		(select count(*) counts from follow_following where to_uid = #{org_id}) b,
+		(select count(*) counts from follow_following where from_uid = #{org_id} ) c
+	</insert>
+	
+	<!-- 更新关注数和粉丝数 -->
+	<update id="updateFollowCount" parameterType="map">
+		UPDATE follow_count SET follower_count = (select count(*) counts from follow_following where to_uid = #{org_id}),
+		following_count = (select count(*) counts from follow_following where from_uid = #{org_id})
+		where uid = #{org_id}
+	</update>
+	
+	<!-- 获取粉丝统计表里的统计数 -->
+	<select id="getFollowFanCounts" parameterType="map" resultType="map">
+		select * from follow_count where uid = #{org_id}
+	</select>
+	
+</mapper>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kaipin.enterprise.repository.dao.position.IPositionDeliveryInterviewDao" >
+  <resultMap id="BaseResultMap" type="com.kaipin.enterprise.model.position.PositionDeliveryInterview" >
+    <id column="position_delivery_id" property="positionDeliveryId" jdbcType="VARCHAR" />
+    <result column="interview_id" property="interviewId" jdbcType="VARCHAR" />
+    <result column="offer_id" property="offerId" jdbcType="VARCHAR" />
+    <result column="exam_invite_id" property="examInviteId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    position_delivery_id, interview_id, offer_id, exam_invite_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from position_delivery_interview
+    where position_delivery_id = #{positionDeliveryId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from position_delivery_interview
+    where position_delivery_id = #{positionDeliveryId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.kaipin.enterprise.model.position.PositionDeliveryInterview" >
+    insert into position_delivery_interview (position_delivery_id, interview_id, 
+      offer_id, exam_invite_id)
+    values (#{positionDeliveryId,jdbcType=VARCHAR}, #{interviewId,jdbcType=VARCHAR}, 
+      #{offerId,jdbcType=VARCHAR}, #{examInviteId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.kaipin.enterprise.model.position.PositionDeliveryInterview" >
+    insert into position_delivery_interview
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="positionDeliveryId != null" >
+        position_delivery_id,
+      </if>
+      <if test="interviewId != null" >
+        interview_id,
+      </if>
+      <if test="offerId != null" >
+        offer_id,
+      </if>
+      <if test="examInviteId != null" >
+        exam_invite_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="positionDeliveryId != null" >
+        #{positionDeliveryId,jdbcType=VARCHAR},
+      </if>
+      <if test="interviewId != null" >
+        #{interviewId,jdbcType=VARCHAR},
+      </if>
+      <if test="offerId != null" >
+        #{offerId,jdbcType=VARCHAR},
+      </if>
+      <if test="examInviteId != null" >
+        #{examInviteId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.kaipin.enterprise.model.position.PositionDeliveryInterview" >
+    update position_delivery_interview
+    <set >
+      <if test="interviewId != null" >
+        interview_id = #{interviewId,jdbcType=VARCHAR},
+      </if>
+      <if test="offerId != null" >
+        offer_id = #{offerId,jdbcType=VARCHAR},
+      </if>
+      <if test="examInviteId != null" >
+        exam_invite_id = #{examInviteId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where position_delivery_id = #{positionDeliveryId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.kaipin.enterprise.model.position.PositionDeliveryInterview" >
+    update position_delivery_interview
+    set interview_id = #{interviewId,jdbcType=VARCHAR},
+      offer_id = #{offerId,jdbcType=VARCHAR},
+      exam_invite_id = #{examInviteId,jdbcType=VARCHAR}
+    where position_delivery_id = #{positionDeliveryId,jdbcType=VARCHAR}
+  </update>
+</mapper>

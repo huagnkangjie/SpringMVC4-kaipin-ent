@@ -1,0 +1,25 @@
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, fieldset, input, textarea, p, blockquote, th, td, span
+{  padding: 0; margin: 0;}
+a{text-decoration: none;}
+h1, h2, h3, h4, h5, h6, em, strong, b{font-weight:bold;font-size: 100%;}
+
+.tm_alert{width:413px;margin-top:22px; border-radius: 5px; overflow: hidden; height:auto;background:#fff;padding-bottom:1px;box-shadow: 0 0 10px rgba(0,0,0,0.5);font-size:14px;font-family: "����","Microsoft Yahei";position: absolute;}
+.tm_alert .tm_title{padding:0 10px;height:42px;cursor: move;background:#fff;position: relative;}
+.tm_alert .tm_title h2{height:42px;line-height:42px;color:#565656;padding-left:20px;font-size: 16px;
+		-webkit-transition: all ease-in-out;-moz-transition: all ease-in-out;-o-transition: all ease-in-out;-ms-transition: all ease-in-out;
+		transition: all ease-in-out; cursor: move;border-bottom:1px solid #e8e8e8;font-family: "΢���ź�","microsoft yahei";letter-spacing:1px;}
+		
+.tm_alert .tm_title a.tm_close{display: block;   width: 16px;  height: 15px; background: url(../images/sprite.png) no-repeat -76px -5px;
+    position: absolute;  right:14px; top:14px;-webkit-transition:all 0.3s ease;-moz-transition:all 0.3s ease;-o-transition:all 0.3s ease;	-ms-transition:all 0.3s ease;transition:all 0.3s ease;}
+.tm_alert .tm_title a.tm_close:hover{-webkit-transform: rotate(360deg);-moz-transform: rotate(360deg);-o-transform: rotate(360deg);	-ms-transform: rotate(360deg);	transform: rotate(360deg);}
+
+.tm_alert .tm_contents{padding:40px 0 20px 0;width:350px; margin:0 auto; font-size: 18px;max-height: 100px;overflow: hidden;color: #565656;
+    font-size: 14px; font-family: "΢���ź�","microsoft yahei"; text-align: center;}
+.tm_alert .tm_contents .tips-title{color:#565656;font-size: 14px;font-family: "΢���ź�","microsoft yahei";text-align: center;}
+.tm_alert .tm_contents p span{margin-right:10px;color:#575f6a;font-size: 14px;font-weight:bold;}
+.tm_alert .tm-btns{width:60%;height:32px;margin:20px auto;text-align: center;}
+.tm_alert .tm-btns a{display:inline-block;font-size:14px; font-family: "΢���ź�","microsoft yahei"; color:#fff;text-align: center;padding:0 38px;line-height:32px;background:#229edc;border:1px solid #229edc;
+	-webkit-transition:all 0.3s ease;-moz-transition:all 0.3s ease;-o-transition:all 0.3s ease;-ms-transition:all 0.3s ease;transition:all 0.3s ease;}
+.tm_alert .tm-btns .tm_cancel{background:#f9f9f9;color:#565656;border-color:#e8e8e8;}
+.tm_alert .tm-btns a:hover{filter:alpha(opacity:80);opacity: 0.8;-webkit-opacity: 0.8;-moz-opacity: 0.8;}
+

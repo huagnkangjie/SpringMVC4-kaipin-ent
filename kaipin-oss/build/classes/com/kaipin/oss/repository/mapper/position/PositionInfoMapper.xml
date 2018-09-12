@@ -1,0 +1,547 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kaipin.oss.repository.mapper.position.PositionInfo" >
+   <resultMap id="BaseResultMap" type="com.kaipin.oss.model.position.PositionInfo" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="company_id" property="companyId" jdbcType="VARCHAR" />
+    <result column="position_name" property="positionName" jdbcType="VARCHAR" />
+    <result column="job_type_code" property="jobTypeCode" jdbcType="VARCHAR" />
+    <result column="education_code" property="educationCode" jdbcType="VARCHAR" />
+    <result column="industry_code" property="industryCode" jdbcType="VARCHAR" />
+    <result column="company_name" property="companyName" jdbcType="VARCHAR" />
+    <result column="start_time" property="startTime" jdbcType="VARCHAR" />
+    <result column="end_time" property="endTime" jdbcType="VARCHAR" />
+    <result column="location_code" property="locationCode" jdbcType="VARCHAR" />
+    <result column="age_start" property="ageStart" jdbcType="TINYINT" />
+    <result column="age_end" property="ageEnd" jdbcType="TINYINT" />
+    <result column="sex_code" property="sexCode" jdbcType="VARCHAR" />
+    <result column="position_responsibility" property="positionResponsibility" jdbcType="VARCHAR" />
+    <result column="position_detail" property="positionDetail" jdbcType="VARCHAR" />
+    <result column="position_requirements" property="positionRequirements" jdbcType="VARCHAR" />
+    <result column="other_info" property="otherInfo" jdbcType="VARCHAR" />
+    <result column="company_introduction" property="companyIntroduction" jdbcType="VARCHAR" />
+    <result column="salary_type" property="salaryType" jdbcType="TINYINT" />
+    <result column="salary_start" property="salaryStart" jdbcType="INTEGER" />
+    <result column="salary_end" property="salaryEnd" jdbcType="INTEGER" />
+    <result column="work_experience_code" property="workExperienceCode" jdbcType="VARCHAR" />
+    <result column="numbers" property="numbers" jdbcType="VARCHAR" />
+    <result column="superior" property="superior" jdbcType="VARCHAR" />
+    <result column="department" property="department" jdbcType="VARCHAR" />
+    <result column="salary_year" property="salaryYear" jdbcType="VARCHAR" />
+    <result column="major_request" property="majorRequest" jdbcType="VARCHAR" />
+    <result column="department_numbers" property="departmentNumbers" jdbcType="INTEGER" />
+    <result column="year_holiday" property="yearHoliday" jdbcType="VARCHAR" />
+    <result column="salary_forms" property="salaryForms" jdbcType="VARCHAR" />
+    <result column="social_security" property="socialSecurity" jdbcType="VARCHAR" />
+    <result column="live" property="live" jdbcType="VARCHAR" />
+    <result column="call_traffic" property="callTraffic" jdbcType="VARCHAR" />
+    <result column="company_type_code" property="companyTypeCode" jdbcType="VARCHAR" />
+    <result column="scale_min" property="scaleMin" jdbcType="INTEGER" />
+    <result column="scale_max" property="scaleMax" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="create_user_id" property="createUserId" jdbcType="VARCHAR" />
+    <result column="last_updated_time" property="lastUpdatedTime" jdbcType="BIGINT" />
+    <result column="create_time" property="createTime" jdbcType="BIGINT" />
+    <result column="updated_user_id" property="updatedUserId" jdbcType="VARCHAR" />
+    <result column="create_times" property="createTimes" jdbcType="VARCHAR" />
+    <result column="is_guo_qi" property="isGuoQi" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, company_id, position_name, job_type_code, education_code, industry_code, company_name, 
+    start_time, end_time, location_code, age_start, age_end, sex_code, position_responsibility, 
+    position_detail, position_requirements, other_info, company_introduction, salary_type, 
+    salary_start, salary_end, work_experience_code, numbers, superior, department, salary_year, 
+    major_request, department_numbers, year_holiday, salary_forms, social_security, live, 
+    call_traffic, company_type_code, scale_min, scale_max, status, create_user_id, 
+    last_updated_time, updated_user_id,create_time,
+    FROM_UNIXTIME(create_time/1000,'%Y-%m-%d %H:%i:%s') create_times
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from position_info
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from position_info
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.kaipin.oss.model.position.PositionInfo" >
+    insert into position_info (id, company_id, position_name, 
+      job_type_code, education_code, industry_code, 
+      company_name, start_time, end_time, 
+      location_code, age_start, age_end, 
+      sex_code, position_responsibility, position_detail, 
+      position_requirements, other_info, company_introduction, 
+      salary_type, salary_start, salary_end, 
+      work_experience_code, numbers, superior, 
+      department, salary_year, major_request, 
+      department_numbers, year_holiday, salary_forms, 
+      social_security, live, call_traffic, 
+      company_type_code, scale_min, scale_max, 
+      status, create_time, create_user_id, 
+      last_updated_time, updated_user_id)
+    values (#{id,jdbcType=VARCHAR}, #{companyId,jdbcType=VARCHAR}, #{positionName,jdbcType=VARCHAR}, 
+      #{jobTypeCode,jdbcType=VARCHAR}, #{educationCode,jdbcType=VARCHAR}, #{industryCode,jdbcType=VARCHAR}, 
+      #{companyName,jdbcType=VARCHAR}, #{startTime,jdbcType=VARCHAR}, #{endTime,jdbcType=VARCHAR}, 
+      #{locationCode,jdbcType=VARCHAR}, #{ageStart,jdbcType=TINYINT}, #{ageEnd,jdbcType=TINYINT}, 
+      #{sexCode,jdbcType=VARCHAR}, #{positionResponsibility,jdbcType=VARCHAR}, #{positionDetail,jdbcType=VARCHAR}, 
+      #{positionRequirements,jdbcType=VARCHAR}, #{otherInfo,jdbcType=VARCHAR}, #{companyIntroduction,jdbcType=VARCHAR}, 
+      #{salaryType,jdbcType=TINYINT}, #{salaryStart,jdbcType=INTEGER}, #{salaryEnd,jdbcType=INTEGER}, 
+      #{workExperienceCode,jdbcType=VARCHAR}, #{numbers,jdbcType=VARCHAR}, #{superior,jdbcType=VARCHAR}, 
+      #{department,jdbcType=VARCHAR}, #{salaryYear,jdbcType=VARCHAR}, #{majorRequest,jdbcType=VARCHAR}, 
+      #{departmentNumbers,jdbcType=INTEGER}, #{yearHoliday,jdbcType=VARCHAR}, #{salaryForms,jdbcType=VARCHAR}, 
+      #{socialSecurity,jdbcType=VARCHAR}, #{live,jdbcType=VARCHAR}, #{callTraffic,jdbcType=VARCHAR}, 
+      #{companyTypeCode,jdbcType=VARCHAR}, #{scaleMin,jdbcType=INTEGER}, #{scaleMax,jdbcType=INTEGER}, 
+      #{status,jdbcType=TINYINT}, #{createTime,jdbcType=BIGINT}, #{createUserId,jdbcType=VARCHAR}, 
+      #{lastUpdatedTime,jdbcType=BIGINT}, #{updatedUserId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.kaipin.oss.model.position.PositionInfo" >
+    insert into position_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="companyId != null" >
+        company_id,
+      </if>
+      <if test="positionName != null" >
+        position_name,
+      </if>
+      <if test="jobTypeCode != null" >
+        job_type_code,
+      </if>
+      <if test="educationCode != null" >
+        education_code,
+      </if>
+      <if test="industryCode != null" >
+        industry_code,
+      </if>
+      <if test="companyName != null" >
+        company_name,
+      </if>
+      <if test="startTime != null" >
+        start_time,
+      </if>
+      <if test="endTime != null" >
+        end_time,
+      </if>
+      <if test="locationCode != null" >
+        location_code,
+      </if>
+      <if test="ageStart != null" >
+        age_start,
+      </if>
+      <if test="ageEnd != null" >
+        age_end,
+      </if>
+      <if test="sexCode != null" >
+        sex_code,
+      </if>
+      <if test="positionResponsibility != null" >
+        position_responsibility,
+      </if>
+      <if test="positionDetail != null" >
+        position_detail,
+      </if>
+      <if test="positionRequirements != null" >
+        position_requirements,
+      </if>
+      <if test="otherInfo != null" >
+        other_info,
+      </if>
+      <if test="companyIntroduction != null" >
+        company_introduction,
+      </if>
+      <if test="salaryType != null" >
+        salary_type,
+      </if>
+      <if test="salaryStart != null" >
+        salary_start,
+      </if>
+      <if test="salaryEnd != null" >
+        salary_end,
+      </if>
+      <if test="workExperienceCode != null" >
+        work_experience_code,
+      </if>
+      <if test="numbers != null" >
+        numbers,
+      </if>
+      <if test="superior != null" >
+        superior,
+      </if>
+      <if test="department != null" >
+        department,
+      </if>
+      <if test="salaryYear != null" >
+        salary_year,
+      </if>
+      <if test="majorRequest != null" >
+        major_request,
+      </if>
+      <if test="departmentNumbers != null" >
+        department_numbers,
+      </if>
+      <if test="yearHoliday != null" >
+        year_holiday,
+      </if>
+      <if test="salaryForms != null" >
+        salary_forms,
+      </if>
+      <if test="socialSecurity != null" >
+        social_security,
+      </if>
+      <if test="live != null" >
+        live,
+      </if>
+      <if test="callTraffic != null" >
+        call_traffic,
+      </if>
+      <if test="companyTypeCode != null" >
+        company_type_code,
+      </if>
+      <if test="scaleMin != null" >
+        scale_min,
+      </if>
+      <if test="scaleMax != null" >
+        scale_max,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="createUserId != null" >
+        create_user_id,
+      </if>
+      <if test="lastUpdatedTime != null" >
+        last_updated_time,
+      </if>
+      <if test="updatedUserId != null" >
+        updated_user_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="companyId != null" >
+        #{companyId,jdbcType=VARCHAR},
+      </if>
+      <if test="positionName != null" >
+        #{positionName,jdbcType=VARCHAR},
+      </if>
+      <if test="jobTypeCode != null" >
+        #{jobTypeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="educationCode != null" >
+        #{educationCode,jdbcType=VARCHAR},
+      </if>
+      <if test="industryCode != null" >
+        #{industryCode,jdbcType=VARCHAR},
+      </if>
+      <if test="companyName != null" >
+        #{companyName,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null" >
+        #{startTime,jdbcType=VARCHAR},
+      </if>
+      <if test="endTime != null" >
+        #{endTime,jdbcType=VARCHAR},
+      </if>
+      <if test="locationCode != null" >
+        #{locationCode,jdbcType=VARCHAR},
+      </if>
+      <if test="ageStart != null" >
+        #{ageStart,jdbcType=TINYINT},
+      </if>
+      <if test="ageEnd != null" >
+        #{ageEnd,jdbcType=TINYINT},
+      </if>
+      <if test="sexCode != null" >
+        #{sexCode,jdbcType=VARCHAR},
+      </if>
+      <if test="positionResponsibility != null" >
+        #{positionResponsibility,jdbcType=VARCHAR},
+      </if>
+      <if test="positionDetail != null" >
+        #{positionDetail,jdbcType=VARCHAR},
+      </if>
+      <if test="positionRequirements != null" >
+        #{positionRequirements,jdbcType=VARCHAR},
+      </if>
+      <if test="otherInfo != null" >
+        #{otherInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="companyIntroduction != null" >
+        #{companyIntroduction,jdbcType=VARCHAR},
+      </if>
+      <if test="salaryType != null" >
+        #{salaryType,jdbcType=TINYINT},
+      </if>
+      <if test="salaryStart != null" >
+        #{salaryStart,jdbcType=INTEGER},
+      </if>
+      <if test="salaryEnd != null" >
+        #{salaryEnd,jdbcType=INTEGER},
+      </if>
+      <if test="workExperienceCode != null" >
+        #{workExperienceCode,jdbcType=VARCHAR},
+      </if>
+      <if test="numbers != null" >
+        #{numbers,jdbcType=VARCHAR},
+      </if>
+      <if test="superior != null" >
+        #{superior,jdbcType=VARCHAR},
+      </if>
+      <if test="department != null" >
+        #{department,jdbcType=VARCHAR},
+      </if>
+      <if test="salaryYear != null" >
+        #{salaryYear,jdbcType=VARCHAR},
+      </if>
+      <if test="majorRequest != null" >
+        #{majorRequest,jdbcType=VARCHAR},
+      </if>
+      <if test="departmentNumbers != null" >
+        #{departmentNumbers,jdbcType=INTEGER},
+      </if>
+      <if test="yearHoliday != null" >
+        #{yearHoliday,jdbcType=VARCHAR},
+      </if>
+      <if test="salaryForms != null" >
+        #{salaryForms,jdbcType=VARCHAR},
+      </if>
+      <if test="socialSecurity != null" >
+        #{socialSecurity,jdbcType=VARCHAR},
+      </if>
+      <if test="live != null" >
+        #{live,jdbcType=VARCHAR},
+      </if>
+      <if test="callTraffic != null" >
+        #{callTraffic,jdbcType=VARCHAR},
+      </if>
+      <if test="companyTypeCode != null" >
+        #{companyTypeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="scaleMin != null" >
+        #{scaleMin,jdbcType=INTEGER},
+      </if>
+      <if test="scaleMax != null" >
+        #{scaleMax,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="createUserId != null" >
+        #{createUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdatedTime != null" >
+        #{lastUpdatedTime,jdbcType=BIGINT},
+      </if>
+      <if test="updatedUserId != null" >
+        #{updatedUserId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.kaipin.oss.model.position.PositionInfo" >
+    update position_info
+    <set >
+      <if test="companyId != null" >
+        company_id = #{companyId,jdbcType=VARCHAR},
+      </if>
+      <if test="positionName != null" >
+        position_name = #{positionName,jdbcType=VARCHAR},
+      </if>
+      <if test="jobTypeCode != null" >
+        job_type_code = #{jobTypeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="educationCode != null" >
+        education_code = #{educationCode,jdbcType=VARCHAR},
+      </if>
+      <if test="industryCode != null" >
+        industry_code = #{industryCode,jdbcType=VARCHAR},
+      </if>
+      <if test="companyName != null" >
+        company_name = #{companyName,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null" >
+        start_time = #{startTime,jdbcType=VARCHAR},
+      </if>
+      <if test="endTime != null" >
+        end_time = #{endTime,jdbcType=VARCHAR},
+      </if>
+      <if test="locationCode != null" >
+        location_code = #{locationCode,jdbcType=VARCHAR},
+      </if>
+      <if test="ageStart != null" >
+        age_start = #{ageStart,jdbcType=TINYINT},
+      </if>
+      <if test="ageEnd != null" >
+        age_end = #{ageEnd,jdbcType=TINYINT},
+      </if>
+      <if test="sexCode != null" >
+        sex_code = #{sexCode,jdbcType=VARCHAR},
+      </if>
+      <if test="positionResponsibility != null" >
+        position_responsibility = #{positionResponsibility,jdbcType=VARCHAR},
+      </if>
+      <if test="positionDetail != null" >
+        position_detail = #{positionDetail,jdbcType=VARCHAR},
+      </if>
+      <if test="positionRequirements != null" >
+        position_requirements = #{positionRequirements,jdbcType=VARCHAR},
+      </if>
+      <if test="otherInfo != null" >
+        other_info = #{otherInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="companyIntroduction != null" >
+        company_introduction = #{companyIntroduction,jdbcType=VARCHAR},
+      </if>
+      <if test="salaryType != null" >
+        salary_type = #{salaryType,jdbcType=TINYINT},
+      </if>
+      <if test="salaryStart != null" >
+        salary_start = #{salaryStart,jdbcType=INTEGER},
+      </if>
+      <if test="salaryEnd != null" >
+        salary_end = #{salaryEnd,jdbcType=INTEGER},
+      </if>
+      <if test="workExperienceCode != null" >
+        work_experience_code = #{workExperienceCode,jdbcType=VARCHAR},
+      </if>
+      <if test="numbers != null" >
+        numbers = #{numbers,jdbcType=VARCHAR},
+      </if>
+      <if test="superior != null" >
+        superior = #{superior,jdbcType=VARCHAR},
+      </if>
+      <if test="department != null" >
+        department = #{department,jdbcType=VARCHAR},
+      </if>
+      <if test="salaryYear != null" >
+        salary_year = #{salaryYear,jdbcType=VARCHAR},
+      </if>
+      <if test="majorRequest != null" >
+        major_request = #{majorRequest,jdbcType=VARCHAR},
+      </if>
+      <if test="departmentNumbers != null" >
+        department_numbers = #{departmentNumbers,jdbcType=INTEGER},
+      </if>
+      <if test="yearHoliday != null" >
+        year_holiday = #{yearHoliday,jdbcType=VARCHAR},
+      </if>
+      <if test="salaryForms != null" >
+        salary_forms = #{salaryForms,jdbcType=VARCHAR},
+      </if>
+      <if test="socialSecurity != null" >
+        social_security = #{socialSecurity,jdbcType=VARCHAR},
+      </if>
+      <if test="live != null" >
+        live = #{live,jdbcType=VARCHAR},
+      </if>
+      <if test="callTraffic != null" >
+        call_traffic = #{callTraffic,jdbcType=VARCHAR},
+      </if>
+      <if test="companyTypeCode != null" >
+        company_type_code = #{companyTypeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="scaleMin != null" >
+        scale_min = #{scaleMin,jdbcType=INTEGER},
+      </if>
+      <if test="scaleMax != null" >
+        scale_max = #{scaleMax,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="createUserId != null" >
+        create_user_id = #{createUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdatedTime != null" >
+        last_updated_time = #{lastUpdatedTime,jdbcType=BIGINT},
+      </if>
+      <if test="updatedUserId != null" >
+        updated_user_id = #{updatedUserId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.kaipin.oss.model.position.PositionInfo" >
+    update position_info
+    set company_id = #{companyId,jdbcType=VARCHAR},
+      position_name = #{positionName,jdbcType=VARCHAR},
+      job_type_code = #{jobTypeCode,jdbcType=VARCHAR},
+      education_code = #{educationCode,jdbcType=VARCHAR},
+      industry_code = #{industryCode,jdbcType=VARCHAR},
+      company_name = #{companyName,jdbcType=VARCHAR},
+      start_time = #{startTime,jdbcType=VARCHAR},
+      end_time = #{endTime,jdbcType=VARCHAR},
+      location_code = #{locationCode,jdbcType=VARCHAR},
+      age_start = #{ageStart,jdbcType=TINYINT},
+      age_end = #{ageEnd,jdbcType=TINYINT},
+      sex_code = #{sexCode,jdbcType=VARCHAR},
+      position_responsibility = #{positionResponsibility,jdbcType=VARCHAR},
+      position_detail = #{positionDetail,jdbcType=VARCHAR},
+      position_requirements = #{positionRequirements,jdbcType=VARCHAR},
+      other_info = #{otherInfo,jdbcType=VARCHAR},
+      company_introduction = #{companyIntroduction,jdbcType=VARCHAR},
+      salary_type = #{salaryType,jdbcType=TINYINT},
+      salary_start = #{salaryStart,jdbcType=INTEGER},
+      salary_end = #{salaryEnd,jdbcType=INTEGER},
+      work_experience_code = #{workExperienceCode,jdbcType=VARCHAR},
+      numbers = #{numbers,jdbcType=VARCHAR},
+      superior = #{superior,jdbcType=VARCHAR},
+      department = #{department,jdbcType=VARCHAR},
+      salary_year = #{salaryYear,jdbcType=VARCHAR},
+      major_request = #{majorRequest,jdbcType=VARCHAR},
+      department_numbers = #{departmentNumbers,jdbcType=INTEGER},
+      year_holiday = #{yearHoliday,jdbcType=VARCHAR},
+      salary_forms = #{salaryForms,jdbcType=VARCHAR},
+      social_security = #{socialSecurity,jdbcType=VARCHAR},
+      live = #{live,jdbcType=VARCHAR},
+      call_traffic = #{callTraffic,jdbcType=VARCHAR},
+      company_type_code = #{companyTypeCode,jdbcType=VARCHAR},
+      scale_min = #{scaleMin,jdbcType=INTEGER},
+      scale_max = #{scaleMax,jdbcType=INTEGER},
+      status = #{status,jdbcType=TINYINT},
+      create_time = #{createTime,jdbcType=BIGINT},
+      create_user_id = #{createUserId,jdbcType=VARCHAR},
+      last_updated_time = #{lastUpdatedTime,jdbcType=BIGINT},
+      updated_user_id = #{updatedUserId,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+<!-- 表数据 -->
+  <!-- 根据企业id   获取该企业发布的所有职位   动态条件 --> 
+  <sql id="getPositionListSQL">
+ 	select 
+  		<include refid="Base_Column_List" />,(CASE WHEN end_time >= (unix_timestamp(now())*1000) then 0 else 1 end) is_guo_qi
+  	from 
+  		position_info
+  	where 1=1
+  		and status != '3'
+  		and end_time >= #{today}
+  		and company_id = #{companyId,jdbcType=VARCHAR}
+  </sql>
+  
+  <!-- 根据企业id   获取该企业发布的所有职位 -->
+  <select id="getPositionList" resultMap="BaseResultMap" parameterType="map"> 
+  	<include refid="getPositionListSQL"></include>
+  	order by create_time desc
+  </select>
+  <!-- 根据企业id   获取该企业发布的所有职位 -->
+  <select id="getPositionListCount" resultType="java.lang.Integer" parameterType="map"> 
+  	select count(*) from (
+  		<include refid="getPositionListSQL"></include>
+  	) m
+  </select>
+  
+</mapper>

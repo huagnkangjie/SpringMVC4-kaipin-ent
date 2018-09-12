@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mapper.user.UserLocalauthMapper" >
+  <resultMap id="BaseResultMap" type="com.model.user.UserLocalauth" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="encode_password" property="encodePassword" jdbcType="VARCHAR" />
+    <result column="is_active_phone" property="isActivePhone" jdbcType="TINYINT" />
+    <result column="is_active_email" property="isActiveEmail" jdbcType="TINYINT" />
+    <result column="salt" property="salt" jdbcType="CHAR" />
+    <result column="category_id" property="categoryId" jdbcType="VARCHAR" />
+    <result column="invitation_code" property="invitationCode" jdbcType="VARCHAR" />
+    <result column="invitation_parent_code" property="invitationParentCode" jdbcType="VARCHAR" />
+    <result column="open_id" property="openId" jdbcType="BIGINT" />
+    <result column="reg_ip" property="regIp" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="BIGINT" />
+    <result column="last_login_time" property="lastLoginTime" jdbcType="BIGINT" />
+    <result column="is_del" property="isDel" jdbcType="TINYINT" />
+    <result column="enable" property="enable" jdbcType="TINYINT" />
+    <result column="organization_id" property="organizationId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, phone, email, password, encode_password, is_active_phone, is_active_email, salt, 
+    category_id, invitation_code, invitation_parent_code, open_id, reg_ip, create_time, 
+    last_login_time, is_del, enable, organization_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from user_localauth
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from user_localauth
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.model.user.UserLocalauth" >
+    insert into user_localauth (id, phone, email, 
+      password, encode_password, is_active_phone, 
+      is_active_email, salt, category_id, 
+      invitation_code, invitation_parent_code, open_id, 
+      reg_ip, create_time, last_login_time, 
+      is_del, enable, organization_id
+      )
+    values (#{id,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
+      #{password,jdbcType=VARCHAR}, #{encodePassword,jdbcType=VARCHAR}, #{isActivePhone,jdbcType=TINYINT}, 
+      #{isActiveEmail,jdbcType=TINYINT}, #{salt,jdbcType=CHAR}, #{categoryId,jdbcType=VARCHAR}, 
+      #{invitationCode,jdbcType=VARCHAR}, #{invitationParentCode,jdbcType=VARCHAR}, #{openId,jdbcType=BIGINT}, 
+      #{regIp,jdbcType=VARCHAR}, #{createTime,jdbcType=BIGINT}, #{lastLoginTime,jdbcType=BIGINT}, 
+      #{isDel,jdbcType=TINYINT}, #{enable,jdbcType=TINYINT}, #{organizationId,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.model.user.UserLocalauth" >
+    insert into user_localauth
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="phone != null" >
+        phone,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="password != null" >
+        password,
+      </if>
+      <if test="encodePassword != null" >
+        encode_password,
+      </if>
+      <if test="isActivePhone != null" >
+        is_active_phone,
+      </if>
+      <if test="isActiveEmail != null" >
+        is_active_email,
+      </if>
+      <if test="salt != null" >
+        salt,
+      </if>
+      <if test="categoryId != null" >
+        category_id,
+      </if>
+      <if test="invitationCode != null" >
+        invitation_code,
+      </if>
+      <if test="invitationParentCode != null" >
+        invitation_parent_code,
+      </if>
+      <if test="openId != null" >
+        open_id,
+      </if>
+      <if test="regIp != null" >
+        reg_ip,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="lastLoginTime != null" >
+        last_login_time,
+      </if>
+      <if test="isDel != null" >
+        is_del,
+      </if>
+      <if test="enable != null" >
+        enable,
+      </if>
+      <if test="organizationId != null" >
+        organization_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="encodePassword != null" >
+        #{encodePassword,jdbcType=VARCHAR},
+      </if>
+      <if test="isActivePhone != null" >
+        #{isActivePhone,jdbcType=TINYINT},
+      </if>
+      <if test="isActiveEmail != null" >
+        #{isActiveEmail,jdbcType=TINYINT},
+      </if>
+      <if test="salt != null" >
+        #{salt,jdbcType=CHAR},
+      </if>
+      <if test="categoryId != null" >
+        #{categoryId,jdbcType=VARCHAR},
+      </if>
+      <if test="invitationCode != null" >
+        #{invitationCode,jdbcType=VARCHAR},
+      </if>
+      <if test="invitationParentCode != null" >
+        #{invitationParentCode,jdbcType=VARCHAR},
+      </if>
+      <if test="openId != null" >
+        #{openId,jdbcType=BIGINT},
+      </if>
+      <if test="regIp != null" >
+        #{regIp,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="lastLoginTime != null" >
+        #{lastLoginTime,jdbcType=BIGINT},
+      </if>
+      <if test="isDel != null" >
+        #{isDel,jdbcType=TINYINT},
+      </if>
+      <if test="enable != null" >
+        #{enable,jdbcType=TINYINT},
+      </if>
+      <if test="organizationId != null" >
+        #{organizationId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.model.user.UserLocalauth" >
+    update user_localauth
+    <set >
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="encodePassword != null" >
+        encode_password = #{encodePassword,jdbcType=VARCHAR},
+      </if>
+      <if test="isActivePhone != null" >
+        is_active_phone = #{isActivePhone,jdbcType=TINYINT},
+      </if>
+      <if test="isActiveEmail != null" >
+        is_active_email = #{isActiveEmail,jdbcType=TINYINT},
+      </if>
+      <if test="salt != null" >
+        salt = #{salt,jdbcType=CHAR},
+      </if>
+      <if test="categoryId != null" >
+        category_id = #{categoryId,jdbcType=VARCHAR},
+      </if>
+      <if test="invitationCode != null" >
+        invitation_code = #{invitationCode,jdbcType=VARCHAR},
+      </if>
+      <if test="invitationParentCode != null" >
+        invitation_parent_code = #{invitationParentCode,jdbcType=VARCHAR},
+      </if>
+      <if test="openId != null" >
+        open_id = #{openId,jdbcType=BIGINT},
+      </if>
+      <if test="regIp != null" >
+        reg_ip = #{regIp,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="lastLoginTime != null" >
+        last_login_time = #{lastLoginTime,jdbcType=BIGINT},
+      </if>
+      <if test="isDel != null" >
+        is_del = #{isDel,jdbcType=TINYINT},
+      </if>
+      <if test="enable != null" >
+        enable = #{enable,jdbcType=TINYINT},
+      </if>
+      <if test="organizationId != null" >
+        organization_id = #{organizationId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.model.user.UserLocalauth" >
+    update user_localauth
+    set phone = #{phone,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      encode_password = #{encodePassword,jdbcType=VARCHAR},
+      is_active_phone = #{isActivePhone,jdbcType=TINYINT},
+      is_active_email = #{isActiveEmail,jdbcType=TINYINT},
+      salt = #{salt,jdbcType=CHAR},
+      category_id = #{categoryId,jdbcType=VARCHAR},
+      invitation_code = #{invitationCode,jdbcType=VARCHAR},
+      invitation_parent_code = #{invitationParentCode,jdbcType=VARCHAR},
+      open_id = #{openId,jdbcType=BIGINT},
+      reg_ip = #{regIp,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=BIGINT},
+      last_login_time = #{lastLoginTime,jdbcType=BIGINT},
+      is_del = #{isDel,jdbcType=TINYINT},
+      enable = #{enable,jdbcType=TINYINT},
+      organization_id = #{organizationId,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

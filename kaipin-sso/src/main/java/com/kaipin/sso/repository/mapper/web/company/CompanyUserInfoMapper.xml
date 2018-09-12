@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="web.CompanyUserInfoMapper" >
+
+  <resultMap id="BaseResultMap" type="com.kaipin.sso.entity.web.company.CompanyUserInfo" >
+    <id column="id" property="id" />
+    <result column="miss_surname" property="missSurname" />
+    <result column="surname" property="surname" />
+    <result column="sex" property="sex" />
+    <result column="position" property="position"  />
+    <result column="password" property="password" />
+    <result column="encode_password" property="encodePassword" />
+    <result column="phone" property="phone"  />
+    <result column="telphone" property="telphone" />
+    <result column="is_check_phone" property="isCheckPhone"   />
+    <result column="email" property="email" />
+    <result column="is_check_mail" property="isCheckMail"  />
+    <result column="enable" property="enable" />
+    <result column="age" property="age"  />
+    <result column="region" property="region" />
+    <result column="head_url" property="headUrl"  />
+    <result column="create_time" property="createTime" />
+    <result column="last_updated_time" property="lastUpdatedTime"  />
+    <result column="id_card_image" property="idCardImage"  />
+    <result column="is_del" property="isDel" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, miss_surname, surname, sex, position, password, encode_password, phone, telphone, 
+    is_check_phone, email, is_check_mail, enable, age, region, head_url, create_time, 
+    last_updated_time, id_card_image, is_del
+  </sql>
+  
+  <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from company_user_info
+    where id = #{id}
+  </select>
+  
+  
+  
+</mapper>

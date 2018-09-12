@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mapper.sch.SchoolNatureMapper" >
+  <resultMap id="BaseResultMap" type="com.model.sch.SchoolNature" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="nature_name" property="natureName" jdbcType="VARCHAR" />
+    <result column="memo" property="memo" jdbcType="VARCHAR" />
+    <result column="score" property="score" jdbcType="INTEGER" />
+    <result column="school_nature_code" property="schoolNatureCode" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, nature_name, memo, score, school_nature_code
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from school_nature
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from school_nature
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.model.sch.SchoolNature" >
+    insert into school_nature (id, nature_name, memo, 
+      score, school_nature_code)
+    values (#{id,jdbcType=VARCHAR}, #{natureName,jdbcType=VARCHAR}, #{memo,jdbcType=VARCHAR}, 
+      #{score,jdbcType=INTEGER}, #{schoolNatureCode,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.model.sch.SchoolNature" >
+    insert into school_nature
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="natureName != null" >
+        nature_name,
+      </if>
+      <if test="memo != null" >
+        memo,
+      </if>
+      <if test="score != null" >
+        score,
+      </if>
+      <if test="schoolNatureCode != null" >
+        school_nature_code,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="natureName != null" >
+        #{natureName,jdbcType=VARCHAR},
+      </if>
+      <if test="memo != null" >
+        #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null" >
+        #{score,jdbcType=INTEGER},
+      </if>
+      <if test="schoolNatureCode != null" >
+        #{schoolNatureCode,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.model.sch.SchoolNature" >
+    update school_nature
+    <set >
+      <if test="natureName != null" >
+        nature_name = #{natureName,jdbcType=VARCHAR},
+      </if>
+      <if test="memo != null" >
+        memo = #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null" >
+        score = #{score,jdbcType=INTEGER},
+      </if>
+      <if test="schoolNatureCode != null" >
+        school_nature_code = #{schoolNatureCode,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.model.sch.SchoolNature" >
+    update school_nature
+    set nature_name = #{natureName,jdbcType=VARCHAR},
+      memo = #{memo,jdbcType=VARCHAR},
+      score = #{score,jdbcType=INTEGER},
+      school_nature_code = #{schoolNatureCode,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

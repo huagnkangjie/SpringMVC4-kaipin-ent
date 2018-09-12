@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="web.CompanyBaseUserMapper" >
+  <resultMap id="BaseResultMap" type="com.kaipin.sso.entity.web.company.CompanyBaseUser" >
+    <result column="company_id" property="companyId"  />
+    <result column="company_user_id" property="companyUserId" />
+    <result column="create_time" property="createTime" />
+    <result column="is_system" property="isSystem"  />
+    
+    		<association property="companyInfo"  javaType="CompanyInfo"
+			column="company_id" select="web.CompanyInfoMapper.selectById" />
+    	 
+    	 	<association property="companyUserInfo"  javaType="CompanyUserInfo"
+			column="company_user_id"  select="web.CompanyUserInfoMapper.selectById" />
+    	 
+    	 
+  </resultMap>
+  
+    <sql id="Base_Column_List">
+    company_id,company_user_id,
+    create_time,
+    is_system
+    </sql>
+  
+  <!-- 根据用户id查询 -->
+  	<select id="getCompanyUserById"  parameterType="string" resultMap="BaseResultMap">
+  	
+  	select 
+  	 <include refid="Base_Column_List" />
+  	
+  	from 
+  	company_base_user
+  	where 
+  	company_user_id=#{id}
+  	</select>
+  <!-- 根据用户id查询资质证件-->
+  	<select id="selectDoc"  parameterType="string" resultMap="BaseResultMap">
+	  	select * from company_user_document where ent_user_id = #{id}
+  	</select>
+   
+</mapper>

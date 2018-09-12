@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+	   http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd"
+	default-lazy-init="true">
+
+	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+		<property name="securityManager" ref="securityManager" />
+		<property name="loginUrl" value="/login" />
+		<property name="successUrl" value="/management/index" />
+		<property name="filters">
+			<util:map>
+				<entry key="authc" value-ref="authcFilter" />
+				<entry key="user" value-ref="userFilter" />
+				<entry key="logout" value-ref="logoutFilter" />
+			</util:map>
+		</property>
+		<!--anon匿名 authc登录认证 user用户已登录 logout退出filter -->
+		<property name="filterChainDefinitions">
+			<value>
+				*.jspx = anon
+				*.jhtml = anon
+				/captcha.png = anon
+				/public/** =anon
+				/login/timeout = anon
+				/login = authc
+				/logout =logout
+				/management/**=user
+			</value>
+		</property>
+	</bean>
+
+
+	<bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator" depends-on="lifecycleBeanPostProcessor">
+	</bean>
+	<bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+    	<property name="securityManager" ref="securityManager"/>
+	</bean>
+	
+	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
+		<property name="cookieName" value="clientlanguage"/>
+		<property name="cookieMaxAge" value="-1"/>
+	</bean>
+	<bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+		<property name="exceptionMappings">
+			<props>
+				<prop key="org.springframework.web.bind.MissingServletRequestParameterException">/error/requiredParameter</prop>
+				<prop key="org.springframework.beans.TypeMismatchException">/error/mismatchParameter</prop>
+				<prop key="org.springframework.web.bind.ServletRequestBindingException">/error/bindException</prop>
+				<prop key="org.apache.shiro.authz.AuthorizationException">/error/authrizationException</prop>
+			</props>
+		</property>
+	</bean>
+
+
+
+
+
+	<!-- Shiro Filter -->
+	<bean id="adminUrlBean" class="com.kaipin.oss.security.AdminUrl">
+		<property name="adminLogin" value="/login" />
+		<property name="adminPrefix" value="/management/" />
+	</bean>
+
+
+	<bean id="authcFilter" class="com.kaipin.oss.security.AccountAuthenticationFilter"
+		parent="adminUrlBean">
+		<property name="adminIndex" value="/management/index" />
+	</bean>
+
+	<bean id="logoutFilter" class="com.kaipin.oss.security.AccountLogoutFilter"
+		parent="adminUrlBean">
+		<property name="redirectUrl" value="/login" />
+	</bean>
+
+
+
+	<bean id="userFilter" class=" com.kaipin.oss.security.AccountFilter"
+		parent="adminUrlBean" />
+
+	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+		<property name="realm" ref="authorizingRealm" />
+		<property name="cacheManager" ref="shiroEhcacheManager" />
+	</bean>
+
+
+
+	<bean id="authorizingRealm" class="com.kaipin.oss.security.AccountAuthorizingRealm">
+		<property name="credentialsMatcher">
+			<bean class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
+
+				<property name="hashAlgorithmName" value="MD5" />
+				<!-- true means hex encoded, false means base64 encoded -->
+				<property name="storedCredentialsHexEncoded" value="true" />
+				<!-- 迭代次数 -->
+				<property name="hashIterations" value="1" />
+			</bean>
+		</property>
+
+	</bean>
+	<bean id="shiroEhcacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
+		<property name="cacheManagerConfigFile">
+			<value>classpath:ehcache-shiro.xml</value>
+		</property>
+	</bean>
+
+	<!-- Enable Shiro Annotations for Spring-configured beans. Only run after -->
+	<!-- the lifecycleBeanProcessor has run: -->
+	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" />
+</beans>

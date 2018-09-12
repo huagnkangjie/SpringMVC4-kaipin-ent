@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kaipin.student.repository.dao.resume.IUserOfferDao" >
+  <resultMap id="BaseResultMap" type="com.kaipin.student.model.resume.UserOffer" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="object_id" property="objectId" jdbcType="VARCHAR" />
+    <result column="offer_title" property="offerTitle" jdbcType="VARCHAR" />
+    <result column="offer_content" property="offerContent" jdbcType="VARCHAR" />
+    <result column="stu_user_id" property="stuUserId" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="hr_name" property="hrName" jdbcType="VARCHAR" />
+    <result column="hr_phone" property="hrPhone" jdbcType="VARCHAR" />
+    <result column="hr_mail" property="hrMail" jdbcType="VARCHAR" />
+    <result column="is_look" property="isLook" jdbcType="TINYINT" />
+    <result column="create_time" property="createTime" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, object_id, offer_title, offer_content, stu_user_id, user_id, hr_name, hr_phone, 
+    hr_mail, is_look, create_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from position_offer
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from position_offer
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.kaipin.student.model.resume.UserOffer" >
+    insert into position_offer (id, object_id, offer_title, 
+      offer_content, stu_user_id, user_id, 
+      hr_name, hr_phone, hr_mail, 
+      is_look, create_time)
+    values (#{id,jdbcType=VARCHAR}, #{objectId,jdbcType=VARCHAR}, #{offerTitle,jdbcType=VARCHAR}, 
+      #{offerContent,jdbcType=VARCHAR}, #{stuUserId,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, 
+      #{hrName,jdbcType=VARCHAR}, #{hrPhone,jdbcType=VARCHAR}, #{hrMail,jdbcType=VARCHAR}, 
+      #{isLook,jdbcType=TINYINT}, #{createTime,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.kaipin.student.model.resume.UserOffer" >
+    insert into position_offer
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="objectId != null" >
+        object_id,
+      </if>
+      <if test="offerTitle != null" >
+        offer_title,
+      </if>
+      <if test="offerContent != null" >
+        offer_content,
+      </if>
+      <if test="stuUserId != null" >
+        stu_user_id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="hrName != null" >
+        hr_name,
+      </if>
+      <if test="hrPhone != null" >
+        hr_phone,
+      </if>
+      <if test="hrMail != null" >
+        hr_mail,
+      </if>
+      <if test="isLook != null" >
+        is_look,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="objectId != null" >
+        #{objectId,jdbcType=VARCHAR},
+      </if>
+      <if test="offerTitle != null" >
+        #{offerTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="offerContent != null" >
+        #{offerContent,jdbcType=VARCHAR},
+      </if>
+      <if test="stuUserId != null" >
+        #{stuUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="hrName != null" >
+        #{hrName,jdbcType=VARCHAR},
+      </if>
+      <if test="hrPhone != null" >
+        #{hrPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="hrMail != null" >
+        #{hrMail,jdbcType=VARCHAR},
+      </if>
+      <if test="isLook != null" >
+        #{isLook,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.kaipin.student.model.resume.UserOffer" >
+    update position_offer
+    <set >
+      <if test="objectId != null" >
+        object_id = #{objectId,jdbcType=VARCHAR},
+      </if>
+      <if test="offerTitle != null" >
+        offer_title = #{offerTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="offerContent != null" >
+        offer_content = #{offerContent,jdbcType=VARCHAR},
+      </if>
+      <if test="stuUserId != null" >
+        stu_user_id = #{stuUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="hrName != null" >
+        hr_name = #{hrName,jdbcType=VARCHAR},
+      </if>
+      <if test="hrPhone != null" >
+        hr_phone = #{hrPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="hrMail != null" >
+        hr_mail = #{hrMail,jdbcType=VARCHAR},
+      </if>
+      <if test="isLook != null" >
+        is_look = #{isLook,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.kaipin.student.model.resume.UserOffer" >
+    update position_offer
+    set object_id = #{objectId,jdbcType=VARCHAR},
+      offer_title = #{offerTitle,jdbcType=VARCHAR},
+      offer_content = #{offerContent,jdbcType=VARCHAR},
+      stu_user_id = #{stuUserId,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=VARCHAR},
+      hr_name = #{hrName,jdbcType=VARCHAR},
+      hr_phone = #{hrPhone,jdbcType=VARCHAR},
+      hr_mail = #{hrMail,jdbcType=VARCHAR},
+      is_look = #{isLook,jdbcType=TINYINT},
+      create_time = #{createTime,jdbcType=BIGINT}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

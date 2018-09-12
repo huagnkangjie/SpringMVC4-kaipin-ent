@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd"
+	default-lazy-init="false">
+
+
+
+	<!--任务 -->
+	<bean id="luceneIndexJobTask" class="com.kaipin.search.job.LuceneIndexJobTask" />
+	<!-- 过期职位 -->
+	<bean id="positionExpireResourceJobTask" class="com.kaipin.search.job.PositionExpireResourceTask" />
+	<!-- 过期视频 -->
+	<bean id="liveExpireResourceJobTask" class="com.kaipin.search.job.LiveExpireResourceTask" />
+
+
+
+
+	<!--定义定时执行 execute 方法 -->
+	<bean id="doLuceneIndexJobTask"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<!--你要执行的那个方法对应的bean -->
+		<property name="targetObject">
+			<ref bean="luceneIndexJobTask" />
+		</property>
+		<!--执行那个方法，不能有返回值 -->
+		<property name="targetMethod">
+			<value>execute</value>
+		</property>
+	</bean>
+
+
+	<bean id="doPositionExpireResourceJobTask"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<!--你要执行的那个方法对应的bean -->
+		<property name="targetObject">
+			<ref bean="positionExpireResourceJobTask" />
+		</property>
+		<!--执行那个方法，不能有返回值 -->
+		<property name="targetMethod">
+			<value>execute</value>
+		</property>
+	</bean>
+
+
+	<bean id="doLiveExpireResourceJobTask"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<!--你要执行的那个方法对应的bean -->
+		<property name="targetObject">
+			<ref bean="liveExpireResourceJobTask" />
+		</property>
+		<!--执行那个方法，不能有返回值 -->
+		<property name="targetMethod">
+			<value>execute</value>
+		</property>
+	</bean>
+
+
+
+
+	<!--触发器的bean的设置 -->
+	<bean id="luceneIndexJobTaskCronTrigger"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail">
+			<ref bean="doLuceneIndexJobTask" />
+		</property>
+		<property name="cronExpression">
+			<!-- 关键在配置此表达式 5分钟执行 -->
+			<value>0 0/5 * * * ? *</value>
+		</property>
+	</bean>
+
+
+	<!--触发器的bean的设置 -->
+	<bean id="positionExpireResourceTaskCronTrigger"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail">
+			<ref bean="doPositionExpireResourceJobTask" />
+		</property>
+		<property name="cronExpression">
+			<!-- 凌晨处理 -->
+			<value>0 0 0 * * ? *</value>
+
+		</property>
+	</bean>
+
+	<!--触发器的bean的设置 -->
+	<bean id="liveExpireResourceTaskCronTrigger"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail">
+			<ref bean="doLiveExpireResourceJobTask" />
+		</property>
+		<property name="cronExpression">
+			<!-- 每小时处理 -->
+			<value>0 0 0/1 * * ? *</value>
+
+		</property>
+	</bean>
+
+
+
+
+	<!--管理触发器的总设置,管理我们的触发器列表,可以在bean的list中放置多个触发器。 autowire="no" -->
+	<bean name="luceneIndexJobTaskScheduler"
+		class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+
+		<!--QuartzScheduler 延时启动，/秒，应用启动后 QuartzScheduler 再启动 -->
+		<property name="startupDelay" value="30" />
+	<!-- 	<property name="autoStartup" value="true" /> -->
+
+		<property name="triggers">
+			<list>
+				<ref bean="luceneIndexJobTaskCronTrigger" />
+				<ref bean="positionExpireResourceTaskCronTrigger" />
+				<ref bean="liveExpireResourceTaskCronTrigger" />
+
+			</list>
+		</property>
+	</bean>
+
+
+
+</beans>

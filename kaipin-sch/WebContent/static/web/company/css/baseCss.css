@@ -1,0 +1,35 @@
+.tableForm {
+	
+}
+
+.tableForm td{
+
+    font-size: 12px;
+    padding-left: 6px;
+    text-align: left;
+}
+
+.tableForm th {
+	/*
+	text-align: right;
+	background-color: #EDF6FC;
+	*/
+  
+    color: #000000;
+    font-size: 12px;
+    font-weight: bold;
+    height: 25px;
+    padding-right: 5px;
+    text-align: left;
+
+	
+}
+form{
+	padding: 15px;
+}
+.tableForm td input {
+	width: 150px;
+}
+.dialog-button{
+	text-align: center;
+}

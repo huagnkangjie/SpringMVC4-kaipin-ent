@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kaipin.oss.repository.mapper.company.CompanyInfoCount">
+
+	<!-- 查询企业管理列表 -->
+	<resultMap id="baseRusltMap" type="com.kaipin.oss.model.company.count.CompanyInfoCount">
+		<result column="positionCounts" property="positionCount" />
+		<result column="followCounts" property="followCount" />
+		<result column="resumeCounts" property="resumeCount" />
+		<result column="documentCount" property="documentCount" />
+		<result column="create_time" property="createTime" />
+		<result column="is_active_email" property="isActiveEmail" />
+		
+		<association property="companyInfo" column="id" 
+			javaType="com.kaipin.oss.model.company.CompanyInfo" 
+			select="com.kaipin.oss.repository.mapper.company.CompanyInfo.selectByPrimaryKey"></association>
+		
+		<association property="userInfo" column="uid"
+			javaType="com.kaipin.oss.model.company.CompanyUserInfo" 
+			select="com.kaipin.oss.repository.mapper.company.CompanyUserInfo.selectByPrimaryKey"></association>
+			
+		<association property="localUser" column="uid"
+			javaType="com.kaipin.oss.model.common.UserLocalauth"
+			select="com.kaipin.oss.repository.dao.common.IUserLocalAuthDao.selectByPrimaryKey"></association>
+		
+	</resultMap>
+	
+	<!-- 查询企业管理列表SQL -->
+	<sql id="getCompanyListSQL">
+		
+		select h.counts followCounts, g.* from
+		(select e.counts resumeCounts,d.*
+			from
+				(select 
+						b.counts positionCounts,a.* from 
+						(select 
+							aa.id id,bb.id uid,aa.ent_name,aa.people_number,aa.ent_simple_name,
+							FROM_UNIXTIME(localUser.create_time/1000,'%Y-%m-%d %H:%i') create_time,
+							bb.phone,bb.surname, bb.miss_surname,bb.email,bb.is_check_mail,localUser.is_active_email
+							
+						 from 
+						 	company_info aa,
+							company_user_info bb,
+							company_base_user base,
+							user_localauth localUser
+						 where 1=1
+						 	and base.company_id = aa.id
+							AND base.company_user_id = bb.id
+							and localUser.id = bb.id 
+							<if test="entName != null " >
+								<if test="entName != ''" >
+									and  aa.ent_name like '%${entName}%'
+								</if>
+							</if>
+							<if test="isCheckMail == 0 " >
+									and  bb.is_check_mail = 0
+							</if>
+							<if test="isCheckMail == 1 " >
+									and  bb.is_check_mail = 1
+							</if>
+							<if test="startTime != ''" >
+								<if test="endTime == ''" >
+									and  FROM_UNIXTIME(aa.create_time/1000,'%Y-%m-%d') >= #{startTime}
+								</if>
+							</if>
+							<if test="startTime == ''" >
+								<if test="endTime != ''" >
+									<![CDATA[and  FROM_UNIXTIME(aa.create_time/1000,'%Y-%m-%d') <= #{endTime}]]>
+								</if>
+							</if>
+							<if test="startTime != ''" >
+								<if test="endTime != ''" >
+									<![CDATA[
+										and  FROM_UNIXTIME(aa.create_time/1000,'%Y-%m-%d') >= #{startTime}
+										and  FROM_UNIXTIME(aa.create_time/1000,'%Y-%m-%d') <= #{endTime}
+									]]>
+								</if>
+							</if>
+					    ) a 
+					LEFT JOIN 
+						(select count(c.id) counts ,c.company_id from position_info c where c.status != 3 GROUP BY c.company_id ) b
+					on a.id = b.company_id) d
+					LEFT JOIN 
+						(select count(f.id) counts ,f.company_id from position_delivery f GROUP BY f.company_id ) e
+					on d.id = e.company_id) g
+					LEFT JOIN 
+						(select count(i.id) counts ,i.company_id from follow_company i GROUP BY i.company_id ) h
+					on g.id = h.company_id
+					order by g.create_time desc
+		
+	</sql>
+	
+	<select id="getCompanyList" resultMap="baseRusltMap" parameterType="map">
+		<include refid="getCompanyListSQL"></include>
+	</select>
+	
+	<select id="getCompanyListCount" resultType="java.lang.Integer" parameterType="map">
+		select count(*) from (
+			<include refid="getCompanyListSQL"></include>
+		) m
+	</select>
+	
+	<!-- 查询企业资质SQL -->
+	<sql id="getCompanyDocumentSQL">
+		SELECT
+			d.count + b.count documentCount, d.id, d.uid, d.create_time, d.entName, d.verifyStatus
+		FROM
+			(
+				select aa.id, aa.userId uid,aa.entName,aa.verifyStatus,(CASE WHEN bb.count is null then 0 else bb.count end) count,bb.create_time from 
+				(
+					SELECT
+						a.id id, b.id userId, a.ent_name entName,a.verify_status verifyStatus
+					FROM
+						company_info a,	company_user_info b, company_base_user c
+					WHERE
+						a.id = c.company_id  AND b.id = c.company_user_id
+				) aa LEFT JOIN
+				(
+					select count(*) count,t2.organization_id company_id,t.create_time from company_user_document t,user_localauth t2
+					where t.ent_user_id = t2.id
+					and t.document_type = 'business_license'
+					GROUP BY t.ent_user_id
+				) bb ON aa.id = bb.company_id
+				
+			) d,
+			(
+					select aa.id, aa.userId uid,(CASE WHEN bb.count is null then 0 else bb.count end) count from 
+					(
+						SELECT
+							a.id id, b.id userId
+						FROM
+							company_info a,	company_user_info b, company_base_user c
+						WHERE
+							a.id = c.company_id  AND b.id = c.company_user_id
+					) aa LEFT JOIN
+					(
+						select count(*) count,t2.organization_id company_id,t.create_time from company_user_document_history t, user_localauth t2
+						where t.ent_user_id = t2.id
+						and t.document_type = 'business_license'
+						GROUP BY t.ent_user_id
+					) bb ON aa.id = bb.company_id
+			
+			) b
+		where 1=1
+			and d.id = b.id and d.uid = b.uid and (d.count + b.count) > 0
+			<if test="entName != null " >
+				<if test="entName != ''" >
+					and  d.entName like '%${entName}%'
+				</if>
+			</if>
+			<if test="verifyStatus == 0 " >
+					and  d.verifyStatus = 0
+			</if>
+			<if test="verifyStatus == 1 " >
+					and  d.verifyStatus = 1
+			</if>
+			<if test="verifyStatus == 2 " >
+					and  d.verifyStatus = 2
+			</if>
+			<if test="startTime != ''" >
+				<if test="endTime == ''" >
+					and  FROM_UNIXTIME(d.create_time/1000,'%Y-%m-%d') >= #{startTime}
+				</if>
+			</if>
+			<if test="startTime == ''" >
+				<if test="endTime != ''" >
+					<![CDATA[and  FROM_UNIXTIME(d.create_time/1000,'%Y-%m-%d') <= #{endTime}]]>
+				</if>
+			</if>
+			<if test="startTime != ''" >
+				<if test="endTime != ''" >
+					<![CDATA[
+						and  FROM_UNIXTIME(d.create_time/1000,'%Y-%m-%d') >= #{startTime}
+						and  FROM_UNIXTIME(d.create_time/1000,'%Y-%m-%d') <= #{endTime}
+					]]>
+				</if>
+			</if>
+		ORDER BY d.verifyStatus asc,d.create_time desc
+	</sql>
+	
+	<select id="getCompanyDocumentList" parameterType="map" resultMap="baseRusltMap">
+		<include refid="getCompanyDocumentSQL"></include>
+	</select>
+	
+	<select id="getCompanyDocumentCount" parameterType="map" resultType="java.lang.Integer">
+		select count(*) from (
+			<include refid="getCompanyDocumentSQL"></include>
+		) m
+	</select>
+	
+	<!-- 企业资质文件 -->
+	<resultMap id="docRusltMap" type="com.kaipin.oss.model.company.CompanyDocument">
+		<id column="ent_user_id" property="entUserId" jdbcType="VARCHAR" />
+	    <result column="document_path" property="documentPath" jdbcType="VARCHAR" />
+	    <result column="document_type" property="documentType" jdbcType="VARCHAR" />
+	    <result column="last_updated_time" property="lastUpdatedTime" jdbcType="BIGINT" />
+	    <result column="create_time" property="createTime" jdbcType="BIGINT" />
+	</resultMap>
+	
+	<select id="getCompanyDocument" parameterType="java.lang.String" resultMap="docRusltMap">
+		select 
+			* 
+		from 
+			company_user_document a, user_localauth b
+		where 
+			a.ent_user_id = b.id
+			and b.organization_id = #{companyId}
+	</select>
+	
+	<!-- 企业注册当月统计 -->
+	<select id="getRegeditCompanyCount" resultType="map" parameterType="map">
+		SELECT
+			count(*) count,
+			FROM_UNIXTIME(uinfo.create_time / 1000,'%Y-%m-%d') months
+		FROM
+			company_info info,
+			company_base_user base,
+			company_user_info uinfo
+		WHERE
+			base.company_user_id = uinfo.id
+		AND base.company_id = info.id
+		GROUP BY FROM_UNIXTIME(uinfo.create_time / 1000,'%Y-%m-%d')
+		ORDER BY uinfo.create_time DESC
+		LIMIT 0,31
+		
+	</select>
+	
+	<!-- 学生注册当月统计 -->
+	<select id="getRegeditStudentCount" resultType="map" parameterType="map">
+		SELECT
+			count(*) count,
+			FROM_UNIXTIME(create_time / 1000,'%Y-%m-%d') months
+		FROM
+			stu_user
+		GROUP BY FROM_UNIXTIME(create_time / 1000,'%Y-%m-%d')
+		ORDER BY create_time DESC
+		LIMIT 0,31
+	</select>
+	
+	<!-- 学校注册当月统计 -->
+	<select id="getRegeditSchCount" resultType="map" parameterType="map">
+		SELECT
+			count(*) count,
+			FROM_UNIXTIME(create_time / 1000,'%Y-%m-%d') months
+		FROM
+			school_info_link
+		GROUP BY FROM_UNIXTIME(create_time / 1000,'%Y-%m-%d')
+		ORDER BY create_time DESC
+		LIMIT 0,31
+	</select>
+	
+	<!-- 获取企业的总注册量 -->
+	<select id="getRegeditAllCompanyCount" resultType="map" parameterType="map">
+		SELECT
+			count(*) count
+		FROM
+			company_info info,
+			company_base_user base,
+			company_user_info uinfo
+		WHERE
+			base.company_user_id = uinfo.id
+		AND base.company_id = info.id
+	</select>
+	
+	<!-- 获取学生的总注册量 -->
+	<select id="getRegeditAllStudentCount" resultType="map" parameterType="map">
+		SELECT
+			count(*) count
+		FROM
+			stu_user
+	</select>
+	
+	<!-- 获取职位总数量-->
+	<select id="getPositionCount" resultType="map" parameterType="map">
+		SELECT
+			count(*) count
+		FROM
+			position_info
+		where status != 3
+	</select>
+	
+	<!-- 获取简历总数量-->
+	<select id="getResumeCount" resultType="map" parameterType="map">
+		SELECT
+			count(*) count
+		FROM
+			resume_info
+	</select>
+	
+	<!-- 获取被投递职位的总数-->
+	<select id="getPositionDeliveryCount" resultType="map" parameterType="map">
+		SELECT
+			count(*) count
+		FROM
+			(
+				SELECT
+					count(*) count
+				FROM
+					position_delivery
+				GROUP BY
+					position_id
+			) a
+	</select>
+	
+	<!-- 获取职位投递总数-->
+	<select id="getResumeDeliveryCount" resultType="map" parameterType="map">
+		SELECT
+			count(*) count
+		FROM
+			(
+				SELECT
+					count(*) count
+				FROM
+					position_delivery
+				GROUP BY
+					resume_id
+			) a
+	</select>
+	
+	<!-- 宣讲会各个类型的统计 -->
+	<select id="getXJHCount" resultType="map" parameterType="java.lang.String">
+		SELECT
+			count(*) count,
+			type
+		FROM
+			live_info
+		WHERE
+			organization_id = #{companyId}
+			and enable = 0
+		GROUP BY
+			type
+	</select>
+	
+	<!-- 宣讲会offer发送了量 -->
+	<select id="getOfferCount" resultType="map" parameterType="java.lang.String">
+		SELECT
+			count(*) count
+		FROM
+			position_offer a,position_delivery b
+		WHERE
+			1 = 1
+		AND a.object_id = b.id
+		AND b.company_id = #{companyId}
+	</select>
+	
+	<!-- 判断企业是否配置offer邮箱 -->
+	<select id="checkOfferConfig" resultType="map" parameterType="java.lang.String">
+		SELECT
+			*
+		FROM
+			comm_mail_config
+		WHERE
+			company_id = #{companyId}
+	</select>
+</mapper>

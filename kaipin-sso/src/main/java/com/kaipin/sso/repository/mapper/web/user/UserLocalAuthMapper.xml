@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="web.UserLocalAuthMapper">
+
+
+
+	<resultMap id="BaseResultMap" type="com.kaipin.sso.entity.web.user.UserLocalAuth">
+		<id column="id" property="id" />
+		<result column="phone" property="phone" />
+		<result column="email" property="email" />
+		<result column="password" property="password" />
+		<result column="encode_password" property="encodePassword" />
+		<result column="is_active_phone" property="isActivePhone" />
+		<result column="is_active_email" property="isActiveEmail" />
+		<result column="salt" property="salt" />
+		<result column="category_id" property="categoryId" />
+		<result column="invitation_code" property="invitationCode" />
+		<result column="invitation_parent_code" property="invitationParentCode" />
+		<result column="open_id" property="openId" />
+		<result column="reg_ip" property="regIp" />
+		<result column="create_time" property="createTime" />
+		<result column="last_login_time" property="lastLoginTime" />
+		<result column="is_del" property="isDel" />
+		<result column="enable" property="enable" />
+		 <result column="organization_id" property="organizationId" jdbcType="VARCHAR" />
+
+		<association property="userCategory"  javaType="UserCategory"
+			column="category_id" select="web.UserCategoryMapper.selectById" />
+ 
+	</resultMap>
+
+	<!-- 表名 -->
+	<sql id="table_name">
+		user_localauth
+	</sql>
+	<sql id="user_local_auth_column">
+		id, phone, email, password, encode_password,
+		is_active_phone,
+		is_active_email, salt,
+		category_id, invitation_code,
+		invitation_parent_code, open_id, reg_ip, create_time,
+		last_login_time,
+		is_del, enable, organization_id
+	</sql>
+
+	<sql id="user_local_auth_property">
+
+	</sql>
+
+
+	<sql id="main_sql">
+		SELECT
+		<include refid="user_local_auth_column" />
+		FROM
+		<include refid="table_name" />
+		p
+	</sql>
+
+
+
+	<!-- 用户登录 (手机或邮箱均可登录) -->
+	<select id="getLoginUser" parameterType="map" resultMap="BaseResultMap">
+		SELECT
+		<include refid="user_local_auth_column" />
+		FROM
+		<include refid="table_name" />
+
+		WHERE
+		
+		is_del=0 
+		and
+		
+		(
+		phone=#{account}
+		OR
+		email=#{account}
+		)
+	</select>
+	
+	<select id="selectByPramiKey" parameterType="map" resultMap="BaseResultMap">
+		SELECT
+		<include refid="user_local_auth_column" />
+		FROM
+		<include refid="table_name" />
+
+		WHERE
+		id = #{id}
+	</select>
+
+
+	<!-- 更新最后登陆时间 -->
+	<update id="updateLastLoginTime" parameterType="UserLocalAuth">
+		update
+		<include refid="table_name" />
+		set last_login_time=#{lastLoginTime} where
+		id=#{id}
+	</update>
+	
+	<!-- 更新最后登陆时间 -->
+	<update id="updateUserLoginTime" parameterType="map">
+		update
+		<include refid="table_name" />
+		set last_login_time=#{last_login_time} where
+		id=#{id}
+	</update>
+
+
+
+
+
+</mapper>

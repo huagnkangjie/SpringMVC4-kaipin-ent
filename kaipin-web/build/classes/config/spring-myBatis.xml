@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx" xmlns:aop="http://www.springframework.org/schema/aop" xsi:schemaLocation="
+http://www.springframework.org/schema/beans 
+http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+http://www.springframework.org/schema/tx 
+http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+http://www.springframework.org/schema/aop 
+http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+">
+    <!-- 配置数据源 -->
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="driverClass" value="${jdbc.driverClassName}" />
+		<property name="jdbcUrl" value="${jdbc.url}" />
+		<property name="user" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+		<property name="autoCommitOnClose" value="true" />
+		<property name="checkoutTimeout" value="${cpool.checkoutTimeout}" />
+		<property name="initialPoolSize" value="${cpool.minPoolSize}" />
+		<property name="minPoolSize" value="${cpool.minPoolSize}" />
+		<property name="maxPoolSize" value="${cpool.maxPoolSize}" />
+		<property name="maxIdleTime" value="${cpool.maxIdleTime}" />
+		<property name="acquireIncrement" value="${cpool.acquireIncrement}" />
+		<property name="maxIdleTimeExcessConnections" value="${cpool.maxIdleTimeExcessConnections}" />
+		<property name="testConnectionOnCheckin" value="false"/>
+    	<property name="testConnectionOnCheckout" value="true"/>
+	</bean>
+    
+    <!--配置sqlSessionFactory 并读取mybatis的一些配置-->
+    <bean name = "sqlSessionFactory" class = "org.mybatis.spring.SqlSessionFactoryBean">
+    <property name = "dataSource" ref = "dataSource"></property>
+    <property name="mapperLocations" value="classpath:com/mapping/*/*.xml"/>
+    </bean>
+    
+    <!--
+    自动扫描 将Mapper接口生成代理注入到Spring
+    -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+<property name="basePackage" value="com.mapper" />
+<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
+</bean>
+    
+    <!--
+    配置事物
+    -->
+   <bean id = "transactionManager" class = "org.springframework.jdbc.datasource.DataSourceTransactionManager">
+    <property name = "dataSource" ref = "dataSource"></property>
+    </bean>
+    
+    <tx:annotation-driven transaction-manager = "transactionManager"/>
+  
+   <!--
+    事物的具体内容
+   
+	<tx:advice id="transactionAdvice" transaction-manager="transactionManager">
+	<tx:attributes>
+	<tx:method name="add*" propagation="REQUIRED" />
+	<tx:method name="append*" propagation="REQUIRED" />
+	<tx:method name="insert*" propagation="REQUIRED" />
+	<tx:method name="save*" propagation="REQUIRED" />
+	<tx:method name="update*" propagation="REQUIRED" />
+	<tx:method name="modify*" propagation="REQUIRED" />
+	<tx:method name="edit*" propagation="REQUIRED" />
+	<tx:method name="delete*" propagation="REQUIRED" />
+	<tx:method name="remove*" propagation="REQUIRED" />
+	<tx:method name="repair" propagation="REQUIRED" />
+	<tx:method name="delAndRepair" propagation="REQUIRED" />
+	
+	
+	<tx:method name="get*" propagation="SUPPORTS" />
+	<tx:method name="find*" propagation="SUPPORTS" />
+	<tx:method name="load*" propagation="SUPPORTS" />
+	<tx:method name="search*" propagation="SUPPORTS" />
+	<tx:method name="datagrid*" propagation="SUPPORTS" />
+	
+	
+	<tx:method name="*" propagation="SUPPORTS" />
+	</tx:attributes>
+	</tx:advice>
+	-->
+	<!--
+    	定义一个切面,在定义的切面上加入事物
+   
+    <aop:config>
+	<aop:pointcut id="transactionPointcut" expression="execution(* com.service.*.*Impl.*(..))" />
+	<aop:advisor pointcut-ref="transactionPointcut" advice-ref="transactionAdvice" />
+	</aop:config>
+	-->
+</beans>

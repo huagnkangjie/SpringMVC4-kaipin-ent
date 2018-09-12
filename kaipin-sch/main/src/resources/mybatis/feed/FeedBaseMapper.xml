@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kaipin.university.repository.dao.feed.IFeedBaseDao" >
+	<!--获取信息流 -->
+  <select id="getFeeds" parameterType="map" resultType="map" >
+   	<include refid="feedListSQL"/>
+	order by create_time desc
+  	limit ${page_start},${page_size}
+  </select>
+  <sql id="feedListSQL">
+  	SELECT
+		*
+	FROM
+		feed
+	WHERE
+		( create_uid IN (
+				SELECT
+					to_uid
+				FROM
+					follow_following
+				WHERE
+					from_uid = #{orgId}
+			) or create_uid = #{orgId} )
+		and is_del = 0
+  </sql>
+  <!--获取信息流 -->
+  <select id="getFeedsCount" parameterType="map" resultType="map">
+  	select 
+  		count(*) counts 
+  	from 
+  		(<include refid="feedListSQL"/>) m
+  </select>
+  
+	<!--获取（组织id）信息流 -->
+  <select id="getFeedByOrgId" parameterType="map" resultType="map" >
+   	<include refid="getFeedByOrgIdSQL"/>
+	order by create_time desc
+  	limit ${page_start},${page_size}
+  </select>
+  <sql id="getFeedByOrgIdSQL">
+  	select * from feed where create_uid = #{orgId} and is_del = 0
+  </sql>
+  <!--获取（组织id）信息流 -->
+  <select id="getFeedByOrgIdCount" parameterType="map" resultType="map">
+  	select 
+  		count(*) counts 
+  	from 
+  		(<include refid="getFeedByOrgIdSQL"/>) m
+  </select>
+  
+   <!--获取职位 -->
+  <select id="getPosition" parameterType="String" resultType="map" >
+  	select * from position_info where id = #{id}
+  </select>
+  
+   <!--获取宣讲会 -->
+  <select id="getLiveInfo" parameterType="String" resultType="map" >
+	SELECT
+		*
+	FROM
+		live_info a
+	LEFT JOIN live_video_info b ON a.id = b.video_id
+	WHERE
+		a.id = #{id}
+  </select>
+  
+   <!--获取企业信息-->
+  <select id="getCompanyInfo" parameterType="String" resultType="map" >
+  	select * from company_info where id = #{id}
+  </select>
+  
+   <!--获取学校信息 -->
+  <select id="getSchInfo" parameterType="String" resultType="map" >
+  	select * from school_info_link where id = #{id}
+  </select>
+  
+   <!--获取学生信息 -->
+  <select id="getStuInfo" parameterType="String" resultType="map" >
+  	select * from stu_user where id = #{id}
+  </select>
+  
+  <!--点赞 -->
+  <select id="getFeedZanCount" parameterType="String" resultType="map">
+  	select count(*) counts from feed_data_digg where feed_id = #{id}
+  </select>
+  
+  <!--判断用户是否对消息进行了点赞 -->
+  <select id="checkFeedZan" parameterType="map" resultType="map">
+  	select count(*) counts from feed_data_digg where feed_id = #{f_id} and uid = #{uid}
+  </select>
+  
+  <!--对消息点赞-->
+  <insert id="insertFeedZan" parameterType="map">
+  	insert into feed_data_digg values(#{id},#{f_id},#{uid},#{create_time})
+  </insert>
+  
+  <!--取消消息点赞-->
+  <delete id="delFeedZan" parameterType="map">
+  	delete from feed_data_digg where feed_id = #{f_id} and uid = #{uid}
+  </delete>
+  
+  <!--获取动态消息的第一级回复 -->
+  <select id="getCommentsLevelOne" parameterType="map" resultType="map">
+  	select * from feed_comment where feed_id = #{id} and (to_comment_id is null or to_comment_id = '') and is_del = 0 ORDER BY create_time asc
+  </select>
+  
+  <!--获取动态消息的第二级回复 -->
+  <select id="getCommentsLevelTwo" parameterType="map" resultType="map">
+  	select * from feed_comment where to_comment_id = #{id} and is_del = 0 ORDER BY create_time asc
+  </select>
+  
+  <!--删除动态，根据资源id -->
+  <update id="delFeedByResourceId" parameterType="map">
+  	update feed set is_del = 1 where resource_id = #{resourceId}
+  </update>
+  
+  <!--删除全部动态评论，或者删除一条动态评论 -->
+  <update id="deleteFeedComment" parameterType="String">
+  	update feed_comment set is_del = 1 where 1=1 
+  	<if test="feedId != null"><if test="feedId != ''">
+  		and feed_id = #{feedId}
+  	</if></if>
+  	<if test="commentId != null"><if test="commentId != ''">
+  		and id = #{commentId}
+  	</if></if>
+  </update>
+  
+  <!--删除指定评论-->
+  <update id="deleteCommentById" parameterType="String">
+  	update feed_comment set is_del = 1 where 1=1 and id = #{commentId}
+  </update>
+  
+  <!--删除二级评论-->
+  <update id="deleteCommentByParentId" parameterType="String">
+  	update feed_comment set is_del = 1 where 1=1 and to_comment_id = #{commentId}
+  </update>
+  
+  <!--获取当前一级评论的二级回复总数-->
+  <select id="getCommentLevelTowCount" parameterType="String" resultType="map">
+  	select count(*) counts from feed_comment where 1=1 and is_del = 0 and to_comment_id = #{commentId}
+  </select>
+  
+</mapper>

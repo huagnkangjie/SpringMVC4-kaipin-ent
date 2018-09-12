@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kaipin.oss.repository.mapper.platform.PlatformUser">
+
+
+	<resultMap type="PlatformUser" id="userResultMap">
+
+		<id column="id" property="id" />
+
+		<result column="code" property="code" />
+		<result column="user_name" property="userName" />
+		<result column="role_id" property="roleId" />
+		<result column="admin" property="admin" />
+		<result column="real_name" property="realName" />
+		<result column="organization_id" property="organizationId" />
+		<result column="sex" property="sex" />
+		<result column="mobile" property="mobile" />
+		<result column="birth_day" property="birthDay" />
+		<result column="duty" property="duty" />
+		<result column="title" property="title" />
+		<result column="user_password" property="userPassword" />
+		<result column="qicq" property="qicq" />
+		<result column="email" property="email" />
+		<result column="first_visit" property="firstVisit" />
+		<result column="previous_visit" property="previousVisit" />
+		<result column="last_visit" property="lastVisit" />
+		<result column="login_count" property="loginCount" />
+		<result column="ip_address" property="ipAddress" />
+		<result column="delete_mark" property="deleteMark" />
+		<result column="enabled" property="enabled" />
+		<result column="priority" property="priority" />
+		<result column="description" property="description" />
+		<result column="create_time" property="createTime" />
+		<result column="create_user_id" property="createUserId" />
+		<result column="last_updated_time" property="lastUpdatedTime" />
+		<result column="modify_user_id" property="modifyUserId" />
+
+
+		<association property="organization" javaType="PlatformOrganization"
+			column="organization_id"
+			select="com.kaipin.oss.repository.mapper.platform.PlatformOrganization.getById">
+		</association>
+
+		<association property="role" javaType="PlatformRole"
+			column="role_id"
+			select="com.kaipin.oss.repository.mapper.platform.PlatformRole.getById">
+		</association>
+
+
+	</resultMap>
+
+
+	<!-- 表名 -->
+	<sql id="tableNameSql">
+		platform_user
+	</sql>
+
+
+	<!-- 用于select查询、insert的公用抽取的列 -->
+	<sql id="commonSelectColumnsPrefix">
+		id,
+		code,
+		user_name,
+		role_id,
+		admin,
+		real_name,
+		organization_id,
+		sex,
+		mobile,
+		birth_day,
+		duty,
+		title,
+		user_password,
+		qicq, email,
+		first_visit,
+		previous_visit,
+		last_visit,
+		login_count,
+		ip_address,
+		delete_mark,
+		enabled, priority,
+		description,
+		create_time,
+		create_user_id,
+		last_updated_time,
+		modify_user_id
+	</sql>
+
+
+
+
+
+
+
+
+	<sql id="mainSql">
+		SELECT
+		<include refid="commonSelectColumnsPrefix" />
+		FROM
+		<include refid="tableNameSql" />
+		p
+	</sql>
+
+
+
+	<sql id="varSql">
+		<where>
+			<if test="id!=null and id!=''">and p.id= #{id} </if>
+			<if test="user_name!=null and user_name!=''">and p.user_name=#{user_name}</if>
+
+		</where>
+	</sql>
+
+
+
+	<!-- 按主键查找条件语句 -->
+	<sql id="conditionOnlyId">
+		id = #{id}
+	</sql>
+
+
+
+
+
+	<select id="findPageBy" parameterType="java.util.Map" resultMap="userResultMap">
+		<include refid="mainSql" />
+
+		<include refid="varSql" />
+
+		<if test="SORT != null and SORT != ''">
+			order by #{SORT}
+
+			<if test="DIR != null and DIR != ''">
+				#{DIR}
+			</if>
+
+		</if>
+	</select>
+
+
+
+
+
+	<select id="getById" parameterType="String" resultMap="userResultMap">
+		<include refid="mainSql" />
+		where
+		<include refid="conditionOnlyId" />
+	</select>
+
+	<select id="getCountBy" parameterType="java.util.Map"
+		resultType="INTEGER">
+		SELECT
+		COUNT(*) AS C
+		FROM
+		<include refid="tableNameSql" />
+		p
+
+		<include refid="varSql" />
+	</select>
+
+	<select id="findListBy" parameterType="java.util.Map" resultMap="userResultMap">
+		<include refid="mainSql" />
+
+		<include refid="varSql" />
+
+	</select>
+
+
+
+	<select id="getByUsername" resultMap="userResultMap"
+		parameterType="string">
+
+		<include refid="mainSql" />
+		where
+		p.user_name=#{user_name}
+
+	</select>
+
+
+	<insert id="save" parameterType="PlatformUser" useGeneratedKeys="true"
+		keyProperty="id">
+		insert into
+		<include refid="tableNameSql" />
+		(
+		<include refid="commonSelectColumnsPrefix" />
+		)
+		values
+		(
+		#{id} ,
+		#{code}
+
+		)
+	</insert>
+
+
+
+	<update id="update" parameterType="PlatformUser">
+		update
+		<include refid="tableNameSql" />
+		set
+		code=#{code}
+
+		where
+
+		<include refid="conditionOnlyId" />
+
+	</update>
+
+
+	<update id="updateSelect" parameterType="PlatformUser">
+		update
+		<include refid="tableNameSql" />
+		set
+
+		<set>
+			<if test="code!= null and code!= ''">
+				code = #{code},
+			</if>
+			<if test="admin!=null">
+				admin = #{admin}
+			</if>
+
+		</set>
+
+
+		<include refid="conditionOnlyId" />
+
+	</update>
+
+
+
+
+
+
+	<delete id="deleteByIds" parameterType="Object[]">
+		delete from
+		<include refid="tableNameSql" />
+		where id in
+		<foreach index="index" item="item" collection="array"
+			separator="," open="(" close=")">#{item}</foreach>
+	</delete>
+
+	<delete id="deleteById" parameterType="Object">
+		delete from
+		<include refid="tableNameSql" />
+		where
+		<include refid="conditionOnlyId" />
+	</delete>
+
+
+
+</mapper>

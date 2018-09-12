@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="StuUserMapper">
+
+	<sql id="Base_Column_List">
+		id, phone, is_check_phone, password, surname, miss_surname,
+		nick_name, avatar, is_del,
+		enable, source, head_url, sex, age, location_code, school_code, major_code,
+		education_code,
+		level, email, is_check_email, create_time, last_updated_time, follow_status
+	</sql>
+
+
+
+	<select id="getSearchAllCount" resultType="long" parameterType="map">
+
+		SELECT
+
+		count(*) AS total
+
+		FROM
+
+		stu_user
+
+
+	</select>
+
+
+	<!-- 全文检索 -->
+
+	<select id="getSearchAll" resultType="map" parameterType="map">
+
+		select
+		a.id, a.surname, a.miss_surname, a.location_code, a.last_updated_time
+		from stu_user a, user_localauth b
+		where a.id = b.organization_id
+
+
+	</select>
+
+
+
+	<select id="selectByPrimaryKey" resultType="map" parameterType="string">
+
+		select
+		id, surname, miss_surname, location_code, last_updated_time
+		from stu_user
+
+		where
+
+		id =#{id}
+
+	</select>
+
+
+
+	<!-- 搜索结果 -->
+
+	<select id="selectAppSearchResult" resultType="map"
+		parameterType="list">
+
+		select t1.*,get_location_name(t1.location_code) as location_name
+		,t2.school_name,t3.major_name,t4.education_name from (
+		select * from
+		stu_user
+		where id in
+		<foreach item="item" index="index" collection="list" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+
+		order by
+		create_time desc
+		) as t1
+		LEFT JOIN
+		school_info as t2
+		ON
+		t1.school_code=t2.school_code
+		LEFT JOIN
+		comm_major as t3
+		ON
+		t1.major_code=t3.major_code
+		LEFT JOIN
+		comm_education as t4
+		ON
+		t1.education_code=t4.education_code
+ ORDER BY
+     field(
+     
+       	t1.id,
+ 
+	<foreach item="item" index="index" collection="list" open=""		separator="," close="">
+			#{item}
+		</foreach> 
+ 
+)
+
+	</select>
+
+	<select id="selectAppSearchRecommend" resultType="map"
+		parameterType="list">
+
+		select id,surname,miss_surname from
+		stu_user
+		where id in
+		<foreach item="item" index="index" collection="list" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+
+	
+		  ORDER BY
+     field(
+     
+        id,
+ 
+	<foreach item="item" index="index" collection="list" open=""		separator="," close="">
+			#{item}
+		</foreach> 
+     
+ 
+    )
+	</select>
+
+
+
+
+
+
+
+
+	<!-- web 搜索结果 -->
+	<select id="selectWebSearchResult" resultType="map"
+		parameterType="list">
+		select a.*,b.major_name FROM
+		(
+			SELECT
+				t1.*, t2.education_name
+			FROM
+				(
+					SELECT
+						a.major_code,
+						a.education_code,
+						a.id,
+						a.surname,
+						a.miss_surname,
+						a.head_url,
+						a.location_code
+					FROM
+						stu_user a
+					
+					WHERE
+						a.id IN
+					<foreach item="item" index="index" collection="list" open="("
+						separator="," close=")">
+						#{item}
+					</foreach>
+					ORDER BY
+						a.create_time DESC
+				) t1
+			LEFT JOIN comm_education t2 ON t1.education_code = t2.education_code
+		) a LEFT JOIN comm_major b
+		on a.major_code = b.major_code
+
+
+	</select>
+
+
+
+</mapper>

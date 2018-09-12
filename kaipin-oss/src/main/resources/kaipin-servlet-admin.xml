@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:mvc="http://www.springframework.org/schema/mvc"  
+	
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+	http://www.springframework.org/schema/context 
+	http://www.springframework.org/schema/context/spring-context-3.2.xsd
+	
+	    http://www.springframework.org/schema/mvc 
+	     http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+	    "
+	default-lazy-init="true">
+	<!-- 不拦截的资源  -->
+<mvc:annotation-driven />
+
+
+<mvc:resources mapping="/public/**" location="/public/" />
+
+
+
+	<!--HttpSession -->
+	<bean id="sessionProvider" class="com.kaipin.oss.common.web.session.HttpSessionProvider" />
+
+
+
+	<!-- 在XML配置文件中加入外部属性文件，当然也可以指定外部文件的编码 <bean id="propertyConfigurer" class="com.shishuo.cms.util.PropertyUtils"> 
+		<property name="locations"> <list> <value>classpath:kaipin.properties</value> 
+		</list> </property> </bean> -->
+
+	<!-- FreeMarker的配置 <bean id="freeMarkerConfigurer" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer"> 
+		<property name="templateLoaderPaths" value="/WEB-INF/sys/" /> <property name="defaultEncoding" 
+		value="UTF-8" /> <property name="freemarkerSettings"> <props> <prop key="template_update_delay">10</prop> 
+		<prop key="defaultEncoding">UTF-8</prop> <prop key="url_escaping_charset">UTF-8</prop> 
+		<prop key="locale">zh_CN</prop> <prop key="boolean_format">true,false</prop> 
+		<prop key="time_format">HH:mm:ss</prop> <prop key="datetime_format">yyyy-MM-dd 
+		HH:mm:ss</prop> <prop key="date_format">yyyy-MM-dd</prop> <prop key="number_format">#.##</prop> 
+		<prop key="whitespace_stripping">true</prop> </props> </property> </bean> 
+		<bean id="viewResolver" class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver"> 
+		<property name="viewClass" value="org.springframework.web.servlet.view.freemarker.FreeMarkerView"></property> 
+		<property name="cache" value="false" /> <property name="prefix" value="" 
+		/> <property name="suffix" value=".jsp" /> <property name="contentType" value="text/html;charset=utf-8" 
+		/> <property name="exposeRequestAttributes" value="true" /> <property name="exposeSessionAttributes" 
+		value="true" /> <property name="exposeSpringMacroHelpers" value="true" /> 
+		</bean> -->
+		
+		
+		<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<property name="cacheSeconds" value="-1"/>
+		<property name="basenames" value="#{propertyUtils.getList('messages.admin.')}"/>
+	</bean>	
+		
+		
+
+		
+	<bean id="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:firewall.properties</value>
+			</list>
+		</property>
+	</bean>
+
+<!-- 视图 -->
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="viewClass">
+			<value>org.springframework.web.servlet.view.JstlView</value>
+		</property>
+		<property name="prefix">
+			<value>/WEB-INF/sys/</value>
+		</property>
+		<property name="suffix">
+			<value>.jsp</value>
+		</property>
+		<property name="contentType" value="text/html; charset=UTF-8" />
+	</bean>
+
+
+
+	<!-- 图片上传的配置 -->
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<!-- 最大值4M -->
+		<property name="maxUploadSize" value="209715200" />
+		<property name="resolveLazily" value="true" />
+	</bean>
+
+
+
+<!-- shrio权限 -->
+	<bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator" depends-on="lifecycleBeanPostProcessor">
+	</bean>
+	
+	
+	<!-- 支持 Shiro对Act的方法级AOP安全控制 权限例子,User:view;  filter 也可自定义控制访问权限    -->       
+		   
+	<bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+    	<property name="securityManager" ref="securityManager"/>
+	</bean>
+	
+	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
+		<property name="cookieName" value="clientlanguage"/>
+		<property name="cookieMaxAge" value="-1"/>
+	</bean>
+	<bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+		<property name="exceptionMappings">
+			<props>
+				<prop key="org.springframework.web.bind.MissingServletRequestParameterException">/error/requiredParameter</prop>
+				<prop key="org.springframework.beans.TypeMismatchException">/error/mismatchParameter</prop>
+				<prop key="org.springframework.web.bind.ServletRequestBindingException">/error/bindException</prop>
+				<prop key="org.apache.shiro.authz.AuthorizationException">/error/authrizationException</prop>
+			</props>
+		</property>
+	</bean>
+
+
+	<!-- 系统日志跟踪功能 -->
+	<bean id="log4JDBCImpl" class="com.kaipin.oss.log.impl.Log4JDBCImpl" >
+		<property name="rootLogLevel" value="ERROR"/>
+		<property name="customLogLevel">
+           <map>
+              <entry key="com.kaipin.oss" value="TRACE" />
+           </map>
+       </property>
+	</bean>
+	
+	
+
+
+<!-- 过滤 -->
+	<mvc:interceptors>
+	
+		<mvc:interceptor>
+			<mvc:mapping path="/**" />
+			<bean class="com.kaipin.oss.presentation.filter.GlobalInterceptor"></bean>
+	
+		</mvc:interceptor>
+
+ 		<!-- 日志拦截记录-->
+		<mvc:interceptor>
+			<mvc:mapping path="/management/**" />
+	 
+			<bean class="com.kaipin.oss.log.filter.LogInterceptor" >
+				<property name="logAPI" ref="log4JDBCImpl"/>
+			</bean>
+		</mvc:interceptor>
+		
+		<bean id="adminContextInterceptor" class="com.kaipin.oss.security.firewall.FireWallInterceptor">
+ 
+	</bean>
+
+ <!-- 
+
+<bean id="adminContextInterceptor" class="com.kaipin.oss.presentation.filter.AdminContextInterceptor">
+	 
+		<property name="auth" value="true"/>
+		<property name="excludeUrls">
+			<list>
+				<value>/login</value>
+				<value>/logout</value>
+			</list>
+		</property>
+	</bean>
+  -->
+
+
+
+
+	</mvc:interceptors>
+	<!-- 定义无act的path<->view直接映射 -->
+	<mvc:view-controller path="/" view-name="redirect:/management/index"/>
+
+	<context:component-scan base-package=" com.kaipin.oss.presentation" />
+
+	<context:annotation-config />
+
+	<!--包含action -->
+
+</beans>

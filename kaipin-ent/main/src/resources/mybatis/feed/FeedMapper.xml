@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kaipin.university.repository.dao.feed.IFeedDao" >
+  <resultMap id="BaseResultMap" type="com.kaipin.university.model.feed.Feed" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="parent_id" property="parentId" jdbcType="VARCHAR" />
+    <result column="feed_type" property="feedType" jdbcType="INTEGER" />
+    <result column="parent_type" property="parentType" jdbcType="INTEGER" />
+    <result column="uid" property="uid" jdbcType="VARCHAR" />
+    <result column="create_uid" property="createUid" jdbcType="VARCHAR" />
+    <result column="resource_table" property="resourceTable" jdbcType="VARCHAR" />
+    <result column="resource_id" property="resourceId" jdbcType="VARCHAR" />
+    <result column="resource_act_type" property="resourceActType" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="BIGINT" />
+    <result column="is_del" property="isDel" jdbcType="TINYINT" />
+    <result column="is_audit" property="isAudit" jdbcType="TINYINT" />
+    <result column="is_recommend" property="isRecommend" jdbcType="TINYINT" />
+    <result column="recommend_time" property="recommendTime" jdbcType="BIGINT" />
+    <result column="from" property="from" jdbcType="TINYINT" />
+    <result column="visible" property="visible" jdbcType="TINYINT" />
+    <result column="comment_count" property="commentCount" jdbcType="INTEGER" />
+    <result column="digg_count" property="diggCount" jdbcType="INTEGER" />
+    <result column="sub_count" property="subCount" jdbcType="INTEGER" />
+    <result column="action" property="action" jdbcType="INTEGER" />
+    <result column="is_repost" property="isRepost" jdbcType="TINYINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, parent_id, feed_type, parent_type, uid, create_uid, resource_table, resource_id, 
+    resource_act_type, create_time, is_del, is_audit, is_recommend, recommend_time, `from`, 
+    visible, comment_count, digg_count, sub_count, action, is_repost
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from feed
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from feed
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.kaipin.university.model.feed.Feed" >
+    insert into feed (id, parent_id, feed_type, 
+      parent_type, uid, create_uid, 
+      resource_table, resource_id, resource_act_type, 
+      create_time, is_del, is_audit, 
+      is_recommend, recommend_time, `from`, 
+      visible, comment_count, digg_count, 
+      sub_count, action, is_repost
+      )
+    values (#{id,jdbcType=VARCHAR}, #{parentId,jdbcType=VARCHAR}, #{feedType,jdbcType=INTEGER}, 
+      #{parentType,jdbcType=INTEGER}, #{uid,jdbcType=VARCHAR}, #{createUid,jdbcType=VARCHAR}, 
+      #{resourceTable,jdbcType=VARCHAR}, #{resourceId,jdbcType=VARCHAR}, #{resourceActType,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=BIGINT}, #{isDel,jdbcType=TINYINT}, #{isAudit,jdbcType=TINYINT}, 
+      #{isRecommend,jdbcType=TINYINT}, #{recommendTime,jdbcType=BIGINT}, #{from,jdbcType=TINYINT}, 
+      #{visible,jdbcType=TINYINT}, #{commentCount,jdbcType=INTEGER}, #{diggCount,jdbcType=INTEGER}, 
+      #{subCount,jdbcType=INTEGER}, #{action,jdbcType=INTEGER}, #{isRepost,jdbcType=TINYINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.kaipin.university.model.feed.Feed" >
+    insert into feed
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="parentId != null" >
+        parent_id,
+      </if>
+      <if test="feedType != null" >
+        feed_type,
+      </if>
+      <if test="parentType != null" >
+        parent_type,
+      </if>
+      <if test="uid != null" >
+        uid,
+      </if>
+      <if test="createUid != null" >
+        create_uid,
+      </if>
+      <if test="resourceTable != null" >
+        resource_table,
+      </if>
+      <if test="resourceId != null" >
+        resource_id,
+      </if>
+      <if test="resourceActType != null" >
+        resource_act_type,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="isDel != null" >
+        is_del,
+      </if>
+      <if test="isAudit != null" >
+        is_audit,
+      </if>
+      <if test="isRecommend != null" >
+        is_recommend,
+      </if>
+      <if test="recommendTime != null" >
+        recommend_time,
+      </if>
+      <if test="from != null" >
+        `from`,
+      </if>
+      <if test="visible != null" >
+        visible,
+      </if>
+      <if test="commentCount != null" >
+        comment_count,
+      </if>
+      <if test="diggCount != null" >
+        digg_count,
+      </if>
+      <if test="subCount != null" >
+        sub_count,
+      </if>
+      <if test="action != null" >
+        action,
+      </if>
+      <if test="isRepost != null" >
+        is_repost,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null" >
+        #{parentId,jdbcType=VARCHAR},
+      </if>
+      <if test="feedType != null" >
+        #{feedType,jdbcType=INTEGER},
+      </if>
+      <if test="parentType != null" >
+        #{parentType,jdbcType=INTEGER},
+      </if>
+      <if test="uid != null" >
+        #{uid,jdbcType=VARCHAR},
+      </if>
+      <if test="createUid != null" >
+        #{createUid,jdbcType=VARCHAR},
+      </if>
+      <if test="resourceTable != null" >
+        #{resourceTable,jdbcType=VARCHAR},
+      </if>
+      <if test="resourceId != null" >
+        #{resourceId,jdbcType=VARCHAR},
+      </if>
+      <if test="resourceActType != null" >
+        #{resourceActType,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="isDel != null" >
+        #{isDel,jdbcType=TINYINT},
+      </if>
+      <if test="isAudit != null" >
+        #{isAudit,jdbcType=TINYINT},
+      </if>
+      <if test="isRecommend != null" >
+        #{isRecommend,jdbcType=TINYINT},
+      </if>
+      <if test="recommendTime != null" >
+        #{recommendTime,jdbcType=BIGINT},
+      </if>
+      <if test="from != null" >
+        #{from,jdbcType=TINYINT},
+      </if>
+      <if test="visible != null" >
+        #{visible,jdbcType=TINYINT},
+      </if>
+      <if test="commentCount != null" >
+        #{commentCount,jdbcType=INTEGER},
+      </if>
+      <if test="diggCount != null" >
+        #{diggCount,jdbcType=INTEGER},
+      </if>
+      <if test="subCount != null" >
+        #{subCount,jdbcType=INTEGER},
+      </if>
+      <if test="action != null" >
+        #{action,jdbcType=INTEGER},
+      </if>
+      <if test="isRepost != null" >
+        #{isRepost,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.kaipin.university.model.feed.Feed" >
+    update feed
+    <set >
+      <if test="parentId != null" >
+        parent_id = #{parentId,jdbcType=VARCHAR},
+      </if>
+      <if test="feedType != null" >
+        feed_type = #{feedType,jdbcType=INTEGER},
+      </if>
+      <if test="parentType != null" >
+        parent_type = #{parentType,jdbcType=INTEGER},
+      </if>
+      <if test="uid != null" >
+        uid = #{uid,jdbcType=VARCHAR},
+      </if>
+      <if test="createUid != null" >
+        create_uid = #{createUid,jdbcType=VARCHAR},
+      </if>
+      <if test="resourceTable != null" >
+        resource_table = #{resourceTable,jdbcType=VARCHAR},
+      </if>
+      <if test="resourceId != null" >
+        resource_id = #{resourceId,jdbcType=VARCHAR},
+      </if>
+      <if test="resourceActType != null" >
+        resource_act_type = #{resourceActType,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="isDel != null" >
+        is_del = #{isDel,jdbcType=TINYINT},
+      </if>
+      <if test="isAudit != null" >
+        is_audit = #{isAudit,jdbcType=TINYINT},
+      </if>
+      <if test="isRecommend != null" >
+        is_recommend = #{isRecommend,jdbcType=TINYINT},
+      </if>
+      <if test="recommendTime != null" >
+        recommend_time = #{recommendTime,jdbcType=BIGINT},
+      </if>
+      <if test="from != null" >
+        `from` = #{from,jdbcType=TINYINT},
+      </if>
+      <if test="visible != null" >
+        visible = #{visible,jdbcType=TINYINT},
+      </if>
+      <if test="commentCount != null" >
+        comment_count = #{commentCount,jdbcType=INTEGER},
+      </if>
+      <if test="diggCount != null" >
+        digg_count = #{diggCount,jdbcType=INTEGER},
+      </if>
+      <if test="subCount != null" >
+        sub_count = #{subCount,jdbcType=INTEGER},
+      </if>
+      <if test="action != null" >
+        action = #{action,jdbcType=INTEGER},
+      </if>
+      <if test="isRepost != null" >
+        is_repost = #{isRepost,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.kaipin.university.model.feed.Feed" >
+    update feed
+    set parent_id = #{parentId,jdbcType=VARCHAR},
+      feed_type = #{feedType,jdbcType=INTEGER},
+      parent_type = #{parentType,jdbcType=INTEGER},
+      uid = #{uid,jdbcType=VARCHAR},
+      create_uid = #{createUid,jdbcType=VARCHAR},
+      resource_table = #{resourceTable,jdbcType=VARCHAR},
+      resource_id = #{resourceId,jdbcType=VARCHAR},
+      resource_act_type = #{resourceActType,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=BIGINT},
+      is_del = #{isDel,jdbcType=TINYINT},
+      is_audit = #{isAudit,jdbcType=TINYINT},
+      is_recommend = #{isRecommend,jdbcType=TINYINT},
+      recommend_time = #{recommendTime,jdbcType=BIGINT},
+      `from` = #{from,jdbcType=TINYINT},
+      visible = #{visible,jdbcType=TINYINT},
+      comment_count = #{commentCount,jdbcType=INTEGER},
+      digg_count = #{diggCount,jdbcType=INTEGER},
+      sub_count = #{subCount,jdbcType=INTEGER},
+      action = #{action,jdbcType=INTEGER},
+      is_repost = #{isRepost,jdbcType=TINYINT}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <!--删除动态，根据资源id -->
+  <delete id="delFeedByResourceId" parameterType="map">
+  	delete from feed where resource_id = #{resourceId}
+  </delete>
+  <!--逻辑删除，根据资源id -->
+  <update id="updateFeedByResourceId" parameterType="map">
+  	update feed set is_del = 1 where resource_id = #{resourceId}
+  </update>
+</mapper>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mapper.stu.StuBaseUserMapper" >
+	
+<!-- 	插入学生资质 -->
+	<insert id="insertDoc" parameterType="map">
+	INSERT INTO 
+  		stu_user_document
+	VALUES
+		(
+			#{stu_user_id},#{document_path},#{document_type},
+			#{last_updated_time},#{create_time})
+	</insert>
+	
+<!-- 	查询学生资质list -->
+	<select id="selectDocList" parameterType="map" resultType="map">
+	SELECT
+		*
+	FROM
+		stu_user_document
+	WHERE
+		stu_user_id = #{stu_user_id}
+	</select>
+  	  <!-- 删除资质认证-->
+  <delete id="deleteDoc" parameterType="map">
+  	DELETE
+	FROM
+		stu_user_document
+	WHERE 1=1
+		 and stu_user_id = #{stu_user_id}
+		 
+	</delete>
+	
+	<!-- 添加教育背景 -->
+	<insert id="insertEdu" parameterType="map">
+		insert into resume_education_background values(
+			#{id},#{start_time},#{end_time},#{education_code},
+			#{school},#{major},0,#{create_time},1,#{resume_id})
+	</insert>
+	
+	<!-- 删除教育背景 -->
+	<delete id="delEdu" parameterType="String">
+		delete from resume_education_background 
+		where resume_id = (select a.id from resume_info a, user_localauth b where a.stu_user_id = b.id and b.id = #{stuId})
+	</delete>
+</mapper>

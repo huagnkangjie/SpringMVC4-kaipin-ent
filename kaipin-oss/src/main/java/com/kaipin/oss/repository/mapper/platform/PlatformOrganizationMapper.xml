@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kaipin.oss.repository.mapper.platform.PlatformOrganization">
+
+
+	<resultMap type="PlatformOrganization" id="organizationResultMap">
+
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="parent_id" property="parentId" />
+		<result column="code" property="code" />
+		<result column="short_name" property="shortName" />
+		<result column="full_name" property="fullName" />
+		<result column="category" property="category" />
+		<result column="layer" property="layer" />
+		<result column="outer_phone" property="outerPhone" />
+		<result column="inner_phone" property="innerPhone" />
+		<result column="fax" property="fax" />
+		<result column="postal_code" property="postalCode" />
+		<result column="address" property="address" />
+		<result column="manager" property="manager" />
+		<result column="assistant_manager" property="assistantManager" />
+		<result column="is_inner_organize" property="isInnerOrganize" />
+		<result column="delete_mark" property="deleteMark" />
+		<result column="enabled" property="enabled" />
+		<result column="priority" property="priority" />
+		<result column="description" property="description" />
+		<result column="create_time" property="createTime" />
+		<result column="create_user_id" property="createUserId" />
+		<result column="last_updated_time" property="lastUpdatedTime" />
+		<result column="modify_user_id" property="modifyUserId" />
+
+
+		<collection property="organizationRoles" ofType="PlatformRole"
+			column="id"
+			select="com.kaipin.oss.repository.mapper.platform.PlatformRole.getOrganizationRoles"   />
+
+	</resultMap>
+
+
+
+
+
+	<select id="getById" resultMap="organizationResultMap"
+		parameterType="string">
+
+		select * from platform_organization where id=#{value}
+
+	</select>
+
+
+
+
+
+
+
+</mapper>

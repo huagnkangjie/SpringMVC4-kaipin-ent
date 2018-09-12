@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mapper.user.UserMapper" >
+  <!-- 邮箱校验 -->
+  <select id="emailValidata" parameterType="map" resultType="map">
+  	SELECT
+		*
+	FROM
+		user_localauth
+	WHERE
+		email = #{email}
+  </select>
+  
+  <!-- 登录-->
+  <select id="login" parameterType="map" resultType="map">
+  	select 
+  		* 
+	from 
+		company_user_info user,
+		company_info info,
+		company_base_user base
+	where 1=1
+		and  ( user.email = #{userName} or user.phone = #{userName})
+  		and password = #{password}
+		and base.company_id = info.id
+		and base.company_user_id = user.id
+  </select>
+  
+  <!-- 邮箱发过来的验证-->
+  <select id="cheackmail" resultType="map" parameterType="map">
+  	SELECT
+		*
+	FROM
+		user_localauth
+	WHERE
+		id = #{id}
+	AND is_active_phone = 1
+	and email = #{email}
+  </select>
+  
+  <!-- 手机号唯一性验证-->
+  <select id="validataPhone" resultType="map" parameterType="map">
+  	select * from user_localauth where 1=1 
+  	and phone = #{phone}
+  	and is_active_phone = 1
+  </select>
+  
+  <!-- 重新获取邮件判断-->
+  <select id="againMail" parameterType="map" resultType="map">
+  	SELECT
+		*
+	FROM
+		company_user_info
+	WHERE
+		(phone = #{userName} OR email = #{userName})
+	AND ENABLE = 1
+	AND is_check_mail = 0
+  </select>
+  
+  <!-- 获取审核意见-->
+  <select id="getFeedbackList" parameterType="map" resultType="map">
+  	SELECT
+		b.title,
+		a.content
+	FROM
+		company_info_feedback_relation a,
+		company_info_feedback_config b
+	WHERE
+		a.config_id = b.id
+	AND a.feedback_id = #{feedbackId}
+  </select>
+  
+  <!-- 邀请码唯一性验证-->
+  <select id="validataInviteCode" parameterType="map" resultType="map">
+  	SELECT
+		*
+	FROM
+		user_localauth
+	WHERE
+		invitation_code = #{inviteCode}
+  </select>
+  
+</mapper>

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mapper.common.CommonPushFollowMapper" >
+	<!-- 添加关注 -->
+	<insert id="addPushFoloow" parameterType="map">
+		insert into follow_following values(#{id},#{from_uid},#{to_uid},#{remark},#{create_time},#{to_user_type},#{from_user_type},0)
+	</insert>
+	<!-- 删除关注 -->
+	<delete id="delPushFoloow" parameterType="map">
+		delete from follow_following where 1=1
+		<if test="id != null"><if test="id != ''"> and id = #{id}</if></if>
+		<if test="fromId != null"><if test="fromId != ''"> and from_uid = #{fromId}</if></if>
+		<if test="toId != null"><if test="toId != ''"> and to_uid = #{toId}</if></if>
+	</delete>
+	<!-- 获取关注list -->
+	<select id="getFollowList" parameterType="map" resultType="map">
+		select * from follow_following where to_uid = #{uId}
+	</select>
+	
+	<!-- 判断某个用户是否关注了某用户list -->
+	<select id="checkIsFollow" parameterType="map" resultType="map">
+		select * from follow_following where to_uid = #{to_uid} and from_uid = #{from_uid}
+	</select>
+	
+ 	<!-- 获取推荐企业list -->
+ 	<select id="getPushEnt" parameterType="map" resultType="map">
+ 		SELECT
+			*
+		FROM
+			company_info a,
+			company_base_user b,
+			company_user_info c
+		WHERE
+			a.id = b.company_id
+			and b.company_user_id = c.id
+			and a.office_area in (  select a.location_code from 
+										comm_location a,
+										(select  CONCAT(left(code,2),'%') code,location_code from comm_location where location_code = #{officeArea}) b 
+									where a.code like b.code )
+			
+			and c.id != #{userId}
+			and a.id not in ( select to_uid from follow_following where from_uid = #{orgId})
+		ORDER BY
+			a.create_time DESC
+		limit ${page_start},${page_size}
+ 	</select> 
+ 	
+ 	<!-- 获取推荐学生list -->
+ 	<select id="getPushStu" parameterType="map" resultType="map">
+ 		SELECT
+			a.*, b.major_name
+		FROM
+			stu_user a,
+			comm_major b,
+			user_localauth c
+		WHERE
+			a.major_code = b.major_code
+		and a.id = c.id
+		AND a.location_code in (  select a.location_code from 
+										comm_location a,
+										(select  CONCAT(left(code,2),'%') code,location_code from comm_location where location_code = #{locationCode}) b 
+									where a.code like b.code )
+		
+		and a.id != #{userId}
+		and a.id not in ( select to_uid from follow_following where from_uid = #{orgId})
+		ORDER BY
+			a.create_time DESC
+	  	limit ${page_start},${page_size}
+ 	</select>
+ 	
+ 	<!-- 获取推荐学校list --> 
+ 	<select id="getPushSch" parameterType="map" resultType="map">
+ 		SELECT
+			a.*, b.school_name
+		FROM
+			school_info_link a,
+			school_info b,
+			school_user_info c
+		WHERE
+			b.id = a.id
+		and b.id = c.school_id
+		and a.school_code = b.school_code
+		and c.id != #{userId}
+		AND a.location_code in (select a.location_code from 
+										comm_location a,
+										(select  CONCAT(left(code,2),'%') code,location_code from comm_location where location_code = #{locationCode}) b 
+								where a.code like b.code )
+		and a.id not in ( select to_uid from follow_following where from_uid = #{orgId})
+		ORDER BY
+			a.create_time DESC
+			limit ${page_start},${page_size}
+ 	</select> 
+ 	
+ 	<!-- 添加关注和粉丝表的统计数 -->
+	<insert id="insertFollowCount" parameterType="map">
+		INSERT into  follow_count(uid, follower_count, following_count) 
+		select 
+		(#{org_id}) a,
+		(select count(*) counts from follow_following where to_uid = #{org_id}) b,
+		(select count(*) counts from follow_following where from_uid = #{org_id} ) c
+	</insert>
+	
+	<!-- 更新关注数和粉丝数 -->
+	<update id="updateFollowCount" parameterType="map">
+		UPDATE follow_count SET follower_count = (select count(*) counts from follow_following where to_uid = #{org_id}),
+		following_count = (select count(*) counts from follow_following where from_uid = #{org_id})
+		where uid = #{org_id}
+	</update>
+</mapper>

@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.enterprise.mapper.exam.ExamMapper" >
+  <!-- 创建试卷和问题的关联 -->
+  <insert id="insertPaperQuestionRelation" parameterType="map">
+  	insert into 
+  		exam_paper_question(id, question_id, paper_id, priority)
+  	values
+  		(#{id}, #{question_id}, #{paper_id}, #{priority});
+  </insert>
+  <!-- 获取没有创建笔试题的职位列表 -->
+  <select id="positionList" parameterType="map" resultType="map">
+  	SELECT
+		position_name,id
+	FROM
+		position_info
+	WHERE
+		1 = 1
+	AND company_id = #{companyId}
+	AND end_time > #{today}
+	AND STATUS = 0
+	AND id NOT IN (
+		SELECT
+			position_id
+		FROM
+			exam_paper_position
+		WHERE
+			company_id = #{companyId}
+	)
+	order by create_time desc
+  </select>
+  
+  
+  <!-- 笔试题统计列表 -->
+  <select id="examCountList" resultType="map" parameterType="map">
+	<include refid="examCountListSql"></include>
+	limit ${page_start},${page_size}
+  </select>
+  <!-- 笔试题统计列表总数 -->
+  <select id="examCountListCount" resultType="map" parameterType="map">
+  	select count(*) counts from (<include refid="examCountListSql"></include>) counts
+  </select>
+  
+  <!-- 笔试题统计列表sql -->
+  <sql id="examCountListSql">
+  	select * from (
+		select * from (
+			select * from 
+			(
+				select 
+					position.position_name,	position.id position_id, 
+					paperPosition.paper_id id, paperPosition.id relationId ,
+					p.create_time, p.status
+				from 
+					position_info position,	exam_paper_position  paperPosition, exam_paper p
+				where 1=1
+					and position.id = paperPosition.position_id
+					and p.id = paperPosition.paper_id
+					and position.company_id = #{companyId}
+			)  paper
+			LEFT JOIN
+			(
+				select count(*) countsQuestion, a.paper_id
+				from exam_paper_question a,exam_question b
+				where 1=1 and a.question_id = b.id and b.status = 1
+				GROUP BY a.paper_id
+			) countsQuestionSql
+			on 
+				countsQuestionSql.paper_id = paper.id
+		) s 
+			LEFT JOIN (
+			select 
+				count(*) countsPeple , invite.paper_position_id
+			from 
+				exam_invite  invite
+			GROUP BY invite.paper_position_id
+		) ss 
+			on 
+			s.relationId = ss.paper_position_id
+		ORDER BY s.create_time desc) m
+		where 1=1 
+			<if test="status != null"><if test="status != ''">and m.status = #{status}</if></if>
+		ORDER BY m.create_time DESC
+  </sql>
+  
+  <!-- 获取某个职位下的做题人员列表 -->
+  <select id="examPersonalList" resultType="map" parameterType="map">
+  	<include refid="examPersonalListSql"></include>
+  	limit ${page_start},${page_size}
+  </select>
+  
+  <!-- 获取某个职位下的做题人员总数 -->
+  <select id="examPersonalListCount" resultType="map" parameterType="map"> 
+  	select count(*) counts from (<include refid="examPersonalListSql"></include>) m
+  </select>
+  
+  <!-- 获取某个职位下的做题人员列表 sql-->
+  <sql id="examPersonalListSql">
+  	select * from 
+		(
+			select 
+				pDelivery.id pDeliveryId, pDelivery.stu_user_id stuId,
+				resume.surname,resume.miss_surname,
+				paperInvite.result_type,paperInvite.create_time,
+				timestampdiff(SECOND,FROM_UNIXTIME(paperInvite.start_time/1000,'%Y-%m-%d %H:%i:%s'),FROM_UNIXTIME(paperInvite.end_time/1000,'%Y-%m-%d %H:%i:%s')) second,
+				paperPosition.paper_id,
+				paperInvite.id inviteId
+			from
+				position_delivery pDelivery,
+				exam_invite invite ,
+				resume_info resume,
+				exam_paper_invite paperInvite,
+				exam_paper_position paperPosition
+			where 1=1 
+				and pDelivery.id = invite.object_id
+				and paperPosition.position_id = pDelivery.position_id
+				and pDelivery.position_id = #{positionId}
+				and pDelivery.company_id = #{companyId}
+				and pDelivery.resume_id = resume.id
+				and paperInvite.invite_id = invite.id
+		) a
+		LEFT JOIN
+		(
+			select 
+				count(*) countsAnswer,detail.paper_id paperId ,detail.stu_user_id
+			from 
+				exam_answer_detail detail 
+			where 1=1
+				and (detail.ianswer != NULL or detail.ianswer != '')
+			GROUP BY detail.stu_user_id,detail.paper_id
+		) b
+		ON 1=1
+			and a.paper_id = b.paperId
+			and a.stuId = b.stu_user_id
+		ORDER BY 
+			a.create_time desc,a.result_type asc	
+  </sql>
+  
+  <!-- 获取试卷题目总数 -->
+  <select id="getPaperQuestionCount" resultType="map" parameterType="map">
+  	select 
+  		count(*) counts 
+  	from 
+		exam_paper_position paperPosition,
+		exam_paper_question paperQuestion
+	where 1=1
+		and paperPosition.paper_id = paperQuestion.paper_id
+		and paperPosition.position_id = #{positionId}
+		and paperPosition.company_id = #{companyId}
+  </select>
+  
+  <!-- 试卷详情 -->
+  <select id="examQuestionList" resultType="map" parameterType="map">
+	 select 
+		paperQuestion.paper_id, paperQuestion.priority,
+		question.id, question.question_type, question.question_content question, question.status,question.question_db_id dbId,
+		position.position_name
+	from 
+		exam_paper_question paperQuestion,
+		exam_question question,
+		exam_paper_position paperPosition,
+		position_info position
+	where 1=1
+		and paperQuestion.question_id = question.id
+		and paperQuestion.paper_id = #{paperId}
+		and question.status = 1
+		and paperPosition.paper_id = paperQuestion.paper_id
+		and paperPosition.position_id = position.id
+	ORDER BY paperQuestion.priority ASC
+  </select>
+  
+  <!-- 判断试卷是否已有学生使用 -->
+  <select id="checkPaperHasUse" parameterType="map" resultType="map">
+  	select 
+		count(*) counts
+	from 
+		exam_answer_detail detail
+	where 1=1
+		and detail.paper_id = #{paperId}
+  </select>
+  
+  <!-- 答题人答题详情 list-->
+  <select id="examAnswerDetailList" parameterType="map" resultType="map">
+  	<include refid="examAnswerDetailListSql"></include> 
+  </select>
+  <!-- 答题人答题详情 count-->
+  <select id="examAnswerDetailListCount" parameterType="map" resultType="map">
+  	select count(*) counts from (
+  		<include refid="examAnswerDetailListSql"></include> ) m
+  </select>
+  
+  <!-- 答题人答题详情 SQL -->
+  <sql id="examAnswerDetailListSql">
+  	SELECT 
+		question.question_content question,detail.ianswer,detail.stu_user_id,paperPosition.position_id
+	FROM 
+		exam_answer_detail detail,
+		exam_question question,
+		exam_paper_question paperQuestion,
+		exam_paper paper,
+		exam_paper_position paperPosition
+	where 1=1
+		and detail.question_id = question.id
+		and paperQuestion.question_id = detail.question_id
+		and detail.paper_id = #{paperId}
+		and detail.stu_user_id = #{uId}
+		and paper.id = paperQuestion.paper_id
+		and paperPosition.paper_id = paper.id
+	ORDER BY paperQuestion.priority asc
+  </sql>
+  
+  <!-- 更新邀请日志表状态 -->
+  <update id="updateInviteStatus" parameterType="map">
+  	UPDATE 
+  		exam_paper_invite invite
+	SET result_type = #{result_type}
+	WHERE
+		invite.id = #{inviteId}
+  </update>
+  
+  <!-- 邀请记录详情-->
+  <select id="InviteDetail" resultType="map" parameterType="map">
+  	select 
+		invite.id inviteId, invite.stu_user_id uId, invite.memo, invite.status, invite.start_time, 
+		invite.end_time, FROM_UNIXTIME(invite.create_time/1000,'%Y-%m-%d %H:%i') create_time, 
+		invite.result_type,
+		timestampdiff(SECOND,FROM_UNIXTIME(invite.start_time/1000,'%Y-%m-%d %H:%i:%s'),FROM_UNIXTIME(invite.end_time/1000,'%Y-%m-%d %H:%i:%s')) second,
+		paperPosition.position_id,paperPosition.company_id,
+		position.position_name,position.id positionId
+	from 
+		exam_paper_invite invite,
+		exam_invite inv,
+		exam_paper_position paperPosition,
+		position_info position
+	where 1=1
+		and inv.id = invite.invite_id
+		and inv.paper_position_id = paperPosition.id
+		and position.id = paperPosition.position_id
+		and invite.id = #{inviteId}
+  </select>
+  
+  <!-- 删除问题与试卷的关联 -->
+  <delete id="deletePaperQuestionRelation" parameterType="map">
+  	delete from 
+  		exam_paper_question 
+  	where 1=1
+  	<if test="questioId != null"><if test="questionId != ''"> and question_id = #{questionId}</if></if>
+  	<if test="paperId != null"><if test="paperId != ''"> and paper_id = #{paperId}</if></if>
+  </delete>
+  
+  <!-- 判断职位是否存在笔试题-->
+  <select id="checkPaperByPos" parameterType="map" resultType="map">
+	SELECT
+		*
+	FROM
+		exam_paper_position a,
+		exam_paper b
+		
+	WHERE
+		1 = 1
+	AND a.position_id = #{positionId}
+	and a.paper_id = b.id
+  </select>  
+  
+  <!-- 获取邀请记录 -->
+  <select id="getPaperInvite" parameterType="map" resultType="map"> 
+  	select * from exam_paper_invite where id = #{inviteId}
+  </select>
+</mapper>

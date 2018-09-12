@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kaipin.oss.repository.mapper.company.CompanyUserInfo" >
+  <resultMap id="BaseResultMap" type="com.kaipin.oss.model.company.CompanyUserInfo">
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="miss_surname" property="missSurname" jdbcType="VARCHAR" />
+    <result column="surname" property="surname" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="TINYINT" />
+    <result column="position" property="position" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="encode_password" property="encodePassword" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="telphone" property="telphone" jdbcType="VARCHAR" />
+    <result column="is_check_phone" property="isCheckPhone" jdbcType="TINYINT" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="is_check_mail" property="isCheckMail" jdbcType="TINYINT" />
+    <result column="enable" property="enable" jdbcType="TINYINT" />
+    <result column="age" property="age" jdbcType="TINYINT" />
+    <result column="region" property="region" jdbcType="VARCHAR" />
+    <result column="head_url" property="headUrl" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="BIGINT" />
+    <result column="last_updated_time" property="lastUpdatedTime" jdbcType="BIGINT" />
+    <result column="id_card_image" property="idCardImage" jdbcType="VARCHAR" />
+    <result column="is_del" property="isDel" jdbcType="TINYINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, miss_surname, surname, sex, position, password, encode_password, phone, telphone, 
+    is_check_phone, email, is_check_mail, enable, age, region, head_url, create_time, 
+    last_updated_time, id_card_image, is_del
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from company_user_info
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from company_user_info
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.kaipin.oss.model.company.CompanyUserInfo" >
+    insert into company_user_info (id, miss_surname, surname, 
+      sex, position, password, 
+      encode_password, phone, telphone, 
+      is_check_phone, email, is_check_mail, 
+      enable, age, region, 
+      head_url, create_time, last_updated_time, 
+      id_card_image, is_del)
+    values (#{id,jdbcType=VARCHAR}, #{missSurname,jdbcType=VARCHAR}, #{surname,jdbcType=VARCHAR}, 
+      #{sex,jdbcType=TINYINT}, #{position,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{encodePassword,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{telphone,jdbcType=VARCHAR}, 
+      #{isCheckPhone,jdbcType=TINYINT}, #{email,jdbcType=VARCHAR}, #{isCheckMail,jdbcType=TINYINT}, 
+      #{enable,jdbcType=TINYINT}, #{age,jdbcType=TINYINT}, #{region,jdbcType=VARCHAR}, 
+      #{headUrl,jdbcType=VARCHAR}, #{createTime,jdbcType=BIGINT}, #{lastUpdatedTime,jdbcType=BIGINT}, 
+      #{idCardImage,jdbcType=VARCHAR}, #{isDel,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.kaipin.oss.model.company.CompanyUserInfo" >
+    insert into company_user_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="missSurname != null" >
+        miss_surname,
+      </if>
+      <if test="surname != null" >
+        surname,
+      </if>
+      <if test="sex != null" >
+        sex,
+      </if>
+      <if test="position != null" >
+        position,
+      </if>
+      <if test="password != null" >
+        password,
+      </if>
+      <if test="encodePassword != null" >
+        encode_password,
+      </if>
+      <if test="phone != null" >
+        phone,
+      </if>
+      <if test="telphone != null" >
+        telphone,
+      </if>
+      <if test="isCheckPhone != null" >
+        is_check_phone,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="isCheckMail != null" >
+        is_check_mail,
+      </if>
+      <if test="enable != null" >
+        enable,
+      </if>
+      <if test="age != null" >
+        age,
+      </if>
+      <if test="region != null" >
+        region,
+      </if>
+      <if test="headUrl != null" >
+        head_url,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="lastUpdatedTime != null" >
+        last_updated_time,
+      </if>
+      <if test="idCardImage != null" >
+        id_card_image,
+      </if>
+      <if test="isDel != null" >
+        is_del,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="missSurname != null" >
+        #{missSurname,jdbcType=VARCHAR},
+      </if>
+      <if test="surname != null" >
+        #{surname,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        #{sex,jdbcType=TINYINT},
+      </if>
+      <if test="position != null" >
+        #{position,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="encodePassword != null" >
+        #{encodePassword,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="telphone != null" >
+        #{telphone,jdbcType=VARCHAR},
+      </if>
+      <if test="isCheckPhone != null" >
+        #{isCheckPhone,jdbcType=TINYINT},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="isCheckMail != null" >
+        #{isCheckMail,jdbcType=TINYINT},
+      </if>
+      <if test="enable != null" >
+        #{enable,jdbcType=TINYINT},
+      </if>
+      <if test="age != null" >
+        #{age,jdbcType=TINYINT},
+      </if>
+      <if test="region != null" >
+        #{region,jdbcType=VARCHAR},
+      </if>
+      <if test="headUrl != null" >
+        #{headUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="lastUpdatedTime != null" >
+        #{lastUpdatedTime,jdbcType=BIGINT},
+      </if>
+      <if test="idCardImage != null" >
+        #{idCardImage,jdbcType=VARCHAR},
+      </if>
+      <if test="isDel != null" >
+        #{isDel,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.kaipin.oss.model.company.CompanyUserInfo" >
+    update company_user_info
+    <set >
+      <if test="missSurname != null" >
+        miss_surname = #{missSurname,jdbcType=VARCHAR},
+      </if>
+      <if test="surname != null" >
+        surname = #{surname,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        sex = #{sex,jdbcType=TINYINT},
+      </if>
+      <if test="position != null" >
+        position = #{position,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="encodePassword != null" >
+        encode_password = #{encodePassword,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="telphone != null" >
+        telphone = #{telphone,jdbcType=VARCHAR},
+      </if>
+      <if test="isCheckPhone != null" >
+        is_check_phone = #{isCheckPhone,jdbcType=TINYINT},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="isCheckMail != null" >
+        is_check_mail = #{isCheckMail,jdbcType=TINYINT},
+      </if>
+      <if test="enable != null" >
+        enable = #{enable,jdbcType=TINYINT},
+      </if>
+      <if test="age != null" >
+        age = #{age,jdbcType=TINYINT},
+      </if>
+      <if test="region != null" >
+        region = #{region,jdbcType=VARCHAR},
+      </if>
+      <if test="headUrl != null" >
+        head_url = #{headUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="lastUpdatedTime != null" >
+        last_updated_time = #{lastUpdatedTime,jdbcType=BIGINT},
+      </if>
+      <if test="idCardImage != null" >
+        id_card_image = #{idCardImage,jdbcType=VARCHAR},
+      </if>
+      <if test="isDel != null" >
+        is_del = #{isDel,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.kaipin.oss.model.company.CompanyUserInfo" >
+    update company_user_info
+    set miss_surname = #{missSurname,jdbcType=VARCHAR},
+      surname = #{surname,jdbcType=VARCHAR},
+      sex = #{sex,jdbcType=TINYINT},
+      position = #{position,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      encode_password = #{encodePassword,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      telphone = #{telphone,jdbcType=VARCHAR},
+      is_check_phone = #{isCheckPhone,jdbcType=TINYINT},
+      email = #{email,jdbcType=VARCHAR},
+      is_check_mail = #{isCheckMail,jdbcType=TINYINT},
+      enable = #{enable,jdbcType=TINYINT},
+      age = #{age,jdbcType=TINYINT},
+      region = #{region,jdbcType=VARCHAR},
+      head_url = #{headUrl,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=BIGINT},
+      last_updated_time = #{lastUpdatedTime,jdbcType=BIGINT},
+      id_card_image = #{idCardImage,jdbcType=VARCHAR},
+      is_del = #{isDel,jdbcType=TINYINT}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

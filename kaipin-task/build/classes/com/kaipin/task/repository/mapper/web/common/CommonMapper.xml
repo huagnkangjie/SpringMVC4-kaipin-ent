@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kaipin.task.repository.dao.web.common.ICommonDao" >
+  
+  <!-- 企业 -->
+  <select id="getCompanyInfo" resultType="map" parameterType="String">
+  	select * from company_info where id = #{companyId}
+  </select>
+  
+  <!-- 学校 -->
+  <select id="getSchoolInfo" resultType="map" parameterType="String">
+  	select a.school_name,b.* from school_info a,school_info_link b
+	where a.school_code = b.school_code
+	and id = #{schId}
+  </select>
+  
+  <!-- 学生 -->
+  <select id="getStudentInfo" resultType="map" parameterType="String">
+  	select * from stu_user where id = #{stuId}
+  </select>
+  
+</mapper>

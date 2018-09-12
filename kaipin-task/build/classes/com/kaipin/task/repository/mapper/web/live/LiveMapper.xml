@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kaipin.task.repository.dao.web.live.ILiveTipDao" >
+  
+  <!-- 获取最近30分钟需要提醒的用户 -->
+  <select id="getLiveTipList" parameterType="map" resultType="map">
+  	<![CDATA[
+  		select 
+			a.*, b.category_id live_org_type
+		from 
+		(
+			  select 
+					a.video_id, 
+					b.id uid, b.phone, b.organization_id org_id, b.category_id,
+					c.strat_time,c.`subject`,
+					CONCAT(d.surname,d.miss_surname) user_name,
+					c.organization_id live_org_id
+				from 
+					follow_live a,
+					user_localauth b,
+					live_info c,
+					stu_user d
+				where 
+					video_id in 
+					(
+						SELECT 
+							id
+						FROM 
+							live_info a 
+						where 1=1 
+							and	FLOOR((UNIX_TIMESTAMP(a.strat_time)-UNIX_TIMESTAMP(NOW()))/60) < 30 
+							and FLOOR((UNIX_TIMESTAMP(a.strat_time)-UNIX_TIMESTAMP(NOW()))/60) > 0
+					)
+					and a.user_id = b.id
+					
+					and a.user_id not in 
+					(
+						select cc .user_id from msg_live_phone_tip aa, live_info bb, follow_live cc
+						where aa.stu_user_id = cc.user_id and aa.video_id = bb.id and aa.video_id = cc.video_id 
+						and bb.id = cc.video_id and aa.`status` = 200
+					) 
+					and c.id = a.video_id
+					and d.id = b.id
+		) a,user_localauth b
+		where a.live_org_id = b.organization_id
+  	]]>
+  	
+  	
+  </select>
+  
+  <insert id="insertPhoneTip" parameterType="map">
+  	insert into msg_live_phone_tip 
+  	values(#{id}, #{phone}, #{video_id}, #{stu_user_id}, #{organization_id},
+  	 #{status}, #{create_time})
+  </insert>
+  
+</mapper>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kaipin.oss.repository.dao.sch.ISchBaseInfoDao">
+
+	<!-- 基础属性 -->
+	<resultMap id="baseRusltMap" type="com.kaipin.oss.model.sch.SchBaseInfo">
+		<result column="id" property="id" />
+		<result column="school_name" property="schoolName" />
+		<result column="school_short_name" property="schoolShortName" />
+		<result column="school_class_id" property="schoolClass" />
+		<result column="school_feature_id" property="schoolFeature" />
+		<result column="verify_status" property="verifyStatus" />
+		<result column="userId" property="userId" />
+		<result column="email" property="email" />
+		<result column="phone" property="phone" />
+		<result column="userName" property="userName" />
+		<result column="location_name" property="location" />
+		<result column="create_time" property="createTime" />
+	</resultMap>
+	
+	<!-- 查询资质文件列表 -->
+	<select id="getSchDocumentList" parameterType="map" resultMap="baseRusltMap">
+		<include refid="getSchDocumentListSQL"></include>
+	</select>
+	
+	<!-- 查询资质文件列表 -->
+	<select id="getSchDocumentCount" resultType="java.lang.Integer" parameterType="map">
+		select count(*) from 
+		(
+			<include refid="getSchDocumentListSQL"></include>
+		 ) m
+	</select>
+	
+	
+	<!-- 查询资质文件列表SQL -->
+	<sql id="getSchDocumentListSQL">
+		select t3.*, t4.class_name from 
+			(
+				select t1.*, t2.group_name from 
+					(
+						select 
+							a.id, a.school_name,
+							b.school_short_name, b.school_feature_id, b.school_class_id, b.verify_status,
+							c.id userId, c.email, c.phone,
+							CONCAT(d.surname, d.miss_surname) userName,
+							e.location_name,
+							FROM_UNIXTIME(f.create_time/1000,'%Y-%m-%d %H:%i:%s') create_time
+						from
+							school_info a,
+							school_info_link b ,
+							user_localauth c,
+							school_user_info d,
+							comm_location e,
+							(select count(*) counts, sch_user_id, create_time from school_user_document GROUP BY sch_user_id HAVING count(*) > 0) f
+						where 1=1
+							and a.id = b.id
+							and a.id = d.school_id
+							and d.id = c.id
+							and b.location_code = e.location_code
+							and c.id = f.sch_user_id
+					) t1 
+				LEFT JOIN 
+					school_feature t2
+				ON t1.school_feature_id = t2.id
+			) t3 
+		LEFT JOIN
+				school_class t4
+		ON t3.school_class_id = t4.id
+		ORDER BY t3.create_time desc
+	</sql>
+	
+	<select id="getSchDocList" parameterType="String" resultType="map">
+		select * from school_user_document where sch_user_id = #{schUserId}
+	</select>
+	
+</mapper>

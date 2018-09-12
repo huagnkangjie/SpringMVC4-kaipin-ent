@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kaipin.university.repository.dao.feed.IFeedCommentDao" >
+  <resultMap id="BaseResultMap" type="com.kaipin.university.model.feed.FeedComment" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="feed_id" property="feedId" jdbcType="VARCHAR" />
+    <result column="uid" property="uid" jdbcType="VARCHAR" />
+    <result column="to_comment_id" property="toCommentId" jdbcType="VARCHAR" />
+    <result column="to_uid" property="toUid" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="BIGINT" />
+    <result column="is_del" property="isDel" jdbcType="BIT" />
+    <result column="from" property="from" jdbcType="TINYINT" />
+    <result column="is_audit" property="isAudit" jdbcType="BIT" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.kaipin.university.model.feed.FeedComment" extends="BaseResultMap" >
+    <result column="content" property="content" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, feed_id, uid, to_comment_id, to_uid, create_time, is_del, `from`, is_audit
+  </sql>
+  <sql id="Blob_Column_List" >
+    content
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    `from` feed_comment
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete `from` feed_comment
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.kaipin.university.model.feed.FeedComment" >
+    insert into feed_comment (id, feed_id, uid, 
+      to_comment_id, to_uid, create_time, 
+      is_del, `from`, is_audit, content
+      )
+    values (#{id,jdbcType=VARCHAR}, #{feedId,jdbcType=VARCHAR}, #{uid,jdbcType=VARCHAR}, 
+      #{toCommentId,jdbcType=VARCHAR}, #{toUid,jdbcType=VARCHAR}, #{createTime,jdbcType=BIGINT}, 
+      #{isDel,jdbcType=BIT}, #{from,jdbcType=TINYINT}, #{isAudit,jdbcType=BIT}, #{content,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.kaipin.university.model.feed.FeedComment" >
+    insert into feed_comment
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="feedId != null" >
+        feed_id,
+      </if>
+      <if test="uid != null" >
+        uid,
+      </if>
+      <if test="toCommentId != null" >
+        to_comment_id,
+      </if>
+      <if test="toUid != null" >
+        to_uid,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="isDel != null" >
+        is_del,
+      </if>
+      <if test="from != null" >
+        `from`,
+      </if>
+      <if test="isAudit != null" >
+        is_audit,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="feedId != null" >
+        #{feedId,jdbcType=VARCHAR},
+      </if>
+      <if test="uid != null" >
+        #{uid,jdbcType=VARCHAR},
+      </if>
+      <if test="toCommentId != null" >
+        #{toCommentId,jdbcType=VARCHAR},
+      </if>
+      <if test="toUid != null" >
+        #{toUid,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="isDel != null" >
+        #{isDel,jdbcType=BIT},
+      </if>
+      <if test="from != null" >
+        #{from,jdbcType=TINYINT},
+      </if>
+      <if test="isAudit != null" >
+        #{isAudit,jdbcType=BIT},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.kaipin.university.model.feed.FeedComment" >
+    update feed_comment
+    <set >
+      <if test="feedId != null" >
+        feed_id = #{feedId,jdbcType=VARCHAR},
+      </if>
+      <if test="uid != null" >
+        uid = #{uid,jdbcType=VARCHAR},
+      </if>
+      <if test="toCommentId != null" >
+        to_comment_id = #{toCommentId,jdbcType=VARCHAR},
+      </if>
+      <if test="toUid != null" >
+        to_uid = #{toUid,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="isDel != null" >
+        is_del = #{isDel,jdbcType=BIT},
+      </if>
+      <if test="from != null" >
+        `from` = #{from,jdbcType=TINYINT},
+      </if>
+      <if test="isAudit != null" >
+        is_audit = #{isAudit,jdbcType=BIT},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.kaipin.university.model.feed.FeedComment" >
+    update feed_comment
+    set feed_id = #{feedId,jdbcType=VARCHAR},
+      uid = #{uid,jdbcType=VARCHAR},
+      to_comment_id = #{toCommentId,jdbcType=VARCHAR},
+      to_uid = #{toUid,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=BIGINT},
+      is_del = #{isDel,jdbcType=BIT},
+      `from` = #{from,jdbcType=TINYINT},
+      is_audit = #{isAudit,jdbcType=BIT},
+      content = #{content,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.kaipin.university.model.feed.FeedComment" >
+    update feed_comment
+    set feed_id = #{feedId,jdbcType=VARCHAR},
+      uid = #{uid,jdbcType=VARCHAR},
+      to_comment_id = #{toCommentId,jdbcType=VARCHAR},
+      to_uid = #{toUid,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=BIGINT},
+      is_del = #{isDel,jdbcType=BIT},
+      `from` = #{from,jdbcType=TINYINT},
+      is_audit = #{isAudit,jdbcType=BIT}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

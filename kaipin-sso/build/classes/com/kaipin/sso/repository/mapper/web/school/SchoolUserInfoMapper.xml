@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="web.SchoolUserInfoMapper" >
+
+  <resultMap id="BaseResultMap" type="com.kaipin.sso.entity.web.school.SchoolUserInfo" >
+    <id column="id" property="id"  />
+    <result column="school_id" property="schoolId"  />
+    <result column="miss_surname" property="missSurname" />
+    <result column="surname" property="surname" />
+    <result column="sex" property="sex"  />
+    <result column="position" property="position" />
+    <result column="age" property="age"  />
+    <result column="head_url" property="headUrl"  />
+    <result column="create_time" property="createTime"  />
+    <result column="last_updated_time" property="lastUpdatedTime" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, school_id, miss_surname, surname, sex, position, age, head_url, create_time, 
+    last_updated_time
+  </sql>
+  
+  <select id="getById" resultMap="BaseResultMap" parameterType="string" >
+    select 
+    <include refid="Base_Column_List" />
+    from school_user_info
+    where id = #{id}
+  </select>
+  
+  <select id="selectDoc" resultType="map" parameterType="string">
+  	SELECT * FROM school_user_document where sch_user_id = #{uid}
+  </select>
+  
+  <!-- 获取学校link信息 -->
+  <select id="selectLinkInfo" parameterType="map" resultType="String">
+  	select * from school_link_info where id = #{uid}
+  </select>
+  
+</mapper>

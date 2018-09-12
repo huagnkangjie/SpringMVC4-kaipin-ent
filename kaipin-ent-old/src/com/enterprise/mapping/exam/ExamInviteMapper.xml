@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.enterprise.mapper.exam.ExamInviteMapper" >
+  <resultMap id="BaseResultMap" type="com.enterprise.model.exam.ExamInvite" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="inviter_handle_status" property="inviterHandleStatus" jdbcType="TINYINT" />
+    <result column="create_time" property="createTime" jdbcType="BIGINT" />
+    <result column="receive_time" property="receiveTime" jdbcType="BIGINT" />
+    <result column="paper_position_id" property="paperPositionId" jdbcType="VARCHAR" />
+    <result column="object_id" property="objectId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, inviter_handle_status, create_time, receive_time, paper_position_id, object_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from exam_invite
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from exam_invite
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.enterprise.model.exam.ExamInvite" >
+    insert into exam_invite (id, inviter_handle_status, create_time, 
+      receive_time, paper_position_id, object_id
+      )
+    values (#{id,jdbcType=VARCHAR}, #{inviterHandleStatus,jdbcType=TINYINT}, #{createTime,jdbcType=BIGINT}, 
+      #{receiveTime,jdbcType=BIGINT}, #{paperPositionId,jdbcType=VARCHAR}, #{objectId,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.enterprise.model.exam.ExamInvite" >
+    insert into exam_invite
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="inviterHandleStatus != null" >
+        inviter_handle_status,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="receiveTime != null" >
+        receive_time,
+      </if>
+      <if test="paperPositionId != null" >
+        paper_position_id,
+      </if>
+      <if test="objectId != null" >
+        object_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="inviterHandleStatus != null" >
+        #{inviterHandleStatus,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="receiveTime != null" >
+        #{receiveTime,jdbcType=BIGINT},
+      </if>
+      <if test="paperPositionId != null" >
+        #{paperPositionId,jdbcType=VARCHAR},
+      </if>
+      <if test="objectId != null" >
+        #{objectId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.enterprise.model.exam.ExamInvite" >
+    update exam_invite
+    <set >
+      <if test="inviterHandleStatus != null" >
+        inviter_handle_status = #{inviterHandleStatus,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="receiveTime != null" >
+        receive_time = #{receiveTime,jdbcType=BIGINT},
+      </if>
+      <if test="paperPositionId != null" >
+        paper_position_id = #{paperPositionId,jdbcType=VARCHAR},
+      </if>
+      <if test="objectId != null" >
+        object_id = #{objectId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.enterprise.model.exam.ExamInvite" >
+    update exam_invite
+    set inviter_handle_status = #{inviterHandleStatus,jdbcType=TINYINT},
+      create_time = #{createTime,jdbcType=BIGINT},
+      receive_time = #{receiveTime,jdbcType=BIGINT},
+      paper_position_id = #{paperPositionId,jdbcType=VARCHAR},
+      object_id = #{objectId,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

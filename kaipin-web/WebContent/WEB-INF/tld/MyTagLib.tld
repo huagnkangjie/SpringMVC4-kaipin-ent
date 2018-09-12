@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<taglib>
+<tlib-version>1.0</tlib-version>
+<jsp-version>1.2</jsp-version>
+
+<tag>
+  <name>demo</name>
+  <tag-class>com.web.tag.TagTest</tag-class>
+  <body-content>empty</body-content>
+  <attribute>
+    <name>parameter</name>
+    <required>false</required>
+    <rtexprvalue>true</rtexprvalue>
+  </attribute>
+</tag>
+
+</taglib>

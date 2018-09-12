@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
+	http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.2.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd"
+	default-lazy-init="true">
+	
+	<!-- 自动扫描的包名
+	
+ -->
+	<context:component-scan base-package="com.kaipin.*" />
+
+	<bean id="configProperties"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:jdbc.properties</value>
+			</list>
+		</property>
+	</bean> 
+
+<bean id="properties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+		<property name="locations">
+			<list>
+				<value>classpath:kaipin.properties</value>
+ 		 
+			</list>
+		</property>
+		<qualifier value="main"/>
+	</bean>
+	<bean id="propertyUtils" class=" com.kaipin.oss.util.PropertyUtils">
+		<property name="properties" ref="properties"/>
+	</bean>
+ 
+
+
+
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+	
+		<property name="jdbcUrl" value="${jdbc.url}" />
+			<property name="driverClass" value="${jdbc.driverClassName}" />
+		<property name="user" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+		<property name="autoCommitOnClose" value="true" />
+		<property name="checkoutTimeout" value="${cpool.checkoutTimeout}" />
+		<property name="initialPoolSize" value="${cpool.minPoolSize}" />
+		<property name="minPoolSize" value="${cpool.minPoolSize}" />
+		<property name="maxPoolSize" value="${cpool.maxPoolSize}" />
+		<property name="maxIdleTime" value="${cpool.maxIdleTime}" />
+		<property name="acquireIncrement" value="${cpool.acquireIncrement}" />
+		<property name="maxIdleTimeExcessConnections" value="${cpool.maxIdleTimeExcessConnections}" />
+	</bean>
+
+
+
+
+<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+	</bean>
+
+
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+	<!--  -->
+		<property name="configLocation" value="classpath:mybatis-config.xml"></property>
+
+		<property name="dataSource" ref="dataSource" />
+		<property name="mapperLocations" value="classpath:com/kaipin/oss/repository/mapper/**/*.xml" />
+		
+		
+		  <property name="typeAliasesPackage" value="com.kaipin.oss.model" />  
+	</bean>
+
+
+<!-- 
+
+<bean id="sqlSessionTemplateSimple" class="org.mybatis.spring.SqlSessionTemplate">     
+<constructor-arg index="0" ref="sqlSessionFactory" />  
+ 
+<constructor-arg index="1" value="SIMPLE"/>  
+</bean>  
+      
+ 
+<bean id="sqlSessionTemplateBatch" class="org.mybatis.spring.SqlSessionTemplate">     
+<constructor-arg index="0" ref="sqlSessionFactory" />  
+  
+<constructor-arg index="1" value="BATCH"/>  
+</bean>  
+
+ -->
+
+
+		
+
+	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate"
+		scope="prototype">
+		<constructor-arg index="0" ref="sqlSessionFactory" />
+
+	</bean>
+
+
+
+
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="annotationClass" value="org.springframework.stereotype.Repository" />
+		
+		
+		<!--  
+		
+		<property name="sqlSessionTemplateBeanName" value="sqlSessionTemplateBatch" />   -->
+		
+
+		<property name="basePackage" value="com.kaipin.oss.repository.dao.*" />
+	</bean>
+
+
+	<tx:annotation-driven transaction-manager="transactionManager" />
+	
+	
+	<context:annotation-config />
+
+
+
+</beans>
